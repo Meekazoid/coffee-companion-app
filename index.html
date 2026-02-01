@@ -242,21 +242,22 @@
         }
 
         .delete-btn {
-            background: rgba(220, 53, 69, 0.8);
-            color: white;
+            background: white;
+            color: #dc3545;
             border: none;
             padding: 0;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1rem;
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
-            max-width: 40px;
+            font-size: 1.2rem;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            max-width: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .coffee-process {
@@ -421,12 +422,13 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            padding: 10px 0;
         }
 
         .ratio-slider input[type="range"] {
             flex: 1;
-            height: 6px;
-            border-radius: 3px;
+            height: 10px;
+            border-radius: 5px;
             background: rgba(255, 255, 255, 0.2);
             outline: none;
             -webkit-appearance: none;
@@ -435,20 +437,28 @@
         .ratio-slider input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #8b4513;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: white;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .ratio-slider input[type="range"]::-webkit-slider-thumb::before {
+            content: '☕';
+            font-size: 18px;
         }
 
         .ratio-slider input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #8b4513;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: white;
             cursor: pointer;
             border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .ratio-value {
@@ -512,13 +522,13 @@
 <body>
     <div class="container">
         <h1>
-            <img src="logo.webp" alt="Coffee Companion" class="logo">
-            Coffee Companion
+            <img src="logo.webp" alt="BrewBuddy" class="logo">
+            BrewBuddy
         </h1>
         
         <div class="mode-toggle">
-            <button class="mode-btn active" onclick="switchMode('camera')">📷 Foto</button>
-            <button class="mode-btn" onclick="switchMode('manual')">✍️ Manuell</button>
+            <button class="mode-btn active" onclick="switchMode('camera')">📷 Photo</button>
+            <button class="mode-btn" onclick="switchMode('manual')">✍️ Manual</button>
         </div>
 
         <div class="add-coffee-section">
@@ -527,12 +537,12 @@
                 <input type="file" id="imageInput" accept="image/*" capture="environment">
                 <button class="camera-button" id="cameraBtn">
                     <span>📷</span>
-                    <span>Kaffee fotografieren</span>
+                    <span>Take Photo of Coffee</span>
                 </button>
                 <img id="imagePreview" alt="Preview">
                 <div id="loadingMessage" class="loading hidden">
                     <div class="spinner"></div>
-                    <p style="margin-top: 10px;">Analysiere Kaffee...</p>
+                    <p style="margin-top: 10px;">Analyzing coffee...</p>
                 </div>
                 <div id="errorMessage" class="error-message hidden"></div>
                 <div id="successMessage" class="success-message hidden"></div>
@@ -542,18 +552,18 @@
             <div class="manual-section">
                 <div class="form-group">
                     <label>Name / Farm</label>
-                    <input type="text" id="name" placeholder="z.B. Finca Milán">
+                    <input type="text" id="name" placeholder="e.g. Finca Milán">
                 </div>
                 
                 <div class="form-group">
-                    <label>Herkunft (Land, Region)</label>
-                    <input type="text" id="origin" placeholder="z.B. Colombia, Calarcá">
+                    <label>Origin (Country, Region)</label>
+                    <input type="text" id="origin" placeholder="e.g. Colombia, Calarcá">
                 </div>
                 
                 <div class="form-group">
-                    <label>Aufbereitungsmethode</label>
+                    <label>Processing Method</label>
                     <select id="process">
-                        <option value="">-- Bitte wählen --</option>
+                        <option value="">-- Please select --</option>
                         <option value="washed">Washed</option>
                         <option value="natural">Natural</option>
                         <option value="honey">Honey</option>
@@ -567,26 +577,26 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Varietät(en)</label>
-                    <input type="text" id="cultivar" placeholder="z.B. Caturra, Chiroso">
+                    <label>Variety/Cultivar</label>
+                    <input type="text" id="cultivar" placeholder="e.g. Caturra, Chiroso">
                 </div>
                 
                 <div class="form-group">
-                    <label>Höhe (masl)</label>
-                    <input type="text" id="altitude" placeholder="z.B. 1650">
+                    <label>Altitude (masl)</label>
+                    <input type="text" id="altitude" placeholder="e.g. 1650">
                 </div>
                 
                 <div class="form-group">
-                    <label>Röster (optional)</label>
-                    <input type="text" id="roaster" placeholder="z.B. Südseite Coffee">
+                    <label>Roaster (optional)</label>
+                    <input type="text" id="roaster" placeholder="e.g. Südseite Coffee">
                 </div>
                 
                 <div class="form-group">
                     <label>Tasting Notes</label>
-                    <textarea id="tastingNotes" placeholder="z.B. Watermelon, Lemonade, Bubblegum"></textarea>
+                    <textarea id="tastingNotes" placeholder="e.g. Watermelon, Lemonade, Bubblegum"></textarea>
                 </div>
                 
-                <button onclick="saveCoffeeManual()">✓ Speichern</button>
+                <button onclick="saveCoffeeManual()">✓ Save</button>
             </div>
         </div>
 
@@ -594,8 +604,8 @@
         
         <div id="emptyState" class="empty-state">
             <div class="empty-state-icon">☕</div>
-            <h2>Noch keine Kaffees gespeichert</h2>
-            <p style="margin-top: 10px;">Fotografiere oder füge deinen ersten Kaffee hinzu!</p>
+            <h2>No coffees saved yet</h2>
+            <p style="margin-top: 10px;">Add your first coffee!</p>
         </div>
     </div>
 
@@ -605,19 +615,19 @@
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Einstellungen</h2>
+                <h2>Settings</h2>
                 <button class="close-btn" onclick="closeSettings()">✕</button>
             </div>
             
             <div class="form-group">
                 <label>Backend URL</label>
-                <input type="text" id="backendUrl" placeholder="https://deine-backend-url.vercel.app">
+                <input type="text" id="backendUrl" placeholder="https://your-backend-url.railway.app">
                 <p style="font-size: 0.85rem; color: #d4af84; margin-top: 5px;">
-                    Trage hier die URL deines deployed Backends ein.
+                    Enter your deployed backend URL here.
                 </p>
             </div>
             
-            <button onclick="saveSettings()">Speichern</button>
+            <button onclick="saveSettings()">Save</button>
         </div>
     </div>
 
@@ -661,13 +671,13 @@
                     temperature: '91-92°C',
                     ratio: `1:16 (${amount}g)`,
                     steps: [
-                        { time: '0:00', action: `Bloom: ${bloom}g Wasser, 30-45 Sek warten` },
-                        { time: '0:45', action: `Bis ${secondPour}g: Langsam kreisförmig gießen` },
-                        { time: '1:15', action: `Bis ${thirdPour}g: Konzentrische Kreise` },
-                        { time: '1:45', action: `Bis ${finalPour}g: Finaler Guss` }
+                        { time: '0:00', action: `Bloom: ${bloom}g water, wait 30-45 sec` },
+                        { time: '0:45', action: `To ${secondPour}g: Pour slowly in circles` },
+                        { time: '1:15', action: `To ${thirdPour}g: Concentric circles` },
+                        { time: '1:45', action: `To ${finalPour}g: Final pour` }
                     ],
                     targetTime: '2:30-3:00',
-                    notes: 'Experimenteller Prozess - kühlere Temperatur für volatile Aromen'
+                    notes: 'Experimental process - cooler temp for volatile aromas'
                 };
             } else if (processLower.includes('natural') || processLower.includes('honey') || 
                        processLower.includes('yeast')) {
@@ -680,13 +690,13 @@
                     temperature: '93-94°C',
                     ratio: `1:16.7 (${amount}g)`,
                     steps: [
-                        { time: '0:00', action: `Bloom: ${bloomNatural}g Wasser, Krater machen, 45 Sek` },
-                        { time: '0:45', action: `Bis ${secondPourNatural}g: Langsam gießen` },
-                        { time: '1:20', action: `Bis ${thirdPourNatural}g: Konzentrische Kreise` },
-                        { time: '1:50', action: `Bis ${waterAmountNatural}g: Finaler Guss` }
+                        { time: '0:00', action: `Bloom: ${bloomNatural}g water, make crater, 45 sec` },
+                        { time: '0:45', action: `To ${secondPourNatural}g: Pour slowly` },
+                        { time: '1:20', action: `To ${thirdPourNatural}g: Concentric circles` },
+                        { time: '1:50', action: `To ${waterAmountNatural}g: Final pour` }
                     ],
                     targetTime: '2:45-3:15',
-                    notes: 'Natural Process - gröberer Mahlgrad, höhere Temperatur'
+                    notes: 'Natural process - coarser grind, higher temp'
                 };
             } else {
                 return {
@@ -694,13 +704,13 @@
                     temperature: '92-93°C',
                     ratio: `1:16 (${amount}g)`,
                     steps: [
-                        { time: '0:00', action: `Bloom: ${bloom}g Wasser, 30-40 Sek` },
-                        { time: '0:40', action: `Bis ${secondPour}g: Gleichmäßig gießen` },
-                        { time: '1:15', action: `Bis ${thirdPour}g: Konzentrische Kreise` },
-                        { time: '1:45', action: `Bis ${finalPour}g: Finaler Guss` }
+                        { time: '0:00', action: `Bloom: ${bloom}g water, 30-40 sec` },
+                        { time: '0:40', action: `To ${secondPour}g: Pour evenly` },
+                        { time: '1:15', action: `To ${thirdPour}g: Concentric circles` },
+                        { time: '1:45', action: `To ${finalPour}g: Final pour` }
                     ],
                     targetTime: '2:30-3:00',
-                    notes: 'Standard Washed - ausgewogenes Profil'
+                    notes: 'Standard washed - balanced profile'
                 };
             }
         }
@@ -722,7 +732,7 @@
                     
                     <div class="brew-params">
                         <div class="ratio-control">
-                            <h4>Kaffeemenge einstellen</h4>
+                            <h4>Adjust Coffee Amount</h4>
                             <div class="ratio-slider">
                                 <span style="color: #d4af84;">10g</span>
                                 <input type="range" min="10" max="30" value="${coffeeAmount}" 
@@ -755,7 +765,7 @@
                         </div>
                         
                         <div class="brew-steps">
-                            <h4>V60 Aufguss-Schritte</h4>
+                            <h4>V60 Pour-Over Steps</h4>
                             ${brewParams.steps.map(step => `
                                 <div class="step">
                                     <div class="step-time">${step.time}</div>
@@ -774,7 +784,7 @@
                         
                         ${coffee.cultivar && coffee.cultivar !== 'Unbekannt' ? `
                         <div style="margin-top: 10px; color: #d4af84; font-size: 0.85rem;">
-                            <strong>Varietät:</strong> ${coffee.cultivar} | <strong>Höhe:</strong> ${coffee.altitude} masl
+                            <strong>Variety:</strong> ${coffee.cultivar} | <strong>Altitude:</strong> ${coffee.altitude} masl
                         </div>
                         ` : ''}
                     </div>
@@ -805,7 +815,7 @@
         }
 
         function deleteCoffee(index) {
-            if (confirm('Diesen Kaffee wirklich löschen?')) {
+            if (confirm('Really delete this coffee?')) {
                 coffees.splice(index, 1);
                 localStorage.setItem('coffees', JSON.stringify(coffees));
                 renderCoffees();
@@ -866,7 +876,7 @@
 
         async function analyzeCoffeeImage(imageData, mediaType) {
             if (!CONFIG.backendUrl) {
-                throw new Error('Backend URL nicht konfiguriert. Bitte in den Einstellungen eintragen.');
+                throw new Error('Backend URL not configured. Please enter it in settings.');
             }
 
             const response = await fetch(`${CONFIG.backendUrl}/api/analyze-coffee`, {
@@ -882,12 +892,12 @@
 
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.error || 'Fehler bei der Analyse');
+                throw new Error(error.error || 'Analysis error');
             }
 
             const result = await response.json();
             if (!result.success) {
-                throw new Error(result.error || 'Analyse fehlgeschlagen');
+                throw new Error(result.error || 'Analysis failed');
             }
 
             return result.data;
@@ -935,7 +945,7 @@
                 renderCoffees();
                 
                 // Show success
-                showMessage('success', '✓ Kaffee erfolgreich hinzugefügt!');
+                showMessage('success', '✓ Coffee added successfully!');
                 
                 // Clear
                 preview.style.display = 'none';
@@ -960,7 +970,7 @@
             const tastingNotes = document.getElementById('tastingNotes').value.trim();
             
             if (!name || !origin || !process) {
-                alert('Bitte fülle mindestens Name, Herkunft und Aufbereitungsmethode aus.');
+                alert('Please fill in at least Name, Origin and Processing Method.');
                 return;
             }
             
@@ -968,10 +978,10 @@
                 name,
                 origin,
                 process,
-                cultivar: cultivar || 'Unbekannt',
+                cultivar: cultivar || 'Unknown',
                 altitude: altitude || '1500',
-                roaster: roaster || 'Unbekannt',
-                tastingNotes: tastingNotes || 'Keine Angaben',
+                roaster: roaster || 'Unknown',
+                tastingNotes: tastingNotes || 'No notes',
                 addedDate: new Date().toISOString()
             };
             
@@ -988,7 +998,7 @@
             document.getElementById('tastingNotes').value = '';
             
             renderCoffees();
-            showMessage('success', '✓ Kaffee erfolgreich hinzugefügt!');
+            showMessage('success', '✓ Coffee added successfully!');
         }
 
         function openSettings() {
@@ -1005,7 +1015,7 @@
             CONFIG.backendUrl = backendUrl;
             localStorage.setItem('backendUrl', backendUrl);
             closeSettings();
-            alert('Einstellungen gespeichert!');
+            alert('Settings saved!');
         }
 
         // Initial render
@@ -1014,7 +1024,7 @@
         // Show settings if no backend URL configured
         if (!CONFIG.backendUrl) {
             setTimeout(() => {
-                alert('Willkommen! Bitte konfiguriere zuerst deine Backend URL in den Einstellungen (⚙️).');
+                alert('Welcome! Please configure your Backend URL in settings (⚙️) first.');
             }, 500);
         }
     </script>

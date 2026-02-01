@@ -1,7 +1,7 @@
 {
-  "name": "Coffee Companion",
-  "short_name": "Coffee",
-  "description": "Dein persönlicher Specialty Coffee Assistent",
+  "name": "BrewBuddy",
+  "short_name": "BrewBuddy",
+  "description": "Your personal specialty coffee brewing assistant",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#2d1b14",
