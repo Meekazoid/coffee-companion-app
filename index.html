@@ -461,6 +461,7 @@
             margin-bottom: 12px;
             padding-left: 12px;
             border-left: 2px solid var(--accent);
+            position: relative;
         }
 
         .step-time {
@@ -476,6 +477,32 @@
             font-size: 0.85rem;
             word-wrap: break-word;
             overflow-wrap: break-word;
+        }
+
+        .step-progress {
+            margin-top: 6px;
+            height: 3px;
+            background: rgba(76, 175, 80, 0.15);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .step-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4CAF50 0%, #66BB6A 100%);
+            border-radius: 3px;
+            transition: width 0.5s ease-out;
+            will-change: width;
+        }
+
+        body.light-mode .step-progress {
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        body.light-mode .step-progress-bar {
+            background: linear-gradient(90deg, #2E7D32 0%, #43A047 100%);
         }
 
         /* BREW TIMER */
@@ -501,6 +528,7 @@
             display: flex;
             gap: 10px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .timer-btn {
@@ -513,6 +541,22 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+        }
+
+        .timer-btn.start-brew {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .timer-btn.start-brew:hover {
+            background: #45a049;
+        }
+
+        .timer-btn.brewing {
+            background: #ff9800;
+            border-color: #ff9800;
+            color: white;
         }
 
         .timer-btn:hover {
@@ -977,6 +1021,10 @@
         let timerInterval = null;
         let timerSeconds = 0;
         let isTimerRunning = false;
+        
+        // New precise brew timer system
+        let brewTimers = {}; // Track timer state per coffee card
+        let animationFrames = {}; // Track RAF IDs per card
 
         // Initialize theme
         const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -1099,6 +1147,172 @@
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
+        // Parse time string (m:ss or mm:ss) to seconds
+        function parseTimeToSeconds(timeStr) {
+            const parts = timeStr.split(':');
+            const minutes = parseInt(parts[0]) || 0;
+            const seconds = parseInt(parts[1]) || 0;
+            return minutes * 60 + seconds;
+        }
+
+        // Start brew with progress bars
+        function startBrewTimer(index) {
+            const coffee = coffees[index];
+            const brewParams = getBrewRecommendations(coffee);
+            
+            // Parse all step times
+            const steps = brewParams.steps.map((step, i) => ({
+                ...step,
+                startSeconds: parseTimeToSeconds(step.time),
+                index: i
+            }));
+            
+            // Calculate end time for each step (next step's start or total brew time)
+            const totalBrewTime = steps[steps.length - 1].startSeconds + 60; // Add 1 min buffer to last step
+            
+            steps.forEach((step, i) => {
+                step.endSeconds = i < steps.length - 1 
+                    ? steps[i + 1].startSeconds 
+                    : totalBrewTime;
+                step.duration = step.endSeconds - step.startSeconds;
+            });
+            
+            // Initialize timer state for this card
+            brewTimers[index] = {
+                startTime: performance.now(),
+                steps: steps,
+                isRunning: true,
+                isPaused: false
+            };
+            
+            // Update UI
+            const startBtn = document.getElementById(`start-brew-${index}`);
+            const pauseBtn = document.getElementById(`pause-brew-${index}`);
+            const resetBtn = document.getElementById(`reset-brew-${index}`);
+            
+            if (startBtn) {
+                startBtn.textContent = 'Brewing...';
+                startBtn.classList.add('brewing');
+                startBtn.disabled = true;
+            }
+            if (pauseBtn) pauseBtn.disabled = false;
+            if (resetBtn) resetBtn.disabled = false;
+            
+            // Start animation loop
+            updateBrewProgress(index);
+        }
+
+        function pauseBrewTimer(index) {
+            const timer = brewTimers[index];
+            if (!timer) return;
+            
+            if (timer.isPaused) {
+                // Resume
+                timer.startTime = performance.now() - (timer.pausedAt || 0);
+                timer.isPaused = false;
+                timer.isRunning = true;
+                updateBrewProgress(index);
+                
+                const pauseBtn = document.getElementById(`pause-brew-${index}`);
+                if (pauseBtn) pauseBtn.textContent = 'Pause';
+            } else {
+                // Pause
+                timer.pausedAt = performance.now() - timer.startTime;
+                timer.isPaused = true;
+                timer.isRunning = false;
+                
+                if (animationFrames[index]) {
+                    cancelAnimationFrame(animationFrames[index]);
+                }
+                
+                const pauseBtn = document.getElementById(`pause-brew-${index}`);
+                if (pauseBtn) pauseBtn.textContent = 'Resume';
+            }
+        }
+
+        function resetBrewTimer(index) {
+            const timer = brewTimers[index];
+            if (!timer) return;
+            
+            // Stop animation
+            timer.isRunning = false;
+            if (animationFrames[index]) {
+                cancelAnimationFrame(animationFrames[index]);
+            }
+            
+            // Reset all progress bars
+            timer.steps.forEach((step, i) => {
+                const bar = document.getElementById(`progress-bar-${index}-${i}`);
+                if (bar) bar.style.width = '0%';
+            });
+            
+            // Reset display
+            const display = document.getElementById(`brew-timer-display-${index}`);
+            if (display) display.textContent = '00:00';
+            
+            // Reset buttons
+            const startBtn = document.getElementById(`start-brew-${index}`);
+            const pauseBtn = document.getElementById(`pause-brew-${index}`);
+            const resetBtn = document.getElementById(`reset-brew-${index}`);
+            
+            if (startBtn) {
+                startBtn.textContent = 'Start Brew';
+                startBtn.classList.remove('brewing');
+                startBtn.disabled = false;
+            }
+            if (pauseBtn) {
+                pauseBtn.textContent = 'Pause';
+                pauseBtn.disabled = true;
+            }
+            if (resetBtn) resetBtn.disabled = true;
+            
+            // Clear timer
+            delete brewTimers[index];
+        }
+
+        function updateBrewProgress(index) {
+            const timer = brewTimers[index];
+            if (!timer || !timer.isRunning) return;
+            
+            const elapsedMs = performance.now() - timer.startTime;
+            const elapsedSeconds = elapsedMs / 1000; // Keep decimals for smoother animation
+            const displaySeconds = Math.floor(elapsedSeconds);
+            
+            // Update timer display (integer seconds)
+            const display = document.getElementById(`brew-timer-display-${index}`);
+            if (display) {
+                display.textContent = formatTime(displaySeconds);
+            }
+            
+            // Update each step's progress bar (with sub-second precision)
+            timer.steps.forEach((step, i) => {
+                const bar = document.getElementById(`progress-bar-${index}-${i}`);
+                if (!bar) return;
+                
+                let percentage = 0;
+                
+                if (elapsedSeconds < step.startSeconds) {
+                    // Not started yet
+                    percentage = 0;
+                } else if (elapsedSeconds >= step.endSeconds) {
+                    // Completed
+                    percentage = 100;
+                } else {
+                    // In progress - calculate proportional fill with high precision
+                    const stepElapsed = elapsedSeconds - step.startSeconds;
+                    percentage = (stepElapsed / step.duration) * 100;
+                    percentage = Math.min(100, Math.max(0, percentage));
+                }
+                
+                // Round to 2 decimals for smooth flow
+                bar.style.width = `${percentage.toFixed(2)}%`;
+            });
+            
+            // Continue animation at 60fps
+            animationFrames[index] = requestAnimationFrame(() => updateBrewProgress(index));
+        }
+
+        // Legacy timer functions (kept for compatibility)
         function startTimer(index) {
             if (isTimerRunning) return;
             isTimerRunning = true;
@@ -1329,20 +1543,23 @@
                         </div>
                         
                         <div class="brew-timer-section">
-                            <div class="timer-display" id="timer-display-${index}">00:00</div>
+                            <div class="timer-display" id="brew-timer-display-${index}">00:00</div>
                             <div class="timer-controls">
-                                <button class="timer-btn" id="timer-start-${index}" onclick="startTimer(${index}); event.stopPropagation();">Start</button>
-                                <button class="timer-btn" id="timer-stop-${index}" onclick="stopTimer(${index}); event.stopPropagation();">Stop</button>
-                                <button class="timer-btn" onclick="resetTimer(${index}); event.stopPropagation();">Reset</button>
+                                <button class="timer-btn start-brew" id="start-brew-${index}" onclick="startBrewTimer(${index}); event.stopPropagation();">Start Brew</button>
+                                <button class="timer-btn" id="pause-brew-${index}" onclick="pauseBrewTimer(${index}); event.stopPropagation();" disabled>Pause</button>
+                                <button class="timer-btn" id="reset-brew-${index}" onclick="resetBrewTimer(${index}); event.stopPropagation();" disabled>Reset</button>
                             </div>
                         </div>
                         
                         <div class="brew-steps">
                             <h4>V60 Pour-Over Steps</h4>
-                            ${brewParams.steps.map(step => `
+                            ${brewParams.steps.map((step, stepIndex) => `
                                 <div class="step">
                                     <div class="step-time">${step.time}</div>
                                     <div class="step-action">${step.action}</div>
+                                    <div class="step-progress">
+                                        <div class="step-progress-bar" id="progress-bar-${index}-${stepIndex}"></div>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
