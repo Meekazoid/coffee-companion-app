@@ -34,6 +34,16 @@
             margin-bottom: 30px;
             color: #f9d9b8;
             font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
         }
 
         .mode-toggle {
@@ -235,14 +245,18 @@
             background: rgba(220, 53, 69, 0.8);
             color: white;
             border: none;
-            padding: 6px 10px;
+            padding: 0;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
-            min-width: 36px;
+            font-size: 1.1rem;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            max-width: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .coffee-process {
@@ -390,6 +404,61 @@
             transform: scale(0.95);
         }
 
+        .ratio-control {
+            background: rgba(139, 69, 19, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .ratio-control h4 {
+            color: #f9d9b8;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .ratio-slider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ratio-slider input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .ratio-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #8b4513;
+            cursor: pointer;
+        }
+
+        .ratio-slider input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #8b4513;
+            cursor: pointer;
+            border: none;
+        }
+
+        .ratio-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #f9d9b8;
+            min-width: 50px;
+            text-align: center;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -442,7 +511,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>☕ Coffee Companion</h1>
+        <h1>
+            <img src="logo.webp" alt="Coffee Companion" class="logo">
+            Coffee Companion
+        </h1>
         
         <div class="mode-toggle">
             <button class="mode-btn active" onclick="switchMode('camera')">📷 Foto</button>
@@ -557,6 +629,7 @@
 
         let coffees = JSON.parse(localStorage.getItem('coffees') || '[]');
         let currentMode = 'camera';
+        let coffeeAmount = parseInt(localStorage.getItem('coffeeAmount')) || 15;
 
         function switchMode(mode) {
             currentMode = mode;
@@ -574,33 +647,43 @@
 
         function getBrewRecommendations(process, altitude) {
             const processLower = process.toLowerCase();
+            const amount = coffeeAmount;
+            const waterAmount = Math.round(amount * 16);
+            const bloom = Math.round(amount * 3);
+            const secondPour = Math.round(waterAmount * 0.5);
+            const thirdPour = Math.round(waterAmount * 0.83);
+            const finalPour = waterAmount;
             
             if (processLower.includes('nitro') || processLower.includes('anaerobic') || 
                 processLower.includes('carbonic') || processLower.includes('extended')) {
                 return {
                     grindSetting: '3-3.5',
                     temperature: '91-92°C',
-                    ratio: '1:16',
+                    ratio: `1:16 (${amount}g)`,
                     steps: [
-                        { time: '0:00', action: 'Bloom: 45g Wasser, 30-45 Sek warten' },
-                        { time: '0:45', action: 'Bis 120g: Langsam kreisförmig gießen' },
-                        { time: '1:15', action: 'Bis 200g: Konzentrische Kreise' },
-                        { time: '1:45', action: 'Bis 240g: Finaler Guss' }
+                        { time: '0:00', action: `Bloom: ${bloom}g Wasser, 30-45 Sek warten` },
+                        { time: '0:45', action: `Bis ${secondPour}g: Langsam kreisförmig gießen` },
+                        { time: '1:15', action: `Bis ${thirdPour}g: Konzentrische Kreise` },
+                        { time: '1:45', action: `Bis ${finalPour}g: Finaler Guss` }
                     ],
                     targetTime: '2:30-3:00',
                     notes: 'Experimenteller Prozess - kühlere Temperatur für volatile Aromen'
                 };
             } else if (processLower.includes('natural') || processLower.includes('honey') || 
                        processLower.includes('yeast')) {
+                const waterAmountNatural = Math.round(amount * 16.7);
+                const bloomNatural = Math.round(amount * 3.3);
+                const secondPourNatural = Math.round(waterAmountNatural * 0.52);
+                const thirdPourNatural = Math.round(waterAmountNatural * 0.84);
                 return {
                     grindSetting: '4-4.5',
                     temperature: '93-94°C',
-                    ratio: '1:16.7',
+                    ratio: `1:16.7 (${amount}g)`,
                     steps: [
-                        { time: '0:00', action: 'Bloom: 50g Wasser, Krater machen, 45 Sek' },
-                        { time: '0:45', action: 'Bis 130g: Langsam gießen' },
-                        { time: '1:20', action: 'Bis 210g: Konzentrische Kreise' },
-                        { time: '1:50', action: 'Bis 250g: Finaler Guss' }
+                        { time: '0:00', action: `Bloom: ${bloomNatural}g Wasser, Krater machen, 45 Sek` },
+                        { time: '0:45', action: `Bis ${secondPourNatural}g: Langsam gießen` },
+                        { time: '1:20', action: `Bis ${thirdPourNatural}g: Konzentrische Kreise` },
+                        { time: '1:50', action: `Bis ${waterAmountNatural}g: Finaler Guss` }
                     ],
                     targetTime: '2:45-3:15',
                     notes: 'Natural Process - gröberer Mahlgrad, höhere Temperatur'
@@ -609,12 +692,12 @@
                 return {
                     grindSetting: '3.5-4',
                     temperature: '92-93°C',
-                    ratio: '1:16',
+                    ratio: `1:16 (${amount}g)`,
                     steps: [
-                        { time: '0:00', action: 'Bloom: 45g Wasser, 30-40 Sek' },
-                        { time: '0:40', action: 'Bis 120g: Gleichmäßig gießen' },
-                        { time: '1:15', action: 'Bis 200g: Konzentrische Kreise' },
-                        { time: '1:45', action: 'Bis 240g: Finaler Guss' }
+                        { time: '0:00', action: `Bloom: ${bloom}g Wasser, 30-40 Sek` },
+                        { time: '0:40', action: `Bis ${secondPour}g: Gleichmäßig gießen` },
+                        { time: '1:15', action: `Bis ${thirdPour}g: Konzentrische Kreise` },
+                        { time: '1:45', action: `Bis ${finalPour}g: Finaler Guss` }
                     ],
                     targetTime: '2:30-3:00',
                     notes: 'Standard Washed - ausgewogenes Profil'
@@ -638,6 +721,18 @@
                     <div class="coffee-process">${coffee.process}</div>
                     
                     <div class="brew-params">
+                        <div class="ratio-control">
+                            <h4>Kaffeemenge einstellen</h4>
+                            <div class="ratio-slider">
+                                <span style="color: #d4af84;">10g</span>
+                                <input type="range" min="10" max="30" value="${coffeeAmount}" 
+                                       onchange="updateCoffeeAmount(this.value); event.stopPropagation();" 
+                                       onclick="event.stopPropagation();">
+                                <span style="color: #d4af84;">30g</span>
+                                <span class="ratio-value" id="ratioValue">${coffeeAmount}g</span>
+                            </div>
+                        </div>
+                        
                         <div class="param-grid">
                             <div class="param-box">
                                 <div class="param-label">Fellow Ode Gen2</div>
@@ -648,7 +743,7 @@
                                 <div class="param-value">${brewParams.temperature}</div>
                             </div>
                             <div class="param-box">
-                                <div class="param-label">Ratio (15g)</div>
+                                <div class="param-label">Ratio</div>
                                 <div class="param-value">${brewParams.ratio}</div>
                             </div>
                             <div class="param-box">
@@ -713,6 +808,13 @@
                 localStorage.setItem('coffees', JSON.stringify(coffees));
                 renderCoffees();
             }
+        }
+
+        function updateCoffeeAmount(value) {
+            coffeeAmount = parseInt(value);
+            localStorage.setItem('coffeeAmount', coffeeAmount);
+            document.getElementById('ratioValue').textContent = coffeeAmount + 'g';
+            renderCoffees();
         }
 
         function showMessage(type, message) {
