@@ -235,9 +235,12 @@
             border-radius: 16px;
             padding: 24px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
-            overflow: visible;
+            overflow: visible !important;
+            height: auto !important;
+            max-height: none !important;
+            min-height: 0 !important;
         }
 
         .coffee-card:hover {
@@ -247,7 +250,9 @@
 
         .coffee-card.expanded {
             box-shadow: 0 12px 32px var(--shadow);
-            overflow: visible;
+            overflow: visible !important;
+            height: auto !important;
+            max-height: none !important;
         }
 
         .coffee-header {
@@ -319,8 +324,9 @@
             padding-top: 24px;
             border-top: 1px solid var(--border);
             display: none;
-            height: auto;
-            overflow: visible;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
         }
 
         .coffee-card.expanded .brew-params {
@@ -332,6 +338,8 @@
             padding: 18px;
             border-radius: 12px;
             margin-bottom: 20px;
+            height: auto !important;
+            overflow: visible !important;
         }
 
         .ratio-control h4 {
@@ -421,6 +429,8 @@
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 24px;
+            height: auto !important;
+            overflow: visible !important;
         }
 
         .brew-steps h4 {
@@ -457,6 +467,8 @@
             padding: 24px;
             border-radius: 12px;
             margin-bottom: 24px;
+            height: auto !important;
+            overflow: visible !important;
         }
 
         .timer-display {
@@ -504,6 +516,9 @@
             padding: 24px;
             border-radius: 12px;
             margin-top: 24px;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
         }
 
         .feedback-section h4 {
