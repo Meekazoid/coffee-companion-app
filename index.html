@@ -7,6 +7,9 @@
     <meta name="theme-color" content="#000000">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="logo.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
     <title>BrewBuddy</title>
     <style>
         * {
@@ -68,10 +71,17 @@
 
         header {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+            margin-bottom: 50px;
+        }
+
+        .logo-title-group {
+            display: flex;
+            align-items: center;
             gap: 14px;
-            margin-bottom: 60px;
         }
 
         .logo {
@@ -81,10 +91,20 @@
         }
 
         h1 {
-            font-size: 1.75rem;
-            font-weight: 450;
-            letter-spacing: -0.02em;
+            font-family: 'Crimson Text', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
             text-transform: lowercase;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-top: -2px;
         }
 
         .mode-toggle {
@@ -162,7 +182,6 @@
             font-size: 1.4rem;
         }
 
-        /* Upload Image Button - 60% smaller, more square */
         .upload-button {
             width: auto;
             max-width: 180px;
@@ -369,6 +388,39 @@
             display: block;
         }
 
+        /* Grinder Selection */
+        .grinder-selector {
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .grinder-btn {
+            flex: 1;
+            padding: 10px 12px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .grinder-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .grinder-btn:hover {
+            border-color: var(--accent);
+        }
+
         .ratio-control {
             background: var(--bg-card);
             padding: 16px;
@@ -391,6 +443,21 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+        }
+
+        /* IMPROVED: Gramm value above slider */
+        .ratio-value-display {
+            text-align: center;
+            padding: 8px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .ratio-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
         }
 
         .slider-track {
@@ -432,20 +499,6 @@
             cursor: pointer;
             border: none;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-
-        .ratio-value-display {
-            text-align: center;
-            padding: 8px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            margin-top: 4px;
-        }
-
-        .ratio-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
         }
 
         .param-grid {
@@ -541,7 +594,6 @@
             background: linear-gradient(90deg, #2E7D32 0%, #43A047 100%);
         }
 
-        /* BREW TIMER */
         .brew-timer-section {
             background: var(--bg-card);
             padding: 20px;
@@ -607,7 +659,6 @@
             border-color: var(--accent);
         }
 
-        /* FEEDBACK SYSTEM */
         .feedback-section {
             background: var(--bg-card);
             padding: 20px;
@@ -711,7 +762,6 @@
             color: white;
         }
 
-        /* FIXED CONTROLS */
         .fixed-controls {
             position: fixed;
             bottom: 24px;
@@ -741,7 +791,6 @@
             box-shadow: 0 6px 20px var(--shadow);
         }
 
-        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -849,7 +898,7 @@
             }
 
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
             }
 
             .logo {
@@ -904,12 +953,12 @@
 
         @media (max-width: 400px) {
             h1 {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
             }
 
             .logo {
-                width: 52px;
-                height: 52px;
+                width: 26px;
+                height: 26px;
             }
 
             .coffee-name {
@@ -934,15 +983,18 @@
 <body>
     <div class="container">
         <header>
-            <svg class="logo" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 15 15 L 15 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 15 15 L 30 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 45 15 L 30 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 45 15 L 45 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 45 45 L 45 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="30" cy="30" r="3.5" fill="currentColor"/>
-            </svg>
-            <h1>brewbuddy</h1>
+            <div class="logo-title-group">
+                <svg class="logo" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 15 15 L 15 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 15 15 L 30 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 45 15 L 30 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 45 15 L 45 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 45 45 L 45 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="30" cy="30" r="3.5" fill="currentColor"/>
+                </svg>
+                <h1>brewbuddy</h1>
+            </div>
+            <div class="header-subtitle">precision meets ritual</div>
         </header>
         
         <div class="mode-toggle">
@@ -1061,9 +1113,7 @@
     </div>
 
     <script>
-        // BrewBuddy Configuration
         const CONFIG = {
-            // Backend URL
             backendUrl: 'https://brew-buddy-backend-production.up.railway.app',
         };
 
@@ -1074,11 +1124,12 @@
         let timerSeconds = 0;
         let isTimerRunning = false;
         
-        // New precise brew timer system
-        let brewTimers = {}; // Track timer state per coffee card
-        let animationFrames = {}; // Track RAF IDs per card
+        let brewTimers = {};
+        let animationFrames = {};
 
-        // Initialize theme
+        // Grinder preferences
+        let preferredGrinder = localStorage.getItem('preferredGrinder') || 'fellow';
+
         const savedTheme = localStorage.getItem('theme') || 'dark';
         if (savedTheme === 'light') {
             document.body.classList.add('light-mode');
@@ -1104,12 +1155,63 @@
             }
         }
 
+        function switchGrinder(event, index, grinder) {
+            event.stopPropagation();
+            const coffee = coffees[index];
+            coffee.selectedGrinder = grinder;
+            preferredGrinder = grinder;
+            localStorage.setItem('preferredGrinder', grinder);
+            localStorage.setItem('coffees', JSON.stringify(coffees));
+            
+            // Re-render und dann die Karte wieder öffnen
+            renderCoffees();
+            
+            // Karte wieder öffnen nach render
+            setTimeout(() => {
+                const card = document.querySelector(`.coffee-card[data-index="${index}"]`);
+                if (card) {
+                    card.classList.add('expanded');
+                }
+            }, 0);
+        }
+
+        function getGrinderSettings(grinder, processLower) {
+            if (grinder === 'comandante') {
+                // Comandante C40 MK3 Nitro Blade settings
+                // 1 full rotation = 8 clicks
+                if (processLower.includes('nitro') || processLower.includes('anaerobic') || 
+                    processLower.includes('carbonic') || processLower.includes('extended')) {
+                    return '20-22 clicks';
+                } else if (processLower.includes('natural') || processLower.includes('honey') || 
+                           processLower.includes('yeast')) {
+                    return '24-26 clicks';
+                } else {
+                    return '22-24 clicks';
+                }
+            } else {
+                // Fellow Ode Gen2 settings
+                if (processLower.includes('nitro') || processLower.includes('anaerobic') || 
+                    processLower.includes('carbonic') || processLower.includes('extended')) {
+                    return '3-3.5';
+                } else if (processLower.includes('natural') || processLower.includes('honey') || 
+                           processLower.includes('yeast')) {
+                    return '4-4.5';
+                } else {
+                    return '3.5-4';
+                }
+            }
+        }
+
+        function getGrinderLabel(grinder) {
+            return grinder === 'comandante' ? 'Comandante C40 MK3' : 'Fellow Ode Gen2';
+        }
+
         function getBrewRecommendations(coffee) {
             const processLower = coffee.process.toLowerCase();
             const amount = coffee.customAmount || coffeeAmount;
+            const grinder = coffee.selectedGrinder || preferredGrinder;
             
-            // Use custom values if available from feedback
-            const grindSetting = coffee.customGrind || getDefaultGrind(processLower);
+            const grindSetting = coffee.customGrind || getGrinderSettings(grinder, processLower);
             const temperature = coffee.customTemp || getDefaultTemp(processLower);
             
             const waterAmount = Math.round(amount * 16);
@@ -1122,6 +1224,7 @@
                 processLower.includes('carbonic') || processLower.includes('extended')) {
                 return {
                     grindSetting,
+                    grinderLabel: getGrinderLabel(grinder),
                     temperature,
                     ratio: `1:16 (${amount}g)`,
                     steps: [
@@ -1141,6 +1244,7 @@
                 const thirdPourNatural = Math.round(waterAmountNatural * 0.84);
                 return {
                     grindSetting,
+                    grinderLabel: getGrinderLabel(grinder),
                     temperature,
                     ratio: `1:16.7 (${amount}g)`,
                     steps: [
@@ -1155,6 +1259,7 @@
             } else {
                 return {
                     grindSetting,
+                    grinderLabel: getGrinderLabel(grinder),
                     temperature,
                     ratio: `1:16 (${amount}g)`,
                     steps: [
@@ -1166,18 +1271,6 @@
                     targetTime: '2:30-3:00',
                     notes: 'Standard washed - balanced profile'
                 };
-            }
-        }
-
-        function getDefaultGrind(processLower) {
-            if (processLower.includes('nitro') || processLower.includes('anaerobic') || 
-                processLower.includes('carbonic') || processLower.includes('extended')) {
-                return '3-3.5';
-            } else if (processLower.includes('natural') || processLower.includes('honey') || 
-                       processLower.includes('yeast')) {
-                return '4-4.5';
-            } else {
-                return '3.5-4';
             }
         }
 
@@ -1199,7 +1292,6 @@
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Parse time string (m:ss or mm:ss) to seconds
         function parseTimeToSeconds(timeStr) {
             const parts = timeStr.split(':');
             const minutes = parseInt(parts[0]) || 0;
@@ -1207,20 +1299,17 @@
             return minutes * 60 + seconds;
         }
 
-        // Start brew with progress bars
         function startBrewTimer(index) {
             const coffee = coffees[index];
             const brewParams = getBrewRecommendations(coffee);
             
-            // Parse all step times
             const steps = brewParams.steps.map((step, i) => ({
                 ...step,
                 startSeconds: parseTimeToSeconds(step.time),
                 index: i
             }));
             
-            // Calculate end time for each step (next step's start or total brew time)
-            const totalBrewTime = steps[steps.length - 1].startSeconds + 60; // Add 1 min buffer to last step
+            const totalBrewTime = steps[steps.length - 1].startSeconds + 60;
             
             steps.forEach((step, i) => {
                 step.endSeconds = i < steps.length - 1 
@@ -1229,7 +1318,6 @@
                 step.duration = step.endSeconds - step.startSeconds;
             });
             
-            // Initialize timer state for this card
             brewTimers[index] = {
                 startTime: performance.now(),
                 steps: steps,
@@ -1237,7 +1325,6 @@
                 isPaused: false
             };
             
-            // Update UI
             const startBtn = document.getElementById(`start-brew-${index}`);
             const pauseBtn = document.getElementById(`pause-brew-${index}`);
             const resetBtn = document.getElementById(`reset-brew-${index}`);
@@ -1250,7 +1337,6 @@
             if (pauseBtn) pauseBtn.disabled = false;
             if (resetBtn) resetBtn.disabled = false;
             
-            // Start animation loop
             updateBrewProgress(index);
         }
 
@@ -1259,7 +1345,6 @@
             if (!timer) return;
             
             if (timer.isPaused) {
-                // Resume
                 timer.startTime = performance.now() - (timer.pausedAt || 0);
                 timer.isPaused = false;
                 timer.isRunning = true;
@@ -1268,7 +1353,6 @@
                 const pauseBtn = document.getElementById(`pause-brew-${index}`);
                 if (pauseBtn) pauseBtn.textContent = 'Pause';
             } else {
-                // Pause
                 timer.pausedAt = performance.now() - timer.startTime;
                 timer.isPaused = true;
                 timer.isRunning = false;
@@ -1286,23 +1370,19 @@
             const timer = brewTimers[index];
             if (!timer) return;
             
-            // Stop animation
             timer.isRunning = false;
             if (animationFrames[index]) {
                 cancelAnimationFrame(animationFrames[index]);
             }
             
-            // Reset all progress bars
             timer.steps.forEach((step, i) => {
                 const bar = document.getElementById(`progress-bar-${index}-${i}`);
                 if (bar) bar.style.width = '0%';
             });
             
-            // Reset display
             const display = document.getElementById(`brew-timer-display-${index}`);
             if (display) display.textContent = '00:00';
             
-            // Reset buttons
             const startBtn = document.getElementById(`start-brew-${index}`);
             const pauseBtn = document.getElementById(`pause-brew-${index}`);
             const resetBtn = document.getElementById(`reset-brew-${index}`);
@@ -1318,7 +1398,6 @@
             }
             if (resetBtn) resetBtn.disabled = true;
             
-            // Clear timer
             delete brewTimers[index];
         }
 
@@ -1327,16 +1406,14 @@
             if (!timer || !timer.isRunning) return;
             
             const elapsedMs = performance.now() - timer.startTime;
-            const elapsedSeconds = elapsedMs / 1000; // Keep decimals for smoother animation
+            const elapsedSeconds = elapsedMs / 1000;
             const displaySeconds = Math.floor(elapsedSeconds);
             
-            // Update timer display (integer seconds)
             const display = document.getElementById(`brew-timer-display-${index}`);
             if (display) {
                 display.textContent = formatTime(displaySeconds);
             }
             
-            // Update each step's progress bar (with sub-second precision)
             timer.steps.forEach((step, i) => {
                 const bar = document.getElementById(`progress-bar-${index}-${i}`);
                 if (!bar) return;
@@ -1344,63 +1421,19 @@
                 let percentage = 0;
                 
                 if (elapsedSeconds < step.startSeconds) {
-                    // Not started yet
                     percentage = 0;
                 } else if (elapsedSeconds >= step.endSeconds) {
-                    // Completed
                     percentage = 100;
                 } else {
-                    // In progress - calculate proportional fill with high precision
                     const stepElapsed = elapsedSeconds - step.startSeconds;
                     percentage = (stepElapsed / step.duration) * 100;
                     percentage = Math.min(100, Math.max(0, percentage));
                 }
                 
-                // Round to 2 decimals for smooth flow
                 bar.style.width = `${percentage.toFixed(2)}%`;
             });
             
-            // Continue animation at 60fps
             animationFrames[index] = requestAnimationFrame(() => updateBrewProgress(index));
-        }
-
-        // Legacy timer functions (kept for compatibility)
-        function startTimer(index) {
-            if (isTimerRunning) return;
-            isTimerRunning = true;
-            
-            timerInterval = setInterval(() => {
-                timerSeconds++;
-                const display = document.getElementById(`timer-display-${index}`);
-                if (display) {
-                    display.textContent = formatTime(timerSeconds);
-                }
-            }, 1000);
-            
-            const startBtn = document.getElementById(`timer-start-${index}`);
-            const stopBtn = document.getElementById(`timer-stop-${index}`);
-            if (startBtn) startBtn.classList.add('active');
-            if (stopBtn) stopBtn.classList.remove('active');
-        }
-
-        function stopTimer(index) {
-            if (!isTimerRunning) return;
-            isTimerRunning = false;
-            clearInterval(timerInterval);
-            
-            const startBtn = document.getElementById(`timer-start-${index}`);
-            const stopBtn = document.getElementById(`timer-stop-${index}`);
-            if (startBtn) startBtn.classList.remove('active');
-            if (stopBtn) stopBtn.classList.add('active');
-        }
-
-        function resetTimer(index) {
-            stopTimer(index);
-            timerSeconds = 0;
-            const display = document.getElementById(`timer-display-${index}`);
-            if (display) {
-                display.textContent = '00:00';
-            }
         }
 
         function selectFeedback(index, category, value) {
@@ -1410,7 +1443,6 @@
             }
             coffee.feedback[category] = value;
             
-            // Update UI
             const options = document.querySelectorAll(`[data-feedback="${index}-${category}"]`);
             options.forEach(opt => {
                 if (opt.dataset.value === value) {
@@ -1420,10 +1452,8 @@
                 }
             });
             
-            // Generate suggestion
             generateSuggestion(index);
             
-            // Save
             localStorage.setItem('coffees', JSON.stringify(coffees));
         }
 
@@ -1438,22 +1468,20 @@
             let newGrind = null;
             let newTemp = null;
             
-            // Extraction feedback
             if (feedback.extraction === 'under') {
                 suggestions.push('Coffee is underextracted - tastes sour/weak');
-                suggestions.push('→ Grind finer (0.5 steps down)');
+                suggestions.push('→ Grind finer');
                 suggestions.push('→ Or increase temperature by 2°C');
-                newGrind = adjustGrind(coffee.customGrind || getDefaultGrind(coffee.process.toLowerCase()), -0.5);
+                newGrind = adjustGrind(coffee, -0.5);
                 newTemp = adjustTemp(coffee.customTemp || getDefaultTemp(coffee.process.toLowerCase()), +2);
             } else if (feedback.extraction === 'over') {
                 suggestions.push('Coffee is overextracted - tastes bitter/harsh');
-                suggestions.push('→ Grind coarser (0.5 steps up)');
+                suggestions.push('→ Grind coarser');
                 suggestions.push('→ Or decrease temperature by 2°C');
-                newGrind = adjustGrind(coffee.customGrind || getDefaultGrind(coffee.process.toLowerCase()), +0.5);
+                newGrind = adjustGrind(coffee, +0.5);
                 newTemp = adjustTemp(coffee.customTemp || getDefaultTemp(coffee.process.toLowerCase()), -2);
             }
             
-            // Taste feedback
             if (feedback.taste === 'flat') {
                 suggestions.push('Flavors not coming through clearly');
                 suggestions.push('→ Increase temperature by 2°C');
@@ -1464,15 +1492,14 @@
                 newTemp = adjustTemp(coffee.customTemp || getDefaultTemp(coffee.process.toLowerCase()), -2);
             }
             
-            // Body feedback
             if (feedback.body === 'thin') {
                 suggestions.push('Body too thin/watery');
                 suggestions.push('→ Grind slightly finer');
-                newGrind = adjustGrind(coffee.customGrind || getDefaultGrind(coffee.process.toLowerCase()), -0.3);
+                newGrind = adjustGrind(coffee, -0.3);
             } else if (feedback.body === 'heavy') {
                 suggestions.push('Body too heavy/muddy');
                 suggestions.push('→ Grind slightly coarser');
-                newGrind = adjustGrind(coffee.customGrind || getDefaultGrind(coffee.process.toLowerCase()), +0.3);
+                newGrind = adjustGrind(coffee, +0.3);
             }
             
             if (suggestions.length === 0 || feedback.extraction === 'perfect') {
@@ -1499,17 +1526,36 @@
             suggestionDiv.classList.remove('hidden');
         }
 
-        function adjustGrind(current, change) {
-            const match = current.match(/([\d.]+)(?:-([\d.]+))?/);
-            if (!match) return current;
+        function adjustGrind(coffee, change) {
+            const grinder = coffee.selectedGrinder || preferredGrinder;
+            const current = coffee.customGrind || getGrinderSettings(grinder, coffee.process.toLowerCase());
             
-            const low = parseFloat(match[1]) + change;
-            const high = match[2] ? parseFloat(match[2]) + change : null;
-            
-            if (high) {
-                return `${low.toFixed(1)}-${high.toFixed(1)}`;
+            if (grinder === 'comandante') {
+                // Comandante: clicks (e.g., "20-22 clicks")
+                const match = current.match(/(\d+)(?:-(\d+))?/);
+                if (!match) return current;
+                
+                const clickChange = change * 2; // Convert to clicks (rougher adjustment)
+                const low = parseInt(match[1]) + clickChange;
+                const high = match[2] ? parseInt(match[2]) + clickChange : null;
+                
+                if (high) {
+                    return `${Math.round(low)}-${Math.round(high)} clicks`;
+                }
+                return `${Math.round(low)} clicks`;
+            } else {
+                // Fellow Ode: decimal settings
+                const match = current.match(/([\d.]+)(?:-([\d.]+))?/);
+                if (!match) return current;
+                
+                const low = parseFloat(match[1]) + change;
+                const high = match[2] ? parseFloat(match[2]) + change : null;
+                
+                if (high) {
+                    return `${low.toFixed(1)}-${high.toFixed(1)}`;
+                }
+                return low.toFixed(1);
             }
-            return low.toFixed(1);
         }
 
         function adjustTemp(current, change) {
@@ -1530,19 +1576,18 @@
             if (newGrind && newGrind !== 'null') coffee.customGrind = newGrind;
             if (newTemp && newTemp !== 'null') coffee.customTemp = newTemp;
             
-            // Reset feedback after applying
             coffee.feedback = {};
             
             localStorage.setItem('coffees', JSON.stringify(coffees));
             renderCoffees();
             
-            // Show success message
             alert('Settings applied! The brew parameters have been updated.');
         }
 
         function renderCoffeeCard(coffee, index) {
             const brewParams = getBrewRecommendations(coffee);
             const amount = coffee.customAmount || coffeeAmount;
+            const grinder = coffee.selectedGrinder || preferredGrinder;
             
             return `
                 <div class="coffee-card" data-index="${index}">
@@ -1557,9 +1602,23 @@
                     <div class="coffee-process">${coffee.process}</div>
                     
                     <div class="brew-params">
+                        <div class="grinder-selector">
+                            <button class="grinder-btn ${grinder === 'fellow' ? 'active' : ''}" 
+                                    onclick="switchGrinder(event, ${index}, 'fellow')">
+                                Fellow Ode
+                            </button>
+                            <button class="grinder-btn ${grinder === 'comandante' ? 'active' : ''}" 
+                                    onclick="switchGrinder(event, ${index}, 'comandante')">
+                                Comandante
+                            </button>
+                        </div>
+                        
                         <div class="ratio-control">
                             <h4>Coffee Amount</h4>
                             <div class="ratio-slider">
+                                <div class="ratio-value-display">
+                                    <span class="ratio-value" id="ratioValue-${index}">${amount}g</span>
+                                </div>
                                 <div class="slider-track">
                                     <span>10g</span>
                                     <input type="range" min="10" max="30" value="${amount}" 
@@ -1569,15 +1628,12 @@
                                            onclick="event.stopPropagation();">
                                     <span>30g</span>
                                 </div>
-                                <div class="ratio-value-display">
-                                    <span class="ratio-value" id="ratioValue-${index}">${amount}g</span>
-                                </div>
                             </div>
                         </div>
                         
                         <div class="param-grid">
                             <div class="param-box">
-                                <div class="param-label">Fellow Ode Gen2</div>
+                                <div class="param-label">${brewParams.grinderLabel}</div>
                                 <div class="param-value">${brewParams.grindSetting}</div>
                             </div>
                             <div class="param-box">
@@ -1722,10 +1778,13 @@
                 
                 document.querySelectorAll('.coffee-card').forEach(card => {
                     card.addEventListener('click', function(e) {
+                        // Prevent card toggle for interactive elements
                         if (e.target.closest('.delete-btn') || 
                             e.target.closest('.timer-btn') || 
                             e.target.closest('.scale-option') ||
                             e.target.closest('.apply-suggestion-btn') ||
+                            e.target.closest('.grinder-btn') ||
+                            e.target.closest('.grinder-selector') ||
                             e.target.closest('input[type="range"]')) {
                             return;
                         }
@@ -1786,7 +1845,6 @@
                 errorEl.classList.remove('hidden');
                 successEl.classList.add('hidden');
             } else if (type === 'info') {
-                // Show info as success with different icon
                 successEl.textContent = '⏳ ' + message;
                 successEl.classList.remove('hidden');
                 errorEl.classList.add('hidden');
@@ -1796,7 +1854,6 @@
                 errorEl.classList.add('hidden');
             }
             
-            // Don't auto-hide info messages (manual hide only)
             if (type !== 'info') {
                 setTimeout(() => {
                     errorEl.classList.add('hidden');
@@ -1838,22 +1895,20 @@
             document.getElementById('imageInput').click();
         });
 
-        // Upload button handler
         document.getElementById('uploadBtn').addEventListener('click', () => {
             document.getElementById('uploadInput').click();
         });
 
-        // Image compression function
-        async function compressImage(file, maxSizeMB = 4.5) {
+        // IMPROVED: More aggressive image compression with multiple attempts
+        async function compressImage(file, maxSizeMB = 4.0) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const img = new Image();
                     img.onload = () => {
-                        // Calculate new dimensions (max 2048px)
                         let width = img.width;
                         let height = img.height;
-                        const maxDim = 2048;
+                        let maxDim = 1920;
                         
                         if (width > maxDim || height > maxDim) {
                             if (width > height) {
@@ -1865,7 +1920,6 @@
                             }
                         }
                         
-                        // Create canvas
                         const canvas = document.createElement('canvas');
                         canvas.width = width;
                         canvas.height = height;
@@ -1873,15 +1927,36 @@
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
                         
-                        // Try different quality levels
-                        let quality = 0.9;
+                        let quality = 0.85;
                         let dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        let attempts = 0;
+                        const maxAttempts = 10;
+                        const targetSize = maxSizeMB * 1024 * 1024 * 1.37;
                         
-                        // Reduce quality if still too large
-                        while (dataUrl.length > maxSizeMB * 1024 * 1024 * 1.37 && quality > 0.1) {
-                            quality -= 0.1;
-                            dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        while (dataUrl.length > targetSize && attempts < maxAttempts) {
+                            quality -= 0.08;
+                            
+                            if (quality < 0.4 && attempts > 5) {
+                                width = Math.floor(width * 0.85);
+                                height = Math.floor(height * 0.85);
+                                canvas.width = width;
+                                canvas.height = height;
+                                ctx.drawImage(img, 0, 0, width, height);
+                                quality = 0.7;
+                            }
+                            
+                            dataUrl = canvas.toDataURL('image/jpeg', Math.max(0.1, quality));
+                            attempts++;
                         }
+                        
+                        if (dataUrl.length > targetSize) {
+                            canvas.width = Math.floor(width * 0.7);
+                            canvas.height = Math.floor(height * 0.7);
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                            dataUrl = canvas.toDataURL('image/jpeg', 0.5);
+                        }
+                        
+                        console.log(`Compression: ${attempts} attempts, quality: ${quality.toFixed(2)}, size: ${(dataUrl.length * 0.75 / 1024 / 1024).toFixed(2)}MB`);
                         
                         resolve({
                             dataUrl: dataUrl,
@@ -1899,7 +1974,6 @@
             });
         }
 
-        // Shared image processing function
         async function processImageUpload(file, uploadBtn) {
             const preview = document.getElementById('imagePreview');
             const loadingEl = document.getElementById('loadingMessage');
@@ -1910,7 +1984,6 @@
             if (uploadBtn) uploadBtn.disabled = true;
             
             try {
-                // Show original in preview
                 const previewReader = new FileReader();
                 previewReader.onload = (event) => {
                     preview.src = event.target.result;
@@ -1918,13 +1991,11 @@
                 };
                 previewReader.readAsDataURL(file);
                 
-                // Compress image if needed
                 const fileSizeMB = file.size / (1024 * 1024);
                 let imageData;
                 let mediaType;
                 
-                if (fileSizeMB > 4.5) {
-                    // Show compression message
+                if (fileSizeMB > 4.0) {
                     showMessage('info', `Compressing image (${fileSizeMB.toFixed(1)}MB → smaller)...`);
                     
                     const compressed = await compressImage(file);
@@ -1933,7 +2004,6 @@
                     
                     console.log(`Compressed: ${(compressed.originalSize / 1024 / 1024).toFixed(1)}MB → ${(compressed.compressedSize / 1024 / 1024).toFixed(1)}MB`);
                 } else {
-                    // Use original
                     imageData = await new Promise((resolve, reject) => {
                         const r = new FileReader();
                         r.onload = () => resolve(r.result.split(',')[1]);
@@ -1943,7 +2013,6 @@
                     mediaType = file.type;
                 }
                 
-                // Analyze
                 const coffeeInfo = await analyzeCoffeeImage(imageData, mediaType);
                 
                 coffees.unshift(coffeeInfo);
@@ -1972,7 +2041,6 @@
             e.target.value = '';
         });
 
-        // Upload input handler (same logic as camera)
         document.getElementById('uploadInput').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
