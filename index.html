@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="logo.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
     <title>BrewBuddy</title>
     <style>
         * {
@@ -80,22 +80,23 @@
 
         .logo-title-group {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .logo {
-            width: 32px;
-            height: 32px;
-            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            color: var(--accent);
         }
 
         h1 {
-            font-family: 'Crimson Text', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            text-transform: lowercase;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
         }
 
         .header-subtitle {
@@ -104,7 +105,7 @@
             text-transform: uppercase;
             color: var(--text-secondary);
             font-weight: 400;
-            margin-top: -2px;
+            margin-top: 8px;
         }
 
         .button-group {
@@ -930,12 +931,13 @@
             }
 
             h1 {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
+                letter-spacing: 0.2em;
             }
 
             .logo {
-                width: 28px;
-                height: 28px;
+                width: 36px;
+                height: 36px;
             }
 
             .upload-button,
@@ -997,12 +999,13 @@
 
         @media (max-width: 400px) {
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+                letter-spacing: 0.18em;
             }
 
             .logo {
-                width: 26px;
-                height: 26px;
+                width: 32px;
+                height: 32px;
             }
 
             .coffee-name {
