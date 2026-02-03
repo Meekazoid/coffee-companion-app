@@ -870,7 +870,16 @@
             transition: all 0.2s;
             display: flex;
             align-items: center;
+            gap: 8px;
             justify-content: center;
+        }
+
+        .v60-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            flex-shrink: 0;
+            filter: brightness(0) invert(1);
         }
 
         .timer-btn-secondary {
@@ -2198,6 +2207,7 @@
                             <div class="timer-display" id="brew-timer-display-${index}">00:00</div>
                             <div class="timer-controls-main">
                                 <button class="timer-btn start-brew" id="start-brew-${index}" onclick="startBrewTimer(${index}); event.stopPropagation();">
+                                    <img src="v60-icon.png" class="v60-icon" alt="V60">
                                     Start Brew
                                 </button>
                             </div>
