@@ -838,6 +838,19 @@
             font-variant-numeric: tabular-nums;
         }
 
+        .timer-controls-main {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .timer-controls-secondary {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .timer-controls {
             display: flex;
             gap: 10px;
@@ -855,12 +868,29 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer-btn-secondary {
+            min-width: 100px;
+        }
+
+        .v60-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            flex-shrink: 0;
         }
 
         .timer-btn.start-brew {
             background: #4CAF50;
             color: white;
             border-color: #4CAF50;
+            min-width: 200px;
+            padding: 12px 24px;
+            font-size: 0.95rem;
         }
 
         .timer-btn.start-brew:hover {
@@ -2166,10 +2196,14 @@
                         
                         <div class="brew-timer-section">
                             <div class="timer-display" id="brew-timer-display-${index}">00:00</div>
-                            <div class="timer-controls">
-                                <button class="timer-btn start-brew" id="start-brew-${index}" onclick="startBrewTimer(${index}); event.stopPropagation();">Start Brew</button>
-                                <button class="timer-btn" id="pause-brew-${index}" onclick="pauseBrewTimer(${index}); event.stopPropagation();" disabled>Pause</button>
-                                <button class="timer-btn" id="reset-brew-${index}" onclick="resetBrewTimer(${index}); event.stopPropagation();" disabled>Reset</button>
+                            <div class="timer-controls-main">
+                                <button class="timer-btn start-brew" id="start-brew-${index}" onclick="startBrewTimer(${index}); event.stopPropagation();">
+                                    Start Brew
+                                </button>
+                            </div>
+                            <div class="timer-controls-secondary">
+                                <button class="timer-btn timer-btn-secondary" id="pause-brew-${index}" onclick="pauseBrewTimer(${index}); event.stopPropagation();" disabled>Pause</button>
+                                <button class="timer-btn timer-btn-secondary" id="reset-brew-${index}" onclick="resetBrewTimer(${index}); event.stopPropagation();" disabled>Reset</button>
                             </div>
                         </div>
                         
