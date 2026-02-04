@@ -1420,23 +1420,37 @@
     </div>
 
     <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Settings</h2>
-                <button class="close-btn" onclick="closeSettings()">✕</button>
-            </div>
-            
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Settings</h2>
+            <button class="close-btn" onclick="closeSettings()">✕</button>
+        </div>
+        
+        <div class="form-group">
+            <label>Access Code / Zugangscode</label>
+            <input type="text" id="accessCodeInput" placeholder="Enter your access code">
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
+                Enter the code you received to activate this device.
+            </p>
+        </div>
+        
+        <div id="activationStatus" style="display: none; padding: 16px; border-radius: 8px; margin-top: 16px;"></div>
+        
+        <button onclick="activateDevice()">Activate Device</button>
+        
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
             <div class="form-group">
                 <label>Backend URL</label>
                 <input type="text" id="backendUrl" placeholder="https://your-backend.railway.app">
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
-                    Enter your deployed backend URL here.
+                    Advanced: Change backend URL if needed.
                 </p>
             </div>
             
-            <button onclick="saveSettings()">Save Settings</button>
+            <button onclick="saveBackendUrl()" style="background: var(--bg-secondary); color: var(--text-primary);">Save Backend URL</button>
         </div>
     </div>
+</div>
 
     <div id="waterModal" class="modal">
         <div class="modal-content">
@@ -2424,20 +2438,43 @@
         }
 
         async function analyzeCoffeeImage(imageData, mediaType) {
-            if (!CONFIG.backendUrl) {
-                throw new Error('Backend URL not configured. Please enter it in settings.');
-            }
+    if (!CONFIG.backendUrl) {
+        throw new Error('Backend URL not configured. Please enter it in settings.');
+    }
+    
+    // Token und DeviceId holen
+    const token = localStorage.getItem('token');
+    const deviceId = localStorage.getItem('deviceId');
+    
+    if (!token || !deviceId) {
+        throw new Error('Device not activated. Please enter your access code in Settings (⚙️).');
+    }
 
-            const response = await fetch(`${CONFIG.backendUrl}/api/analyze-coffee`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    imageData,
-                    mediaType
-                }),
-            });
+    const response = await fetch(`${CONFIG.backendUrl}/api/analyze-coffee`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            imageData,
+            mediaType,
+            token,
+            deviceId
+        }),
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Analysis error');
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+        throw new Error(result.error || 'Analysis failed');
+    }
+
+    return result.data;
+}
 
             if (!response.ok) {
                 const error = await response.json();
@@ -2664,31 +2701,92 @@
         }
 
         function openSettings() {
-            document.getElementById('settingsModal').classList.add('active');
-            document.getElementById('backendUrl').value = CONFIG.backendUrl;
-        }
+    document.getElementById('settingsModal').classList.add('active');
+    document.getElementById('backendUrl').value = CONFIG.backendUrl;
+    
+    // Zeige aktuellen Status
+    const token = localStorage.getItem('token');
+    const statusDiv = document.getElementById('activationStatus');
+    
+    if (token) {
+        statusDiv.style.display = 'block';
+        statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
+        statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
+        statusDiv.style.color = '#5fda7d';
+        statusDiv.innerHTML = '✅ Device already activated';
+    } else {
+        statusDiv.style.display = 'none';
+    }
+}
 
         function closeSettings() {
             document.getElementById('settingsModal').classList.remove('active');
         }
 
-        function saveSettings() {
-            const backendUrl = document.getElementById('backendUrl').value.trim();
-            
-            if (backendUrl && !backendUrl.startsWith('http')) {
-                showMessage('error', 'Backend URL must start with http:// or https://');
-                return;
-            }
-            
-            CONFIG.backendUrl = backendUrl;
-            localStorage.setItem('backendUrl', backendUrl);
-            showMessage('success', '✓ Settings saved successfully!');
-            
-            setTimeout(() => {
-                closeSettings();
-            }, 1000);
-        }
+        function saveBackendUrl() {
+    const backendUrl = document.getElementById('backendUrl').value.trim();
+    
+    if (backendUrl && !backendUrl.startsWith('http')) {
+        showMessage('error', 'Backend URL must start with http:// or https://');
+        return;
+    }
+    
+    CONFIG.backendUrl = backendUrl;
+    if (typeof BACKEND_CONFIG !== 'undefined') {
+        BACKEND_CONFIG.url = backendUrl;
+    }
+    localStorage.setItem('backendUrl', backendUrl);
+    showMessage('success', '✓ Backend URL saved successfully!');
+    
+    setTimeout(() => {
+        closeSettings();
+    }, 1000);
+}
 
+    async function activateDevice() {
+    const accessCode = document.getElementById('accessCodeInput').value.trim();
+    const statusDiv = document.getElementById('activationStatus');
+    
+    if (!accessCode) {
+        statusDiv.style.display = 'block';
+        statusDiv.style.background = 'rgba(220, 53, 69, 0.1)';
+        statusDiv.style.border = '1px solid rgba(220, 53, 69, 0.3)';
+        statusDiv.style.color = '#ff6b7a';
+        statusDiv.innerHTML = '❌ Please enter an access code';
+        return;
+    }
+    
+    // validateAndSaveToken wird von backend-sync.js bereitgestellt
+    const result = await validateAndSaveToken(accessCode);
+    
+    if (result.success) {
+        statusDiv.style.display = 'block';
+        statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
+        statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
+        statusDiv.style.color = '#5fda7d';
+        statusDiv.innerHTML = '✅ Success! Device linked.<br>You can now use all features.';
+        
+        // Backend-Sync neu initialisieren
+        if (typeof BACKEND_CONFIG !== 'undefined') {
+            BACKEND_CONFIG.syncEnabled = true;
+        }
+        if (typeof initBackendSync === 'function') {
+            await initBackendSync();
+        }
+        
+        setTimeout(() => {
+            closeSettings();
+            location.reload();
+        }, 2000);
+    } else {
+        statusDiv.style.display = 'block';
+        statusDiv.style.background = 'rgba(220, 53, 69, 0.1)';
+        statusDiv.style.border = '1px solid rgba(220, 53, 69, 0.3)';
+        statusDiv.style.color = '#ff6b7a';
+        statusDiv.innerHTML = '❌ ' + (result.error || 'Invalid access code');
+    }
+}
+        
         function openWaterModal() {
             document.getElementById('waterModal').classList.add('active');
             document.getElementById('zipCodeInput').value = userZipCode;
