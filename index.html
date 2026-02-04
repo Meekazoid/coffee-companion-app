@@ -1401,17 +1401,17 @@
     </div>
 
     <div class="fixed-controls">
-        <div class="control-btn" onclick="toggleTheme()">
+        <div class="control-btn" id="themeToggleBtn">
             <svg class="control-icon" viewBox="0 0 24 24">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
         </div>
-        <div class="control-btn" id="waterControlBtn" onclick="openWaterModal()">
+        <div class="control-btn" id="waterControlBtn">
             <svg class="control-icon" viewBox="0 0 24 24">
                 <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
             </svg>
         </div>
-        <div class="control-btn" onclick="openSettings()">
+        <div class="control-btn" id="settingsBtn">
             <svg class="control-icon" viewBox="0 0 24 24">
                 <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
@@ -1423,7 +1423,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h2>Settings</h2>
-            <button class="close-btn" onclick="closeSettings()">✕</button>
+            <button class="close-btn" id="closeSettingsBtn">✕</button>
         </div>
         
         <div class="form-group">
@@ -1436,7 +1436,7 @@
         
         <div id="activationStatus" style="display: none; padding: 16px; border-radius: 8px; margin-top: 16px;"></div>
         
-        <button onclick="activateDevice().catch(err => console.error(err))">Activate Device</button>
+        <button id="activateDeviceBtn">Activate Device</button>
         
         <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
             <div class="form-group">
@@ -1447,7 +1447,7 @@
                 </p>
             </div>
             
-            <button onclick="saveBackendUrl()" style="background: var(--bg-secondary); color: var(--text-primary);">Save Backend URL</button>
+            <button id="saveBackendUrlBtn" style="background: var(--bg-secondary); color: var(--text-primary);">Save Backend URL</button>
         </div>
     </div>
 </div>
@@ -1516,6 +1516,69 @@
 
     <script src="water-hardness.js"></script>
     <script>
+        // ==========================================
+        // CRITICAL: Event Listeners zuerst!
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ DOM loaded - Event Listeners aktiviert');
+            
+            // Settings Button
+            const settingsBtn = document.getElementById('settingsBtn');
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', openSettings);
+            }
+            
+            // Close Settings Button
+            const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+            if (closeSettingsBtn) {
+                closeSettingsBtn.addEventListener('click', closeSettings);
+            }
+            
+            // Settings Modal Overlay Click (schließen wenn außerhalb geklickt)
+            const settingsModal = document.getElementById('settingsModal');
+            if (settingsModal) {
+                settingsModal.addEventListener('click', (e) => {
+                    if (e.target === settingsModal) {
+                        closeSettings();
+                    }
+                });
+            }
+            
+            // Activate Device Button
+            const activateBtn = document.getElementById('activateDeviceBtn');
+            if (activateBtn) {
+                activateBtn.addEventListener('click', () => {
+                    activateDevice().catch(err => {
+                        console.error('Activation error:', err);
+                        showActivationError(err.message);
+                    });
+                });
+            }
+            
+            // Save Backend URL Button
+            const saveBackendBtn = document.getElementById('saveBackendUrlBtn');
+            if (saveBackendBtn) {
+                saveBackendBtn.addEventListener('click', saveBackendUrl);
+            }
+            
+            // Theme Toggle Button
+            const themeBtn = document.getElementById('themeToggleBtn');
+            if (themeBtn) {
+                themeBtn.addEventListener('click', toggleTheme);
+            }
+            
+            // Water Modal Button
+            const waterBtn = document.getElementById('waterControlBtn');
+            if (waterBtn) {
+                waterBtn.addEventListener('click', openWaterModal);
+            }
+            
+            console.log('✅ Alle Event Listeners registriert');
+        });
+        
+        // ==========================================
+        // CONFIG & GLOBALS
+        // ==========================================
         const CONFIG = {
             backendUrl: 'https://brew-buddy-backend-production.up.railway.app',
         };
@@ -2700,7 +2763,6 @@
             showMessage('success', '✓ Coffee added successfully!');
         }
 
-
         
         function openWaterModal() {
             document.getElementById('waterModal').classList.add('active');
@@ -2725,24 +2787,24 @@
             document.getElementById('waterHardnessDisplay').style.display = 'block';
         }
 
-function openSettings() {
-    document.getElementById('settingsModal').classList.add('active');
-    document.getElementById('backendUrl').value = CONFIG.backendUrl;
-    
-    // Zeige aktuellen Status
-    const token = localStorage.getItem('token');
-    const statusDiv = document.getElementById('activationStatus');
-    
-    if (token) {
-        statusDiv.style.display = 'block';
-        statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
-        statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
-        statusDiv.style.color = '#5fda7d';
-        statusDiv.innerHTML = '✅ Device already activated';
-    } else {
-        statusDiv.style.display = 'none';
-    }
-}
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+            document.getElementById('backendUrl').value = CONFIG.backendUrl;
+            
+            // Zeige aktuellen Status
+            const token = localStorage.getItem('token');
+            const statusDiv = document.getElementById('activationStatus');
+            
+            if (token) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
+                statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
+                statusDiv.style.color = '#5fda7d';
+                statusDiv.innerHTML = '✅ Device already activated';
+            } else {
+                statusDiv.style.display = 'none';
+            }
+        }
 
 function closeSettings() {
     document.getElementById('settingsModal').classList.remove('active');
@@ -2768,57 +2830,51 @@ function saveBackendUrl() {
     }, 1000);
 }
 
-function activateDevice() {
-    activateDeviceAsync().catch(err => {
+async function activateDevice() {
+    try {
+        const accessCode = document.getElementById('accessCodeInput').value.trim();
         const statusDiv = document.getElementById('activationStatus');
-        statusDiv.style.display = 'block';
-        statusDiv.style.background = 'rgba(220, 53, 69, 0.1)';
-        statusDiv.style.border = '1px solid rgba(220, 53, 69, 0.3)';
-        statusDiv.style.color = '#ff6b7a';
-        statusDiv.innerHTML = '❌ ' + err.message;
-    });
+        
+        if (!accessCode) {
+            showActivationError('Please enter an access code');
+            return;
+        }
+        
+        const result = await validateAndSaveToken(accessCode);
+        
+        if (result.success) {
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
+            statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
+            statusDiv.style.color = '#5fda7d';
+            statusDiv.innerHTML = '✅ Success! Device linked.<br>You can now use all features.';
+            
+            if (typeof BACKEND_CONFIG !== 'undefined') {
+                BACKEND_CONFIG.syncEnabled = true;
+            }
+            if (typeof initBackendSync === 'function') {
+                await initBackendSync();
+            }
+            
+            setTimeout(() => {
+                closeSettings();
+                location.reload();
+            }, 2000);
+        } else {
+            showActivationError(result.error || 'Invalid access code');
+        }
+    } catch (error) {
+        showActivationError(error.message || 'Activation failed');
+    }
 }
 
-async function activateDeviceAsync() {
-    const accessCode = document.getElementById('accessCodeInput').value.trim();
+function showActivationError(message) {
     const statusDiv = document.getElementById('activationStatus');
-    
-    if (!accessCode) {
-        statusDiv.style.display = 'block';
-        statusDiv.style.background = 'rgba(220, 53, 69, 0.1)';
-        statusDiv.style.border = '1px solid rgba(220, 53, 69, 0.3)';
-        statusDiv.style.color = '#ff6b7a';
-        statusDiv.innerHTML = '❌ Please enter an access code';
-        return;
-    }
-    
-    const result = await validateAndSaveToken(accessCode);
-    
-    if (result.success) {
-        statusDiv.style.display = 'block';
-        statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
-        statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
-        statusDiv.style.color = '#5fda7d';
-        statusDiv.innerHTML = '✅ Success! Device linked.<br>You can now use all features.';
-        
-        if (typeof BACKEND_CONFIG !== 'undefined') {
-            BACKEND_CONFIG.syncEnabled = true;
-        }
-        if (typeof initBackendSync === 'function') {
-            await initBackendSync();
-        }
-        
-        setTimeout(() => {
-            closeSettings();
-            location.reload();
-        }, 2000);
-    } else {
-        statusDiv.style.display = 'block';
-        statusDiv.style.background = 'rgba(220, 53, 69, 0.1)';
-        statusDiv.style.border = '1px solid rgba(220, 53, 69, 0.3)';
-        statusDiv.style.color = '#ff6b7a';
-        statusDiv.innerHTML = '❌ ' + (result.error || 'Invalid access code');
-    }
+    statusDiv.style.display = 'block';
+    statusDiv.style.background = 'rgba(220, 53, 69, 0.1)';
+    statusDiv.style.border = '1px solid rgba(220, 53, 69, 0.3)';
+    statusDiv.style.color = '#ff6b7a';
+    statusDiv.innerHTML = '❌ ' + message;
 }
         
         async function saveWaterHardness() {

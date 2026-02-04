@@ -1,24 +1,18 @@
 // ==========================================
-// BREWBUDDY BACKEND SYNC MODULE
-// Füge das in dein index.html ein (vor dem schließenden </script> Tag)
+// BREWBUDDY BACKEND SYNC MODULE V3
+// Mit Token-System + Fehlertoleranz
 // ==========================================
 
-// Backend Configuration
 const BACKEND_CONFIG = {
     url: 'https://brew-buddy-backend-production.up.railway.app',
     syncEnabled: true,
     offlineFirst: true
 };
 
-// ==========================================
-// DEVICE ID MANAGEMENT
-// ==========================================
-
 function getOrCreateDeviceId() {
     let deviceId = localStorage.getItem('deviceId');
     
     if (!deviceId) {
-        // Generiere eindeutige Device-ID basierend auf Browser-Fingerprint
         const fingerprint = [
             navigator.userAgent,
             navigator.language,
@@ -27,7 +21,6 @@ function getOrCreateDeviceId() {
             navigator.hardwareConcurrency || 'unknown'
         ].join('|');
         
-        // Hash zu Device-ID
         deviceId = 'device-' + btoa(fingerprint).substring(0, 32).replace(/[^a-zA-Z0-9]/g, '');
         localStorage.setItem('deviceId', deviceId);
     }
@@ -35,72 +28,55 @@ function getOrCreateDeviceId() {
     return deviceId;
 }
 
-// ==========================================
-// TOKEN VALIDATION
-// ==========================================
-
 async function validateAndSaveToken(token) {
-    const deviceId = getOrCreateDeviceId();
-    
     try {
-        const response = await fetch(
-            `${BACKEND_CONFIG.url}/api/auth/validate?token=${token}&deviceId=${deviceId}`
-        );
+        const deviceId = getOrCreateDeviceId();
+        
+        const response = await fetch(`${BACKEND_CONFIG.url}/api/auth/validate?token=${token}&deviceId=${deviceId}`);
+        
+        if (!response.ok) {
+            const error = await response.json();
+            return { success: false, error: error.error || 'Token validation failed' };
+        }
+        
         const data = await response.json();
         
         if (data.valid) {
-            // Token ist gültig, speichern
             localStorage.setItem('token', token);
             localStorage.setItem('deviceId', deviceId);
-            
-            console.log('✅ Token erfolgreich validiert und gespeichert');
+            console.log('✅ Token valid and saved');
             return { success: true, user: data.user };
         } else {
-            console.error('❌ Token ungültig:', data.error);
             return { success: false, error: data.error || 'Invalid token' };
         }
-    } catch (err) {
-        console.error('❌ Token-Validierung fehlgeschlagen:', err);
-        return { success: false, error: 'Network error' };
+    } catch (error) {
+        console.error('Token validation error:', error);
+        return { success: false, error: 'Could not reach server. Check your internet connection.' };
     }
 }
-
-// ==========================================
-// USER MANAGEMENT (Simplified - No Auto-Register)
-// ==========================================
 
 async function checkUserStatus() {
     const token = localStorage.getItem('token');
-    const deviceId = getOrCreateDeviceId();
+    const deviceId = localStorage.getItem('deviceId');
     
-    if (!token) {
-        console.log('⚠️ Kein Token vorhanden - Aktivierung erforderlich');
-        return { hasToken: false };
+    if (!token || !deviceId) {
+        return { hasToken: false, valid: false };
     }
     
-    // Token validieren
     try {
-        const response = await fetch(
-            `${BACKEND_CONFIG.url}/api/auth/validate?token=${token}&deviceId=${deviceId}`
-        );
+        const response = await fetch(`${BACKEND_CONFIG.url}/api/auth/validate?token=${token}&deviceId=${deviceId}`);
         const data = await response.json();
         
-        if (data.valid) {
-            console.log('✅ Token gültig');
-            return { hasToken: true, valid: true, user: data.user };
-        } else {
-            console.log('❌ Token ungültig oder Device-Mismatch');
-            return { hasToken: true, valid: false, error: data.error };
-        }
-    } catch (err) {
-        console.error('❌ Token-Check fehlgeschlagen:', err);
-        return { hasToken: true, valid: false, error: 'Network error' };
+        return {
+            hasToken: true,
+            valid: data.valid || false,
+            user: data.user
+        };
+    } catch (error) {
+        console.warn('Could not check token status:', error);
+        return { hasToken: true, valid: false, error: error.message };
     }
 }
-
-// ==========================================
-// SYNC FUNCTIONS
-// ==========================================
 
 async function syncCoffeesToBackend(coffees) {
     if (!BACKEND_CONFIG.syncEnabled) return;
@@ -113,8 +89,8 @@ async function syncCoffeesToBackend(coffees) {
         const token = localStorage.getItem('token');
         const deviceId = localStorage.getItem('deviceId');
         
-        if (!token) {
-            console.log('⚠️ Kein Token - Sync nicht möglich (Aktivierung erforderlich)');
+        if (!token || !deviceId) {
+            console.warn('⚠️ Kein Token - Backend-Sync deaktiviert');
             return;
         }
         
@@ -148,7 +124,7 @@ async function loadCoffeesFromBackend() {
         const token = localStorage.getItem('token');
         const deviceId = localStorage.getItem('deviceId');
         
-        if (!token) {
+        if (!token || !deviceId) {
             console.log('⚠️ Kein Token - kein Backend-Load möglich');
             return null;
         }
@@ -172,10 +148,6 @@ async function loadCoffeesFromBackend() {
     }
 }
 
-// ==========================================
-// MERGE STRATEGY
-// ==========================================
-
 function mergeCoffees(localCoffees, backendCoffees) {
     if (!backendCoffees || backendCoffees.length === 0) {
         return localCoffees;
@@ -185,8 +157,6 @@ function mergeCoffees(localCoffees, backendCoffees) {
         return backendCoffees;
     }
     
-    // Merge: Backend hat Priorität (neuere Daten)
-    // Aber behalte lokale Coffees die nicht im Backend sind
     const merged = [...backendCoffees];
     
     localCoffees.forEach(local => {
@@ -203,106 +173,95 @@ function mergeCoffees(localCoffees, backendCoffees) {
     return merged;
 }
 
-// ==========================================
-// INITIALIZATION
-// ==========================================
-
 async function initBackendSync() {
     console.log('🔄 Initialisiere Backend-Sync...');
     
-    // 1. Prüfe User-Status (kein Auto-Register!)
-    const userStatus = await checkUserStatus();
-    
-    if (!userStatus.hasToken) {
-        console.log('⚠️ Kein Token - Backend-Sync pausiert bis zur Aktivierung');
+    try {
+        const status = await checkUserStatus();
+        
+        if (!status.hasToken) {
+            console.log('⚠️ Kein Token vorhanden - Aktivierung erforderlich');
+            BACKEND_CONFIG.syncEnabled = false;
+            return;
+        }
+        
+        if (!status.valid) {
+            console.warn('⚠️ Token ungültig - Backend-Sync pausiert bis zur Aktivierung');
+            BACKEND_CONFIG.syncEnabled = false;
+            return;
+        }
+        
+        const backendCoffees = await loadCoffeesFromBackend();
+        const localCoffees = JSON.parse(localStorage.getItem('coffees') || '[]');
+        const mergedCoffees = mergeCoffees(localCoffees, backendCoffees);
+        
+        localStorage.setItem('coffees', JSON.stringify(mergedCoffees));
+        
+        if (typeof coffees !== 'undefined') {
+            coffees.length = 0;
+            coffees.push(...mergedCoffees);
+        }
+        
+        if (mergedCoffees.length > 0) {
+            await syncCoffeesToBackend(mergedCoffees);
+        }
+        
+        if (typeof renderCoffees === 'function') {
+            renderCoffees();
+        }
+        
+        console.log('✅ Backend-Sync initialisiert');
+        
+    } catch (error) {
+        console.error('❌ Backend-Sync Init Fehler:', error);
         BACKEND_CONFIG.syncEnabled = false;
-        return;
+        console.log('⚠️ Backend-Sync deaktiviert - App läuft im Offline-Modus');
     }
-    
-    if (!userStatus.valid) {
-        console.log('⚠️ Token ungültig - Backend-Sync deaktiviert');
-        BACKEND_CONFIG.syncEnabled = false;
-        return;
-    }
-    
-    // 2. Lade Coffees vom Backend
-    const backendCoffees = await loadCoffeesFromBackend();
-    
-    // 3. Merge mit lokalem Storage
-    const localCoffees = JSON.parse(localStorage.getItem('coffees') || '[]');
-    const mergedCoffees = mergeCoffees(localCoffees, backendCoffees);
-    
-    // 4. Speichere merged version
-    localStorage.setItem('coffees', JSON.stringify(mergedCoffees));
-    if (typeof coffees !== 'undefined') {
-        coffees = mergedCoffees;
-    }
-    
-    // 5. Sync zurück zum Backend (falls lokale Änderungen)
-    if (mergedCoffees.length > 0) {
-        await syncCoffeesToBackend(mergedCoffees);
-    }
-    
-    // 6. Re-render UI (falls renderCoffees existiert)
-    if (typeof renderCoffees === 'function') {
-        renderCoffees();
-    }
-    
-    console.log('✅ Backend-Sync initialisiert');
 }
 
-// ==========================================
-// AUTO-SYNC ON CHANGES
-// ==========================================
-
-// Wrapper für saveCoffeeManual
-const originalSaveCoffeeManual = window.saveCoffeeManual;
-window.saveCoffeeManual = async function() {
-    // Call original function
+if (typeof window !== 'undefined') {
+    const originalSaveCoffeeManual = window.saveCoffeeManual;
     if (originalSaveCoffeeManual) {
-        originalSaveCoffeeManual();
+        window.saveCoffeeManual = async function() {
+            originalSaveCoffeeManual();
+            if (BACKEND_CONFIG.syncEnabled) {
+                await syncCoffeesToBackend(coffees);
+            }
+        };
     }
-    
-    // Sync to backend
-    await syncCoffeesToBackend(coffees);
-};
+}
 
-// Wrapper für deleteCoffee
-const originalDeleteCoffee = window.deleteCoffee;
-window.deleteCoffee = async function(index) {
-    // Call original function
-    if (originalDeleteCoffee) {
-        originalDeleteCoffee(index);
-    }
-    
-    // Sync to backend
-    await syncCoffeesToBackend(coffees);
-};
-
-// Online/Offline Detection
 window.addEventListener('online', async () => {
     console.log('🌐 Verbindung wieder hergestellt');
-    const localCoffees = JSON.parse(localStorage.getItem('coffees') || '[]');
-    await syncCoffeesToBackend(localCoffees);
+    if (BACKEND_CONFIG.syncEnabled) {
+        const localCoffees = JSON.parse(localStorage.getItem('coffees') || '[]');
+        await syncCoffeesToBackend(localCoffees);
+    }
 });
 
 window.addEventListener('offline', () => {
     console.log('📴 Offline-Modus');
 });
 
-// ==========================================
-// START ON PAGE LOAD
-// ==========================================
-
-// Auto-init beim Laden der Seite
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBackendSync);
+    document.addEventListener('DOMContentLoaded', () => {
+        initBackendSync().catch(err => {
+            console.error('Backend-Sync Init Error:', err);
+            console.log('⚠️ App läuft im Offline-Modus');
+        });
+    });
 } else {
-    initBackendSync();
+    initBackendSync().catch(err => {
+        console.error('Backend-Sync Init Error:', err);
+        console.log('⚠️ App läuft im Offline-Modus');
+    });
 }
 
 console.log('📦 Backend-Sync Modul geladen');
 
-// Expose functions für index.html
-window.validateAndSaveToken = validateAndSaveToken;
-window.checkUserStatus = checkUserStatus;
+if (typeof window !== 'undefined') {
+    window.validateAndSaveToken = validateAndSaveToken;
+    window.checkUserStatus = checkUserStatus;
+    window.initBackendSync = initBackendSync;
+    window.BACKEND_CONFIG = BACKEND_CONFIG;
+}
