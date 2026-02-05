@@ -1411,7 +1411,7 @@
                 <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
             </svg>
         </div>
-        <div class="control-btn" id="settingsBtn">
+        <div class="control-btn" id="settingsBtnControl">
             <svg class="control-icon" viewBox="0 0 24 24">
                 <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
@@ -1516,66 +1516,6 @@
 
     <script src="water-hardness.js"></script>
     <script>
-        // ==========================================
-        // CRITICAL: Event Listeners zuerst!
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('✅ DOM loaded - Event Listeners aktiviert');
-            
-            // Settings Button
-            const settingsBtn = document.getElementById('settingsBtn');
-            if (settingsBtn) {
-                settingsBtn.addEventListener('click', openSettings);
-            }
-            
-            // Close Settings Button
-            const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-            if (closeSettingsBtn) {
-                closeSettingsBtn.addEventListener('click', closeSettings);
-            }
-            
-            // Settings Modal Overlay Click (schließen wenn außerhalb geklickt)
-            const settingsModal = document.getElementById('settingsModal');
-            if (settingsModal) {
-                settingsModal.addEventListener('click', (e) => {
-                    if (e.target === settingsModal) {
-                        closeSettings();
-                    }
-                });
-            }
-            
-            // Activate Device Button
-            const activateBtn = document.getElementById('activateDeviceBtn');
-            if (activateBtn) {
-                activateBtn.addEventListener('click', () => {
-                    activateDevice().catch(err => {
-                        console.error('Activation error:', err);
-                        showActivationError(err.message);
-                    });
-                });
-            }
-            
-            // Save Backend URL Button
-            const saveBackendBtn = document.getElementById('saveBackendUrlBtn');
-            if (saveBackendBtn) {
-                saveBackendBtn.addEventListener('click', saveBackendUrl);
-            }
-            
-            // Theme Toggle Button
-            const themeBtn = document.getElementById('themeToggleBtn');
-            if (themeBtn) {
-                themeBtn.addEventListener('click', toggleTheme);
-            }
-            
-            // Water Modal Button
-            const waterBtn = document.getElementById('waterControlBtn');
-            if (waterBtn) {
-                waterBtn.addEventListener('click', openWaterModal);
-            }
-            
-            console.log('✅ Alle Event Listeners registriert');
-        });
-        
         // ==========================================
         // CONFIG & GLOBALS
         // ==========================================
@@ -2539,19 +2479,6 @@
     return result.data;
 }
 
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || 'Analysis error');
-            }
-
-            const result = await response.json();
-            if (!result.success) {
-                throw new Error(result.error || 'Analysis failed');
-            }
-
-            return result.data;
-        }
-
         document.getElementById('cameraBtn').addEventListener('click', () => {
             document.getElementById('imageInput').click();
         });
@@ -2840,6 +2767,41 @@ async function activateDevice() {
             return;
         }
         
+        // Inline validateAndSaveToken function (falls backend-sync.js nicht geladen ist)
+        const validateAndSaveToken = async (token) => {
+            try {
+                const deviceId = getOrCreateDeviceId();
+                
+                const response = await fetch(`${CONFIG.backendUrl}/api/auth/validate?token=${token}&deviceId=${deviceId}`);
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    return { success: false, error: error.error || 'Token validation failed' };
+                }
+                
+                const data = await response.json();
+                
+                if (data.valid) {
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('deviceId', deviceId);
+                    return { success: true, user: data.user };
+                } else {
+                    return { success: false, error: data.error || 'Invalid token' };
+                }
+            } catch (error) {
+                return { success: false, error: 'Could not reach server' };
+            }
+        };
+        
+        const getOrCreateDeviceId = () => {
+            let deviceId = localStorage.getItem('deviceId');
+            if (!deviceId) {
+                deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+                localStorage.setItem('deviceId', deviceId);
+            }
+            return deviceId;
+        };
+        
         const result = await validateAndSaveToken(accessCode);
         
         if (result.success) {
@@ -2928,6 +2890,62 @@ function showActivationError(message) {
                 alert('Welcome to BrewBuddy! Please configure your Backend URL in settings (⚙️) first.');
             }, 500);
         }
+
+        // ==========================================
+        // EVENT LISTENERS (am Ende, wenn alle Funktionen definiert sind)
+        // ==========================================
+        
+        // Settings Button
+        const settingsBtnControl = document.getElementById('settingsBtnControl');
+        if (settingsBtnControl) {
+            settingsBtnControl.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('⚙️ Settings clicked');
+                openSettings();
+            };
+        }
+        
+        // Close Settings Button
+        const closeSettingsBtnElement = document.getElementById('closeSettingsBtn');
+        if (closeSettingsBtnElement) {
+            closeSettingsBtnElement.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('✕ Close clicked');
+                closeSettings();
+            };
+        }
+        
+        // Settings Modal Overlay Click
+        const settingsModalElement = document.getElementById('settingsModal');
+        if (settingsModalElement) {
+            settingsModalElement.onclick = function(e) {
+                if (e.target === settingsModalElement) {
+                    closeSettings();
+                }
+            };
+        }
+        
+        // Activate Device Button
+        const activateDeviceBtnElement = document.getElementById('activateDeviceBtn');
+        if (activateDeviceBtnElement) {
+            activateDeviceBtnElement.onclick = function() {
+                activateDevice().catch(err => {
+                    console.error('Activation error:', err);
+                    showActivationError(err.message);
+                });
+            };
+        }
+        
+        // Save Backend URL Button
+        const saveBackendBtnElement = document.getElementById('saveBackendUrlBtn');
+        if (saveBackendBtnElement) {
+            saveBackendBtnElement.onclick = function() {
+                saveBackendUrl();
+            };
+        }
+    
     </script>
     <script src="backend-sync.js"></script>
 </body>
