@@ -181,6 +181,13 @@ function setupTokenUI() {
     const clearTokenBtn = document.getElementById('clearTokenBtn');
     const tokenStatus = document.getElementById('tokenStatus');
 
+    // Nur ausführen wenn die Token-UI-Elemente existieren
+    // (sie existieren NICHT in der neuen index.html)
+    if (!tokenInput || !saveTokenBtn || !clearTokenBtn || !tokenStatus) {
+        console.log('ℹ️ Token-UI nicht gefunden (wird über Settings-Modal verwaltet)');
+        return;
+    }
+
     // Load existing token
     const existingToken = getToken();
     if (existingToken) {
@@ -188,7 +195,7 @@ function setupTokenUI() {
     }
 
     // Save token
-    saveTokenBtn?.addEventListener('click', async () => {
+    saveTokenBtn.addEventListener('click', async () => {
         const token = tokenInput.value.trim();
         
         if (!token) {
@@ -218,7 +225,7 @@ function setupTokenUI() {
     });
 
     // Clear token
-    clearTokenBtn?.addEventListener('click', () => {
+    clearTokenBtn.addEventListener('click', () => {
         clearToken();
         tokenInput.value = '';
         tokenStatus.innerHTML = '<span style="color: var(--text-secondary);">Token cleared</span>';
