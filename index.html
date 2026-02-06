@@ -301,6 +301,120 @@
             background: var(--accent-hover);
         }
 
+        /* Global Grinder Selector (Sticky) */
+        .global-grinder-selector {
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 12px 20px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .global-grinder-selector:hover {
+            box-shadow: 0 6px 16px var(--shadow);
+        }
+
+        .grinder-selector-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .grinder-icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .grinder-toggle {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            max-width: 420px;
+        }
+
+        .grinder-option {
+            flex: 1;
+            padding: 10px 16px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grinder-option::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .grinder-option:hover::before {
+            opacity: 0.05;
+        }
+
+        .grinder-option.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.3);
+        }
+
+        .grinder-option.active::before {
+            opacity: 0;
+        }
+
+        .grinder-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .grinder-subtext {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .grinder-option:hover:not(.active) {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .grinder-option:active {
+            transform: translateY(0);
+        }
+
         .coffee-list {
             display: grid;
             gap: 20px;
@@ -407,7 +521,6 @@
             font-weight: 500;
         }
 
-        /* Process + Freshness in einer Zeile (15% kleiner) */
         .process-freshness-row {
             display: flex;
             align-items: center;
@@ -486,7 +599,6 @@
             fill: none;
         }
 
-        /* Roast Date Section */
         .roast-date-section {
             background: var(--bg-card);
             padding: 16px;
@@ -578,39 +690,6 @@
             display: block;
         }
 
-        /* Grinder Selection */
-        .grinder-selector {
-            background: var(--bg-card);
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            display: flex;
-            gap: 8px;
-        }
-
-        .grinder-btn {
-            flex: 1;
-            padding: 10px 12px;
-            background: var(--bg-secondary);
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .grinder-btn.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .grinder-btn:hover {
-            border-color: var(--accent);
-        }
-
         .ratio-control {
             background: var(--bg-card);
             padding: 16px;
@@ -635,7 +714,6 @@
             gap: 8px;
         }
 
-        /* IMPROVED: Gramm value above slider */
         .ratio-value-display {
             text-align: center;
             padding: 8px;
@@ -672,7 +750,6 @@
             cursor: pointer;
         }
 
-        /* Track - thin horizontal line */
         .ratio-slider input[type="range"]::-webkit-slider-runnable-track {
             width: 100%;
             height: 3px;
@@ -688,7 +765,6 @@
             border: none;
         }
 
-        /* Thumb - sits centered ON the track */
         .ratio-slider input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 18px;
@@ -697,7 +773,7 @@
             background: white;
             border: 2px solid var(--text-secondary);
             cursor: grab;
-            margin-top: -7.5px; /* Centers 18px thumb on 3px track: (18-3)/2 = 7.5 */
+            margin-top: -7.5px;
         }
 
         .ratio-slider input[type="range"]::-webkit-slider-thumb:active {
@@ -718,7 +794,6 @@
             cursor: grabbing;
         }
 
-        /* Light mode adjustments */
         body.light-mode .ratio-slider input[type="range"]::-webkit-slider-thumb {
             border-color: var(--border);
         }
@@ -1206,6 +1281,34 @@
                 height: 12px;
             }
 
+            .global-grinder-selector {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 14px 16px;
+                top: 10px;
+            }
+            
+            .grinder-selector-label {
+                justify-content: center;
+            }
+            
+            .grinder-toggle {
+                max-width: 100%;
+            }
+            
+            .grinder-option {
+                padding: 12px 14px;
+            }
+            
+            .grinder-name {
+                font-size: 0.85rem;
+            }
+            
+            .grinder-subtext {
+                font-size: 0.65rem;
+            }
+
             .param-grid {
                 grid-template-columns: 1fr;
                 gap: 10px;
@@ -1278,12 +1381,22 @@
                 padding: 18px 32px;
                 font-size: 1rem;
             }
+
+            .grinder-name {
+                font-size: 0.8rem;
+            }
+            
+            .grinder-subtext {
+                font-size: 0.6rem;
+            }
+            
+            .grinder-option {
+                padding: 10px 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>
     <div class="container">
         <header>
             <div class="logo-title-group">
@@ -1391,6 +1504,27 @@
             </div>
         </div>
 
+        <!-- Global Grinder Selection (sticky) -->
+        <div class="global-grinder-selector">
+            <div class="grinder-selector-label">
+                <svg class="grinder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+                </svg>
+                <span>Grinder</span>
+            </div>
+            <div class="grinder-toggle">
+                <button class="grinder-option active" data-grinder="fellow" id="global-fellow">
+                    <span class="grinder-name">Fellow Ode</span>
+                    <span class="grinder-subtext">Gen 2</span>
+                </button>
+                <button class="grinder-option" data-grinder="comandante" id="global-comandante">
+                    <span class="grinder-name">Comandante</span>
+                    <span class="grinder-subtext">C40 MK3</span>
+                </button>
+            </div>
+        </div>
+
         <div id="coffeeList" class="coffee-list"></div>
         
         <div id="emptyState" class="empty-state">
@@ -1420,37 +1554,37 @@
     </div>
 
     <div id="settingsModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Settings</h2>
-            <button class="close-btn" id="closeSettingsBtn">✕</button>
-        </div>
-        
-        <div class="form-group">
-            <label>Access Code / Zugangscode</label>
-            <input type="text" id="accessCodeInput" placeholder="Enter your access code">
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
-                Enter the code you received to activate this device.
-            </p>
-        </div>
-        
-        <div id="activationStatus" style="display: none; padding: 16px; border-radius: 8px; margin-top: 16px;"></div>
-        
-        <button id="activateDeviceBtn">Activate Device</button>
-        
-        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" id="closeSettingsBtn">✕</button>
+            </div>
+            
             <div class="form-group">
-                <label>Backend URL</label>
-                <input type="text" id="backendUrl" placeholder="https://your-backend.railway.app">
+                <label>Access Code / Zugangscode</label>
+                <input type="text" id="accessCodeInput" placeholder="Enter your access code">
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
-                    Advanced: Change backend URL if needed.
+                    Enter the code you received to activate this device.
                 </p>
             </div>
             
-            <button id="saveBackendUrlBtn" style="background: var(--bg-secondary); color: var(--text-primary);">Save Backend URL</button>
+            <div id="activationStatus" style="display: none; padding: 16px; border-radius: 8px; margin-top: 16px;"></div>
+            
+            <button id="activateDeviceBtn">Activate Device</button>
+            
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
+                <div class="form-group">
+                    <label>Backend URL</label>
+                    <input type="text" id="backendUrl" placeholder="https://your-backend.railway.app">
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
+                        Advanced: Change backend URL if needed.
+                    </p>
+                </div>
+                
+                <button id="saveBackendUrlBtn" style="background: var(--bg-secondary); color: var(--text-primary);">Save Backend URL</button>
+            </div>
         </div>
     </div>
-</div>
 
     <div id="waterModal" class="modal">
         <div class="modal-content">
@@ -1533,7 +1667,7 @@
         let brewTimers = {};
         let animationFrames = {};
 
-        // Grinder preferences
+        // Global grinder preference
         let preferredGrinder = localStorage.getItem('preferredGrinder') || 'fellow';
 
         // Water hardness
@@ -1549,7 +1683,6 @@
         if (userZipCode && typeof WaterHardness !== 'undefined') {
             WaterHardness.getHardness(userZipCode).then(data => {
                 waterHardness = data;
-                // Mark water button as active
                 const waterBtn = document.getElementById('waterControlBtn');
                 if (waterBtn) waterBtn.classList.add('active');
             }).catch(err => {
@@ -1568,12 +1701,63 @@
             manualSection.classList.toggle('hidden');
         }
 
+        // ==========================================
+        // GLOBAL GRINDER SELECTION
+        // ==========================================
+
+        function initGlobalGrinder() {
+            const fellowBtn = document.getElementById('global-fellow');
+            const comandanteBtn = document.getElementById('global-comandante');
+            
+            // Set initial state from localStorage
+            if (preferredGrinder === 'comandante') {
+                fellowBtn.classList.remove('active');
+                comandanteBtn.classList.add('active');
+            }
+            
+            // Event listeners
+            fellowBtn.addEventListener('click', () => switchGlobalGrinder('fellow'));
+            comandanteBtn.addEventListener('click', () => switchGlobalGrinder('comandante'));
+        }
+
+        async function switchGlobalGrinder(grinder) {
+            const fellowBtn = document.getElementById('global-fellow');
+            const comandanteBtn = document.getElementById('global-comandante');
+            
+            // Update UI
+            if (grinder === 'fellow') {
+                fellowBtn.classList.add('active');
+                comandanteBtn.classList.remove('active');
+            } else {
+                fellowBtn.classList.remove('active');
+                comandanteBtn.classList.add('active');
+            }
+            
+            // Update global state
+            preferredGrinder = grinder;
+            localStorage.setItem('preferredGrinder', grinder);
+            
+            // Sync grinder preference to backend
+            if (typeof window.backendSync !== 'undefined' && window.backendSync.syncGrinderPreference) {
+                await window.backendSync.syncGrinderPreference(grinder);
+            }
+            
+            // Re-render all coffee cards with new grinder settings
+            renderCoffees();
+            
+            // Optional: Haptic feedback (if supported)
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+            
+            console.log(`✓ Grinder switched to: ${grinder}`);
+        }
+
         function updateRoastDate(index, dateValue) {
             const coffee = coffees[index];
             coffee.roastDate = dateValue;
             localStorage.setItem('coffees', JSON.stringify(coffees));
             
-            // Update freshness badge
             const badgeWrapper = document.getElementById(`freshness-badge-${index}`);
             if (badgeWrapper) {
                 badgeWrapper.innerHTML = getRoastFreshnessBadge(coffee.roastDate);
@@ -1589,12 +1773,10 @@
             const currentTime = new Date().getTime();
             const daysDiff = Math.floor((currentTime - roastTime) / (1000 * 60 * 60 * 24));
 
-            // Flame icon for all three states
             const flameIcon = `<svg class="freshness-icon" viewBox="0 0 24 24">
                 <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
             </svg>`;
 
-            // Freshness logic: 0-7 days: Still Resting, 7-30 days: Sweet Spot, 30+ days: Fading
             let category, label, gradientStyle;
 
             if (daysDiff < 7) {
@@ -1627,64 +1809,27 @@
             return `<div class="freshness-badge ${category}" style="${gradientStyle}">${flameIcon}${label}</div>`;
         }
 
-        function switchGrinder(event, index, grinder) {
-            event.stopPropagation();
-            const coffee = coffees[index];
-            coffee.selectedGrinder = grinder;
-            preferredGrinder = grinder;
-            localStorage.setItem('preferredGrinder', grinder);
-            localStorage.setItem('coffees', JSON.stringify(coffees));
-            
-            // Re-render und dann die Karte wieder öffnen
-            renderCoffees();
-            
-            // Karte wieder öffnen nach render
-            setTimeout(() => {
-                const card = document.querySelector(`.coffee-card[data-index="${index}"]`);
-                if (card) {
-                    card.classList.add('expanded');
-                }
-            }, 0);
-        }
-
-
-
         function getGrinderLabel(grinder) {
             return grinder === 'comandante' ? 'Comandante C40 MK3' : 'Fellow Ode Gen2';
         }
 
         // ==========================================
-        // ERWEITERTE BREW-PARAMETER ENGINE
-        // Processing + Altitude + Cultivar + Origin
+        // BREW PARAMETERS ENGINE
         // ==========================================
 
-        /**
-         * Hauptfunktion - orchestriert alle Parameter
-         */
         function getBrewRecommendations(coffee) {
             const amount = coffee.customAmount || coffeeAmount;
-            const grinder = coffee.selectedGrinder || preferredGrinder;
+            const grinder = preferredGrinder; // ✅ Now uses global state
             
-            // 1. Basis-Parameter aus Processing
             const baseParams = getProcessingBaseParams(coffee.process);
-            
-            // 2. Altitude-Anpassung
             const altitudeAdjusted = adjustForAltitude(baseParams, coffee.altitude);
-            
-            // 3. Cultivar-Anpassung
             const cultivarAdjusted = adjustForCultivar(altitudeAdjusted, coffee.cultivar);
-            
-            // 4. Origin-Anpassung
             const originAdjusted = adjustForOrigin(cultivarAdjusted, coffee.origin);
-            
-            // 5. Wasserhärte
             const finalParams = adjustForWaterHardness(originAdjusted);
             
-            // 6. Custom Overrides
             const grindSetting = coffee.customGrind || getGrinderValue(finalParams.grindBase, grinder);
             const temperature = coffee.customTemp || formatTemp(finalParams.tempBase);
             
-            // 7. Brew Steps berechnen
             const steps = generateBrewSteps(amount, finalParams.ratio, finalParams.brewStyle);
             
             return {
@@ -1698,13 +1843,9 @@
             };
         }
 
-        /**
-         * Processing-spezifische Basis-Parameter (10 Kategorien)
-         */
         function getProcessingBaseParams(process) {
             const processLower = process.toLowerCase();
             
-            // Experimental: Nitro, CO2-Infused
             if (processLower.includes('nitro') || processLower.includes('co2') || 
                 processLower.includes('co-infused')) {
                 return {
@@ -1717,7 +1858,6 @@
                 };
             }
             
-            // Anaerobic Natural
             if (processLower.includes('anaerobic') && processLower.includes('natural')) {
                 return {
                     grindBase: { comandante: 20, fellow: 3.2 },
@@ -1729,7 +1869,6 @@
                 };
             }
             
-            // Anaerobic Washed
             if (processLower.includes('anaerobic') && processLower.includes('washed')) {
                 return {
                     grindBase: { comandante: 19, fellow: 3.0 },
@@ -1741,7 +1880,6 @@
                 };
             }
             
-            // Carbonic Maceration
             if (processLower.includes('carbonic')) {
                 return {
                     grindBase: { comandante: 20, fellow: 3.3 },
@@ -1753,7 +1891,6 @@
                 };
             }
             
-            // Extended Fermentation
             if (processLower.includes('extended') || processLower.includes('long ferment')) {
                 return {
                     grindBase: { comandante: 21, fellow: 3.4 },
@@ -1765,7 +1902,6 @@
                 };
             }
             
-            // Yeast Inoculated
             if (processLower.includes('yeast')) {
                 return {
                     grindBase: { comandante: 23, fellow: 3.8 },
@@ -1777,7 +1913,6 @@
                 };
             }
             
-            // Honey Process (Yellow/Red/Black)
             if (processLower.includes('honey')) {
                 let grindBase, tempBase;
                 
@@ -1788,7 +1923,6 @@
                     grindBase = { comandante: 26, fellow: 4.2 };
                     tempBase = { min: 93, max: 94 };
                 } else {
-                    // Red Honey oder unspecified
                     grindBase = { comandante: 24, fellow: 3.9 };
                     tempBase = { min: 93, max: 94 };
                 }
@@ -1803,7 +1937,6 @@
                 };
             }
             
-            // Natural Process
             if (processLower.includes('natural')) {
                 return {
                     grindBase: { comandante: 25, fellow: 4.1 },
@@ -1815,7 +1948,6 @@
                 };
             }
             
-            // Washed (Default)
             return {
                 grindBase: { comandante: 22, fellow: 3.5 },
                 tempBase: { min: 92, max: 93 },
@@ -1826,9 +1958,6 @@
             };
         }
 
-        /**
-         * Altitude-Anpassung (Höhenlage)
-         */
         function adjustForAltitude(params, altitudeStr) {
             const altitude = parseInt(altitudeStr) || 1500;
             
@@ -1863,9 +1992,6 @@
             };
         }
 
-        /**
-         * Cultivar-Anpassung (Varietät)
-         */
         function adjustForCultivar(params, cultivarStr) {
             const cultivar = cultivarStr.toLowerCase();
             
@@ -1873,7 +1999,6 @@
             let tempAdjust = 0;
             let category = 'balanced';
             
-            // Delicate Cultivars
             if (cultivar.includes('gesha') || cultivar.includes('geisha') ||
                 cultivar.includes('sl28') || cultivar.includes('sl34') ||
                 cultivar.includes('bourbon') || cultivar.includes('typica')) {
@@ -1882,7 +2007,6 @@
                 category = 'delicate';
             }
             
-            // Robust Cultivars
             else if (cultivar.includes('pacamara') || cultivar.includes('maragogype') ||
                      cultivar.includes('catimor') || cultivar.includes('sarchimor') ||
                      cultivar.includes('robusta')) {
@@ -1905,9 +2029,6 @@
             };
         }
 
-        /**
-         * Origin-Anpassung (Region)
-         */
         function adjustForOrigin(params, originStr) {
             const origin = originStr.toLowerCase();
             
@@ -1915,7 +2036,6 @@
             let tempAdjust = 0;
             let region = 'unknown';
             
-            // Afrika
             if (origin.includes('ethiopia') || origin.includes('kenya') ||
                 origin.includes('rwanda') || origin.includes('burundi') ||
                 origin.includes('tanzania')) {
@@ -1924,7 +2044,6 @@
                 region = 'africa';
             }
             
-            // Asien
             else if (origin.includes('indonesia') || origin.includes('sumatra') ||
                      origin.includes('java') || origin.includes('india') ||
                      origin.includes('vietnam') || origin.includes('papua')) {
@@ -1933,7 +2052,6 @@
                 region = 'asia';
             }
             
-            // Lateinamerika (balanced)
             else {
                 region = 'latin-america';
             }
@@ -1952,9 +2070,6 @@
             };
         }
 
-        /**
-         * Wasserhärte-Anpassung
-         */
         function adjustForWaterHardness(params) {
             if (!waterHardness) return params;
             
@@ -1983,9 +2098,6 @@
             };
         }
 
-        /**
-         * Grinder-Wert formatieren
-         */
         function getGrinderValue(grindBase, grinder) {
             if (grinder === 'comandante') {
                 const clicks = Math.round(grindBase.comandante);
@@ -1996,16 +2108,10 @@
             }
         }
 
-        /**
-         * Temperatur formatieren
-         */
         function formatTemp(tempBase) {
             return `${tempBase.min}-${tempBase.max}°C`;
         }
 
-        /**
-         * Brew Steps generieren
-         */
         function generateBrewSteps(amount, ratio, brewStyle) {
             const waterAmount = Math.round(amount * ratio);
             const bloom = Math.round(amount * (brewStyle === 'slow' ? 3.5 : 3));
@@ -2038,13 +2144,9 @@
             }
         }
 
-        /**
-         * Erweiterte Brew Notes generieren
-         */
         function generateBrewNotes(coffee, params) {
             const notes = [];
             
-            // Processing Note
             const categoryNotes = {
                 'experimental-nitro': 'Nitro process - very delicate, preserve volatile compounds',
                 'anaerobic-natural': 'Anaerobic natural - funky & fruity, control extraction',
@@ -2058,7 +2160,6 @@
             };
             notes.push(categoryNotes[params.category] || 'Standard brewing approach');
             
-            // Altitude Note
             if (params.altitudeAdjustment) {
                 const alt = params.altitudeAdjustment;
                 if (alt.altitude >= 1800) {
@@ -2068,7 +2169,6 @@
                 }
             }
             
-            // Cultivar Note
             if (params.cultivarAdjustment) {
                 const cult = params.cultivarAdjustment;
                 if (cult.category === 'delicate') {
@@ -2078,7 +2178,6 @@
                 }
             }
             
-            // Origin Note
             if (params.originAdjustment) {
                 const orig = params.originAdjustment;
                 if (orig.region === 'africa') {
@@ -2088,7 +2187,6 @@
                 }
             }
             
-            // Water Note
             if (waterHardness) {
                 if (waterHardness.category === 'very_soft' || waterHardness.category === 'soft') {
                     notes.push('Soft water - ground finer, higher temp');
@@ -2099,10 +2197,6 @@
             
             return notes.join('. ');
         }
-
-
-
-
 
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
@@ -2346,15 +2440,14 @@
         }
 
         function adjustGrind(coffee, change) {
-            const grinder = coffee.selectedGrinder || preferredGrinder;
+            const grinder = preferredGrinder;
             const current = coffee.customGrind || getGrinderSettings(grinder, coffee.process.toLowerCase());
             
             if (grinder === 'comandante') {
-                // Comandante: clicks (e.g., "20-22 clicks")
                 const match = current.match(/(\d+)(?:-(\d+))?/);
                 if (!match) return current;
                 
-                const clickChange = change * 2; // Convert to clicks (rougher adjustment)
+                const clickChange = change * 2;
                 const low = parseInt(match[1]) + clickChange;
                 const high = match[2] ? parseInt(match[2]) + clickChange : null;
                 
@@ -2363,7 +2456,6 @@
                 }
                 return `${Math.round(low)} clicks`;
             } else {
-                // Fellow Ode: decimal settings
                 const match = current.match(/([\d.]+)(?:-([\d.]+))?/);
                 if (!match) return current;
                 
@@ -2406,7 +2498,6 @@
         function renderCoffeeCard(coffee, index) {
             const brewParams = getBrewRecommendations(coffee);
             const amount = coffee.customAmount || coffeeAmount;
-            const grinder = coffee.selectedGrinder || preferredGrinder;
             
             return `
                 <div class="coffee-card" data-index="${index}">
@@ -2448,17 +2539,6 @@
                                     onclick="event.stopPropagation();"
                                 />
                             </div>
-                        </div>
-                        
-                        <div class="grinder-selector">
-                            <button class="grinder-btn ${grinder === 'fellow' ? 'active' : ''}" 
-                                    onclick="switchGrinder(event, ${index}, 'fellow')">
-                                Fellow Ode
-                            </button>
-                            <button class="grinder-btn ${grinder === 'comandante' ? 'active' : ''}" 
-                                    onclick="switchGrinder(event, ${index}, 'comandante')">
-                                Comandante
-                            </button>
                         </div>
                         
                         <div class="ratio-control">
@@ -2631,13 +2711,10 @@
                 
                 document.querySelectorAll('.coffee-card').forEach(card => {
                     card.addEventListener('click', function(e) {
-                        // Prevent card toggle for interactive elements
                         if (e.target.closest('.delete-btn') || 
                             e.target.closest('.timer-btn') || 
                             e.target.closest('.scale-option') ||
                             e.target.closest('.apply-suggestion-btn') ||
-                            e.target.closest('.grinder-btn') ||
-                            e.target.closest('.grinder-selector') ||
                             e.target.closest('input[type="range"]')) {
                             return;
                         }
@@ -2716,43 +2793,42 @@
         }
 
         async function analyzeCoffeeImage(imageData, mediaType) {
-    if (!CONFIG.backendUrl) {
-        throw new Error('Backend URL not configured. Please enter it in settings.');
-    }
-    
-    // Token und DeviceId holen
-    const token = localStorage.getItem('token');
-    const deviceId = localStorage.getItem('deviceId');
-    
-    if (!token || !deviceId) {
-        throw new Error('Device not activated. Please enter your access code in Settings (⚙️).');
-    }
+            if (!CONFIG.backendUrl) {
+                throw new Error('Backend URL not configured. Please enter it in settings.');
+            }
+            
+            const token = localStorage.getItem('token');
+            const deviceId = localStorage.getItem('deviceId');
+            
+            if (!token || !deviceId) {
+                throw new Error('Device not activated. Please enter your access code in Settings (⚙️).');
+            }
 
-    const response = await fetch(`${CONFIG.backendUrl}/api/analyze-coffee`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            imageData,
-            mediaType,
-            token,
-            deviceId
-        }),
-    });
+            const response = await fetch(`${CONFIG.backendUrl}/api/analyze-coffee`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    imageData,
+                    mediaType,
+                    token,
+                    deviceId
+                }),
+            });
 
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Analysis error');
-    }
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Analysis error');
+            }
 
-    const result = await response.json();
-    if (!result.success) {
-        throw new Error(result.error || 'Analysis failed');
-    }
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Analysis failed');
+            }
 
-    return result.data;
-}
+            return result.data;
+        }
 
         document.getElementById('cameraBtn').addEventListener('click', () => {
             document.getElementById('imageInput').click();
@@ -2762,7 +2838,6 @@
             document.getElementById('uploadInput').click();
         });
 
-        // IMPROVED: More aggressive image compression with multiple attempts
         async function compressImage(file, maxSizeMB = 4.0) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -2888,7 +2963,6 @@
                 localStorage.setItem('coffees', JSON.stringify(coffees));
                 renderCoffees();
                 
-                // Sync zum Backend
                 if (typeof window.backendSync !== 'undefined' && window.backendSync.syncCoffeesToBackend) {
                     await window.backendSync.syncCoffeesToBackend(coffees);
                 }
@@ -2952,7 +3026,6 @@
             coffees.unshift(coffee);
             localStorage.setItem('coffees', JSON.stringify(coffees));
             
-            // Sync zum Backend
             if (typeof window.backendSync !== 'undefined' && window.backendSync.syncCoffeesToBackend) {
                 await window.backendSync.syncCoffeesToBackend(coffees);
             }
@@ -2965,7 +3038,6 @@
             document.getElementById('roaster').value = '';
             document.getElementById('tastingNotes').value = '';
             
-            // Schließe die Manual-Section automatisch
             const manualSection = document.querySelector('.manual-section');
             if (manualSection) {
                 manualSection.classList.add('hidden');
@@ -2980,7 +3052,6 @@
             document.getElementById('waterModal').classList.add('active');
             document.getElementById('zipCodeInput').value = userZipCode;
             
-            // Show current water hardness if available
             if (waterHardness) {
                 displayWaterHardness(waterHardness);
             }
@@ -3003,7 +3074,6 @@
             document.getElementById('settingsModal').classList.add('active');
             document.getElementById('backendUrl').value = CONFIG.backendUrl;
             
-            // Zeige aktuellen Status
             const token = localStorage.getItem('token');
             const statusDiv = document.getElementById('activationStatus');
             
@@ -3018,120 +3088,118 @@
             }
         }
 
-function closeSettings() {
-    document.getElementById('settingsModal').classList.remove('active');
-}
-
-function saveBackendUrl() {
-    const backendUrl = document.getElementById('backendUrl').value.trim();
-    
-    if (backendUrl && !backendUrl.startsWith('http')) {
-        showMessage('error', 'Backend URL must start with http:// or https://');
-        return;
-    }
-    
-    CONFIG.backendUrl = backendUrl;
-    if (typeof BACKEND_CONFIG !== 'undefined') {
-        BACKEND_CONFIG.url = backendUrl;
-    }
-    localStorage.setItem('backendUrl', backendUrl);
-    showMessage('success', '✓ Backend URL saved successfully!');
-    
-    setTimeout(() => {
-        closeSettings();
-    }, 1000);
-}
-
-async function activateDevice() {
-    try {
-        const accessCode = document.getElementById('accessCodeInput').value.trim();
-        const statusDiv = document.getElementById('activationStatus');
-        
-        if (!accessCode) {
-            showActivationError('Please enter an access code');
-            return;
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
         }
-        
-        // Inline validateAndSaveToken function (falls backend-sync.js nicht geladen ist)
-        const validateAndSaveToken = async (token) => {
-            try {
-                const deviceId = getOrCreateDeviceId();
-                
-                const response = await fetch(`${CONFIG.backendUrl}/api/auth/validate?token=${token}&deviceId=${deviceId}`);
-                
-                if (!response.ok) {
-                    const error = await response.json();
-                    return { success: false, error: error.error || 'Token validation failed' };
-                }
-                
-                const data = await response.json();
-                
-                if (data.valid) {
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('deviceId', deviceId);
-                    return { success: true, user: data.user };
-                } else {
-                    return { success: false, error: data.error || 'Invalid token' };
-                }
-            } catch (error) {
-                return { success: false, error: 'Could not reach server' };
-            }
-        };
-        
-        const getOrCreateDeviceId = () => {
-            let deviceId = localStorage.getItem('deviceId');
-            if (!deviceId) {
-                // Gleicher Fingerprint wie in backend-sync.js
-                const fingerprint = [
-                    navigator.userAgent,
-                    navigator.language,
-                    screen.width + 'x' + screen.height,
-                    new Date().getTimezoneOffset(),
-                    navigator.hardwareConcurrency || 'unknown'
-                ].join('|');
-                
-                deviceId = 'device-' + btoa(fingerprint).substring(0, 32).replace(/[^a-zA-Z0-9]/g, '');
-                localStorage.setItem('deviceId', deviceId);
-            }
-            return deviceId;
-        };
-        
-        const result = await validateAndSaveToken(accessCode);
-        
-        if (result.success) {
-            statusDiv.style.display = 'block';
-            statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
-            statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
-            statusDiv.style.color = '#5fda7d';
-            statusDiv.innerHTML = '✅ Success! Device linked.<br>You can now use all features.';
+
+        function saveBackendUrl() {
+            const backendUrl = document.getElementById('backendUrl').value.trim();
             
+            if (backendUrl && !backendUrl.startsWith('http')) {
+                showMessage('error', 'Backend URL must start with http:// or https://');
+                return;
+            }
+            
+            CONFIG.backendUrl = backendUrl;
             if (typeof BACKEND_CONFIG !== 'undefined') {
-                BACKEND_CONFIG.syncEnabled = true;
+                BACKEND_CONFIG.url = backendUrl;
             }
-            if (typeof initBackendSync === 'function') {
-                await initBackendSync();
-            }
+            localStorage.setItem('backendUrl', backendUrl);
+            showMessage('success', '✓ Backend URL saved successfully!');
             
             setTimeout(() => {
                 closeSettings();
-                location.reload();
-            }, 2000);
-        } else {
-            showActivationError(result.error || 'Invalid access code');
+            }, 1000);
         }
-    } catch (error) {
-        showActivationError(error.message || 'Activation failed');
-    }
-}
 
-function showActivationError(message) {
-    const statusDiv = document.getElementById('activationStatus');
-    statusDiv.style.display = 'block';
-    statusDiv.style.background = 'rgba(220, 53, 69, 0.1)';
-    statusDiv.style.border = '1px solid rgba(220, 53, 69, 0.3)';
-    statusDiv.style.color = '#ff6b7a';
-    statusDiv.innerHTML = '❌ ' + message;
-}
+        async function activateDevice() {
+            try {
+                const accessCode = document.getElementById('accessCodeInput').value.trim();
+                const statusDiv = document.getElementById('activationStatus');
+                
+                if (!accessCode) {
+                    showActivationError('Please enter an access code');
+                    return;
+                }
+                
+                const validateAndSaveToken = async (token) => {
+                    try {
+                        const deviceId = getOrCreateDeviceId();
+                        
+                        const response = await fetch(`${CONFIG.backendUrl}/api/auth/validate?token=${token}&deviceId=${deviceId}`);
+                        
+                        if (!response.ok) {
+                            const error = await response.json();
+                            return { success: false, error: error.error || 'Token validation failed' };
+                        }
+                        
+                        const data = await response.json();
+                        
+                        if (data.valid) {
+                            localStorage.setItem('token', token);
+                            localStorage.setItem('deviceId', deviceId);
+                            return { success: true, user: data.user };
+                        } else {
+                            return { success: false, error: data.error || 'Invalid token' };
+                        }
+                    } catch (error) {
+                        return { success: false, error: 'Could not reach server' };
+                    }
+                };
+                
+                const getOrCreateDeviceId = () => {
+                    let deviceId = localStorage.getItem('deviceId');
+                    if (!deviceId) {
+                        const fingerprint = [
+                            navigator.userAgent,
+                            navigator.language,
+                            screen.width + 'x' + screen.height,
+                            new Date().getTimezoneOffset(),
+                            navigator.hardwareConcurrency || 'unknown'
+                        ].join('|');
+                        
+                        deviceId = 'device-' + btoa(fingerprint).substring(0, 32).replace(/[^a-zA-Z0-9]/g, '');
+                        localStorage.setItem('deviceId', deviceId);
+                    }
+                    return deviceId;
+                };
+                
+                const result = await validateAndSaveToken(accessCode);
+                
+                if (result.success) {
+                    statusDiv.style.display = 'block';
+                    statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
+                    statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
+                    statusDiv.style.color = '#5fda7d';
+                    statusDiv.innerHTML = '✅ Success! Device linked.<br>You can now use all features.';
+                    
+                    if (typeof BACKEND_CONFIG !== 'undefined') {
+                        BACKEND_CONFIG.syncEnabled = true;
+                    }
+                    if (typeof initBackendSync === 'function') {
+                        await initBackendSync();
+                    }
+                    
+                    setTimeout(() => {
+                        closeSettings();
+                        location.reload();
+                    }, 2000);
+                } else {
+                    showActivationError(result.error || 'Invalid access code');
+                }
+            } catch (error) {
+                showActivationError(error.message || 'Activation failed');
+            }
+        }
+
+        function showActivationError(message) {
+            const statusDiv = document.getElementById('activationStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = 'rgba(220, 53, 69, 0.1)';
+            statusDiv.style.border = '1px solid rgba(220, 53, 69, 0.3)';
+            statusDiv.style.color = '#ff6b7a';
+            statusDiv.innerHTML = '❌ ' + message;
+        }
         
         async function saveWaterHardness() {
             const zipCode = document.getElementById('zipCodeInput').value.trim();
@@ -3157,17 +3225,13 @@ function showActivationError(message) {
                 userZipCode = zipCode;
                 localStorage.setItem('userZipCode', zipCode);
                 
-                // Display water hardness info
                 displayWaterHardness(hardness);
                 
-                // Mark water button as active
                 const waterBtn = document.getElementById('waterControlBtn');
                 if (waterBtn) waterBtn.classList.add('active');
                 
-                // Re-render coffees with new water hardness adjustments
                 renderCoffees();
                 
-                // Show success message
                 setTimeout(() => {
                     alert(`✓ Wasserhärte gespeichert!\n\n${hardness.region}: ${hardness.value} °dH (${hardness.category_de})\n\nIhre Brew-Parameter wurden angepasst.`);
                 }, 100);
@@ -3177,6 +3241,7 @@ function showActivationError(message) {
             }
         }
 
+        // Initialize
         renderCoffees();
 
         if (!CONFIG.backendUrl) {
@@ -3185,33 +3250,25 @@ function showActivationError(message) {
             }, 500);
         }
 
-        // ==========================================
-        // EVENT LISTENERS (am Ende, wenn alle Funktionen definiert sind)
-        // ==========================================
-        
-        // Settings Button
+        // Event Listeners
         const settingsBtnControl = document.getElementById('settingsBtnControl');
         if (settingsBtnControl) {
             settingsBtnControl.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('⚙️ Settings clicked');
                 openSettings();
             };
         }
         
-        // Close Settings Button
         const closeSettingsBtnElement = document.getElementById('closeSettingsBtn');
         if (closeSettingsBtnElement) {
             closeSettingsBtnElement.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('✕ Close clicked');
                 closeSettings();
             };
         }
         
-        // Settings Modal Overlay Click
         const settingsModalElement = document.getElementById('settingsModal');
         if (settingsModalElement) {
             settingsModalElement.onclick = function(e) {
@@ -3221,7 +3278,6 @@ function showActivationError(message) {
             };
         }
         
-        // Activate Device Button
         const activateDeviceBtnElement = document.getElementById('activateDeviceBtn');
         if (activateDeviceBtnElement) {
             activateDeviceBtnElement.onclick = function() {
@@ -3232,7 +3288,6 @@ function showActivationError(message) {
             };
         }
         
-        // Save Backend URL Button
         const saveBackendBtnElement = document.getElementById('saveBackendUrlBtn');
         if (saveBackendBtnElement) {
             saveBackendBtnElement.onclick = function() {
@@ -3240,28 +3295,30 @@ function showActivationError(message) {
             };
         }
 
-        // Theme Toggle Button
         const themeBtnElement = document.getElementById('themeToggleBtn');
         if (themeBtnElement) {
             themeBtnElement.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('🌙 Theme clicked');
                 toggleTheme();
             };
         }
 
-        // Water Button
         const waterBtnElement = document.getElementById('waterControlBtn');
         if (waterBtnElement) {
             waterBtnElement.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('💧 Water clicked');
                 openWaterModal();
             };
         }
-    
+
+        // Initialize global grinder selector
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initGlobalGrinder);
+        } else {
+            initGlobalGrinder();
+        }
     </script>
     <script src="backend-sync.js"></script>
 </body>

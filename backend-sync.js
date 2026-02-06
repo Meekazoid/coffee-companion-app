@@ -142,6 +142,65 @@ async function syncCoffeesToBackend(coffees) {
     }
 }
 
+async function syncGrinderPreference(grinder) {
+    const token = getToken();
+    const deviceId = getOrCreateDeviceId();
+
+    if (!token) {
+        console.log('⚠️ Kein Token vorhanden. Grinder-Sync übersprungen.');
+        return false;
+    }
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/user/grinder`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                token,
+                deviceId,
+                grinder
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            console.log(`✅ Grinder-Präferenz synchronisiert: ${grinder}`);
+            return true;
+        } else {
+            console.error('Grinder sync failed:', data.error);
+            return false;
+        }
+    } catch (error) {
+        console.error('Grinder sync error:', error);
+        return false;
+    }
+}
+
+async function fetchGrinderPreference() {
+    const token = getToken();
+    const deviceId = getOrCreateDeviceId();
+
+    if (!token) return null;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/user/grinder?token=${token}&deviceId=${deviceId}`);
+        const data = await response.json();
+
+        if (response.ok && data.success && data.grinder) {
+            console.log(`📦 Grinder-Präferenz vom Backend geladen: ${data.grinder}`);
+            return data.grinder;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Fetch grinder preference error:', error);
+        return null;
+    }
+}
+
 // ==========================================
 // INITIALIZATION
 // ==========================================
@@ -153,6 +212,19 @@ async function initBackendSync() {
         
         if (status.valid) {
             console.log(`✅ Eingeloggt als: ${status.user.username}`);
+            
+            // Grinder-Präferenz vom Backend laden
+            const remoteGrinder = await fetchGrinderPreference();
+            if (remoteGrinder) {
+                window.preferredGrinder = remoteGrinder;
+                localStorage.setItem('preferredGrinder', remoteGrinder);
+                
+                // Update UI if grinder selector exists
+                if (typeof initGlobalGrinder === 'function') {
+                    initGlobalGrinder();
+                }
+            }
+            
             // Coffees vom Backend laden
             const remoteCoffees = await fetchCoffeesFromBackend();
             if (remoteCoffees) {
@@ -249,6 +321,8 @@ if (document.readyState === 'loading') {
 // Export functions for use in app.js
 window.backendSync = {
     syncCoffeesToBackend,
+    syncGrinderPreference,
+    fetchGrinderPreference,
     checkUserStatus,
     getToken
 };

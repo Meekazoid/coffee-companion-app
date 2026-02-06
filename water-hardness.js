@@ -15,7 +15,6 @@ const WaterHardness = (() => {
     };
 
     // Regional water hardness database (°dH - Deutsche Härte)
-    // This is a representative sample - in production, you'd use a complete database
     const regionalData = {
         // Berlin
         '10': { value: 16, region: 'Berlin', source: 'Berliner Wasserbetriebe' },
