@@ -628,7 +628,7 @@ function applySuggestion(index, newGrind, newTemp) {
     if (newTemp && newTemp !== 'null') coffee.customTemp = newTemp;
     coffee.feedback = {};
     localStorage.setItem('coffees', JSON.stringify(coffees));
-    renderCoffees();
+    renderCoffees(index);
     alert('Settings applied! The brew parameters have been updated.');
 }
 
@@ -652,8 +652,10 @@ function adjustGrindManual(index, direction) {
         coffee.customGrind = newVal.toFixed(1);
     }
 
+    // Direct DOM update – no re-render needed
+    const el = document.getElementById(`grind-value-${index}`);
+    if (el) el.textContent = coffee.customGrind;
     saveCoffeesAndSync();
-    renderCoffees();
 }
 
 function adjustTempManual(index, direction) {
@@ -667,8 +669,10 @@ function adjustTempManual(index, direction) {
     const high = match[2] ? parseInt(match[2]) + direction : null;
     coffee.customTemp = high ? `${low}-${high}°C` : `${low}°C`;
 
+    // Direct DOM update – no re-render needed
+    const el = document.getElementById(`temp-value-${index}`);
+    if (el) el.textContent = coffee.customTemp;
     saveCoffeesAndSync();
-    renderCoffees();
 }
 
 function resetCoffeeAdjustments(index) {
@@ -677,7 +681,7 @@ function resetCoffeeAdjustments(index) {
     delete coffee.customTemp;
     delete coffee.feedback;
     saveCoffeesAndSync();
-    renderCoffees();
+    renderCoffees(index);
 }
 
 // ==========================================
@@ -753,20 +757,20 @@ function renderCoffeeCard(coffee, index) {
                     <div class="param-box">
                         <div class="param-label">${brewParams.grinderLabel}</div>
                         <div class="param-value-row">
-                            <div class="param-value">${brewParams.grindSetting}</div>
+                            <div class="param-value" id="grind-value-${index}">${brewParams.grindSetting}</div>
                             <div class="param-adjust">
-                                <button class="adjust-btn" onclick="adjustGrindManual(${index}, 1); event.stopPropagation();">+</button>
-                                <button class="adjust-btn" onclick="adjustGrindManual(${index}, -1); event.stopPropagation();">−</button>
+                                <button class="adjust-btn" onclick="event.stopPropagation(); adjustGrindManual(${index}, 1);">+</button>
+                                <button class="adjust-btn" onclick="event.stopPropagation(); adjustGrindManual(${index}, -1);">−</button>
                             </div>
                         </div>
                     </div>
                     <div class="param-box">
                         <div class="param-label">Temperature</div>
                         <div class="param-value-row">
-                            <div class="param-value">${brewParams.temperature}</div>
+                            <div class="param-value" id="temp-value-${index}">${brewParams.temperature}</div>
                             <div class="param-adjust">
-                                <button class="adjust-btn" onclick="adjustTempManual(${index}, 1); event.stopPropagation();">+</button>
-                                <button class="adjust-btn" onclick="adjustTempManual(${index}, -1); event.stopPropagation();">−</button>
+                                <button class="adjust-btn" onclick="event.stopPropagation(); adjustTempManual(${index}, 1);">+</button>
+                                <button class="adjust-btn" onclick="event.stopPropagation(); adjustTempManual(${index}, -1);">−</button>
                             </div>
                         </div>
                     </div>
@@ -846,7 +850,7 @@ function renderCoffeeCard(coffee, index) {
                         </div>
                     </div>
                     <div class="feedback-suggestion hidden" id="suggestion-${index}"></div>
-                    <button class="reset-adjustments-btn" onclick="resetCoffeeAdjustments(${index}); event.stopPropagation();">Reset Adjustments</button>
+                    <button class="reset-adjustments-btn" onclick="event.stopPropagation(); resetCoffeeAdjustments(${index});">Reset Adjustments</button>
                 </div>
                 
                 <div style="margin-top: 20px; padding: 16px; background: var(--bg-secondary); border-radius: 8px; font-size: 0.9rem;">
@@ -879,7 +883,7 @@ function renderCoffeeCard(coffee, index) {
 // 10. COFFEE LIST RENDERING & SORTING
 // ==========================================
 
-function renderCoffees() {
+function renderCoffees(expandAfterIndex) {
     const listEl = document.getElementById('coffeeList');
     const emptyState = document.getElementById('emptyState');
 
@@ -913,10 +917,16 @@ function renderCoffees() {
 
     listEl.innerHTML = sorted.map(item => renderCoffeeCard(item.coffee, item.originalIndex)).join('');
 
+    // Re-expand card if requested (e.g. after reset adjustments)
+    if (expandAfterIndex !== undefined) {
+        const card = document.querySelector(`.coffee-card[data-original-index="${expandAfterIndex}"]`);
+        if (card) card.classList.add('expanded');
+    }
+
     // Card expand/collapse listeners
     document.querySelectorAll('.coffee-card').forEach(card => {
         card.addEventListener('click', function (e) {
-            if (e.target.closest('.delete-btn, .favorite-btn, .timer-btn, .scale-option, .apply-suggestion-btn, input[type="range"], input[type="date"]')) return;
+            if (e.target.closest('.delete-btn, .favorite-btn, .timer-btn, .scale-option, .apply-suggestion-btn, .adjust-btn, .reset-adjustments-btn, input[type="range"], input[type="date"]')) return;
             document.querySelectorAll('.coffee-card').forEach(c => { if (c !== this) c.classList.remove('expanded'); });
             this.classList.toggle('expanded');
         });
