@@ -991,7 +991,7 @@ function renderCoffees(expandAfterIndex) {
 function deleteCoffee(originalIndex) {
     if (originalIndex < 0 || originalIndex >= coffees.length) return;
 
-    if (confirm('Move this coffee to Decaf?')) {
+    if (confirm('Move this coffee to Compost?')) {
         coffees[originalIndex].deleted = true;
         coffees[originalIndex].deletedAt = new Date().toISOString();
         saveCoffeesAndSync();
