@@ -39,6 +39,10 @@ const testCases = [
     { zip: '10115', expectedRegion: 'Berlin', expectedValue: 16, description: 'Berlin 10xx (2-digit)' },
     { zip: '80331', expectedRegion: 'München', expectedValue: 19, description: 'München 80xx (2-digit)' },
     { zip: '50667', expectedRegion: 'Köln', expectedValue: 16, description: 'Köln 50xx (2-digit)' },
+    
+    // German average fallback - for ZIP codes with no data
+    { zip: '03042', expectedRegion: 'Deutschland (Schätzwert)', expectedValue: 16, description: 'Unknown region (German average)', isEstimate: true },
+    { zip: '98765', expectedRegion: 'Deutschland (Schätzwert)', expectedValue: 16, description: 'Unknown region (German average)', isEstimate: true },
 ];
 
 async function runTests() {
@@ -54,12 +58,17 @@ async function runTests() {
             
             const regionMatch = result.region === test.expectedRegion;
             const valueMatch = result.value === test.expectedValue;
+            const estimateMatch = test.isEstimate ? result.isEstimate === true : true;
             
-            if (regionMatch && valueMatch) {
-                console.log(`${GREEN}✓${RESET} ${test.description}: ${test.zip} → ${result.region} (${result.value}°dH)`);
+            if (regionMatch && valueMatch && estimateMatch) {
+                const estimateTag = test.isEstimate ? ' [estimate]' : '';
+                console.log(`${GREEN}✓${RESET} ${test.description}: ${test.zip} → ${result.region} (${result.value}°dH)${estimateTag}`);
                 passed++;
             } else {
-                const error = `Expected ${test.expectedRegion} (${test.expectedValue}°dH), got ${result.region} (${result.value}°dH)`;
+                let error = `Expected ${test.expectedRegion} (${test.expectedValue}°dH)`;
+                if (test.isEstimate) error += ' [estimate]';
+                error += `, got ${result.region} (${result.value}°dH)`;
+                if (result.isEstimate) error += ' [estimate]';
                 console.log(`${RED}✗${RESET} ${test.description}: ${test.zip} - ${error}`);
                 failures.push({ test, error });
                 failed++;

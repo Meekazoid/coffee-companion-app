@@ -273,7 +273,8 @@ const WaterHardness = (() => {
                     category: getCategory(data.value)
                 };
             } else {
-                // Always prefer 2-digit prefixes for display (shorter is more general)
+                // Prefer shorter prefixes for display (2-digit over 3-digit)
+                // This ensures regions are shown with their most general ZIP prefix
                 if (zip.length < regions[regionKey].zipPrefix.length) {
                     regions[regionKey].zipPrefix = zip;
                 }
