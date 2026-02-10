@@ -169,7 +169,7 @@ const WaterHardness = (() => {
         '97': { value: 19, region: 'Würzburg', source: 'Würzburger Versorgungs- und Verkehrs GmbH' },
         
         // Ulm
-        '89': { value: 16, region: 'Ulm', source: 'SWU' }
+        '89': { value: 16, region: 'Ulm', source: 'SWU' },
     };
 
     /**
