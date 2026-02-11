@@ -5,6 +5,7 @@
 export let coffees = JSON.parse(localStorage.getItem('coffees') || '[]');
 export let coffeeAmount = parseInt(localStorage.getItem('coffeeAmount')) || 15;
 export let preferredGrinder = localStorage.getItem('preferredGrinder') || 'fellow';
+export let waterHardness = null; // Current active water hardness (manual or API)
 export let manualWaterHardness = (() => {
   try {
     return JSON.parse(localStorage.getItem('manualWaterHardness')) || null;
@@ -12,17 +13,23 @@ export let manualWaterHardness = (() => {
     return null;
   }
 })();
-export let apiWaterHardness = null;
+export let apiWaterHardness = null; // Water hardness from ZIP lookup
 export let userZipCode = localStorage.getItem('userZipCode') || '';
 
+// Brew timer state (per-card)
+export let brewTimers = {};
+export let animationFrames = {};
+
 // Expose legacy globals so root-level scripts (backend-sync.js) continue to work
-// Mirror names intentionally chosen to match previous globals
 window.coffees = coffees;
 window.coffeeAmount = coffeeAmount;
 window.preferredGrinder = preferredGrinder;
+window.waterHardness = waterHardness;
 window.manualWaterHardness = manualWaterHardness;
 window.apiWaterHardness = apiWaterHardness;
 window.userZipCode = userZipCode;
+window.brewTimers = brewTimers;
+window.animationFrames = animationFrames;
 
 // Setters that update module state, localStorage and keep window.* in sync
 export function setCoffees(value) {
@@ -37,14 +44,27 @@ export function setCoffees(value) {
 
 export function setCoffeeAmount(value) {
   coffeeAmount = Number(value) || 0;
-  localStorage.setItem('coffeeAmount', String(coffeeAmount));
+  try {
+    localStorage.setItem('coffeeAmount', String(coffeeAmount));
+  } catch (e) {
+    console.warn('Failed to persist coffeeAmount to localStorage', e);
+  }
   window.coffeeAmount = coffeeAmount;
 }
 
 export function setPreferredGrinder(value) {
   preferredGrinder = String(value || 'fellow');
-  localStorage.setItem('preferredGrinder', preferredGrinder);
+  try {
+    localStorage.setItem('preferredGrinder', preferredGrinder);
+  } catch (e) {
+    console.warn('Failed to persist preferredGrinder to localStorage', e);
+  }
   window.preferredGrinder = preferredGrinder;
+}
+
+export function setWaterHardness(value) {
+  waterHardness = value;
+  window.waterHardness = waterHardness;
 }
 
 export function setManualWaterHardness(value) {
@@ -64,8 +84,41 @@ export function setApiWaterHardness(value) {
 
 export function setUserZipCode(value) {
   userZipCode = String(value || '');
-  localStorage.setItem('userZipCode', userZipCode);
+  try {
+    localStorage.setItem('userZipCode', userZipCode);
+  } catch (e) {
+    console.warn('Failed to persist userZipCode to localStorage', e);
+  }
   window.userZipCode = userZipCode;
+}
+
+export function setBrewTimers(value) {
+  brewTimers = value || {};
+  window.brewTimers = brewTimers;
+}
+
+export function setAnimationFrames(value) {
+  animationFrames = value || {};
+  window.animationFrames = animationFrames;
+}
+
+// Save coffees to localStorage and optionally sync to backend
+export async function saveCoffeesAndSync() {
+  // Ensure local persistence first
+  setCoffees(coffees);
+
+  // If a backend sync hook exists, attempt to sync (non-blocking for UI)
+  if (typeof window.backendSync !== 'undefined' && typeof window.backendSync.syncCoffeesToBackend === 'function') {
+    try {
+      // Some implementations may return a Promise; await to catch failures
+      await window.backendSync.syncCoffeesToBackend(coffees);
+    } catch (e) {
+      console.warn('backendSync.syncCoffeesToBackend threw:', e);
+    }
+  }
+
+  // Keep window mirror updated
+  window.coffees = coffees;
 }
 
 // Helper to add a coffee at the front of the list
@@ -80,36 +133,22 @@ export function replaceState(partialState = {}) {
   if (partialState.coffees) setCoffees(partialState.coffees);
   if (partialState.coffeeAmount !== undefined) setCoffeeAmount(partialState.coffeeAmount);
   if (partialState.preferredGrinder) setPreferredGrinder(partialState.preferredGrinder);
+  if (partialState.waterHardness !== undefined) setWaterHardness(partialState.waterHardness);
   if (partialState.manualWaterHardness !== undefined) setManualWaterHardness(partialState.manualWaterHardness);
   if (partialState.apiWaterHardness !== undefined) setApiWaterHardness(partialState.apiWaterHardness);
   if (partialState.userZipCode !== undefined) setUserZipCode(partialState.userZipCode);
+  if (partialState.brewTimers !== undefined) setBrewTimers(partialState.brewTimers);
+  if (partialState.animationFrames !== undefined) setAnimationFrames(partialState.animationFrames);
 }
 
-// Runtime state for brew timers (not persisted)
-export let brewTimers = {};
-export let animationFrames = {};
-
-// Save coffees to localStorage and sync to backend if token exists
-export async function saveCoffeesAndSync() {
-  setCoffees(coffees);
-  if (window.backendSync?.getToken?.()) {
-    try {
-      await window.backendSync.syncCoffeesToBackend(coffees);
-    } catch (error) {
-      console.warn('Failed to sync coffees to backend:', error);
-    }
-  }
-}
-
-// Sanitize HTML to prevent XSS attacks
+// Utility to sanitize HTML for XSS protection (kept for compatibility)
 export function sanitizeHTML(str) {
-  if (!str) return '';
-  const map = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;'
-  };
-  return String(str).replace(/[&<>"']/g, char => map[char]);
+  if (str === null || str === undefined) return '';
+  // Ampersand first to avoid double-encoding
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
