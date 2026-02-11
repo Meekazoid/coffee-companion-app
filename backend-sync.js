@@ -356,19 +356,6 @@ async function initBackendSync() {
 // UI INTEGRATION
 // ==========================================
 
-function setupTokenUI() {
-    const tokenInput = document.getElementById('tokenInput');
-    const saveTokenBtn = document.getElementById('saveTokenBtn');
-    const clearTokenBtn = document.getElementById('clearTokenBtn');
-    const tokenStatus = document.getElementById('tokenStatus');
-
-    // Only execute if token UI elements exist
-    // (they do NOT exist in the new index.html)
-    if (!tokenInput || !saveTokenBtn || !clearTokenBtn || !tokenStatus) {
-        console.log('ℹ️ Token UI not found (managed via Settings modal)');
-        return;
-    }
-
     // Load existing token
     const existingToken = getToken();
     if (existingToken) {
