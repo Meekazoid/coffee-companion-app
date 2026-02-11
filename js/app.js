@@ -39,7 +39,10 @@ import {
 
 // Make updateRoastDate available globally for onclick handlers
 window.updateRoastDate = updateRoastDate;
-
+// Make brew timer functions available globally for onclick handlers
+window.startBrewTimer = startBrewTimer;
+window.pauseBrewTimer = pauseBrewTimer;
+window.resetBrewTimer = resetBrewTimer;
 // Initialize event listeners
 function initEventListeners() {
     // Camera & Upload
