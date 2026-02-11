@@ -353,54 +353,6 @@ async function initBackendSync() {
 }
 
 // ==========================================
-// UI INTEGRATION
-// ==========================================
-
-    // Load existing token
-    const existingToken = getToken();
-    if (existingToken) {
-        tokenInput.value = existingToken;
-    }
-
-    // Save token
-    saveTokenBtn.addEventListener('click', async () => {
-        const token = tokenInput.value.trim();
-        
-        if (!token) {
-            tokenStatus.innerHTML = '<span style="color: var(--error);">⚠️ Please enter a token</span>';
-            return;
-        }
-
-        tokenStatus.innerHTML = '<span style="color: var(--text-secondary);">⏳ Validating...</span>';
-
-        saveToken(token);
-        const status = await checkUserStatus();
-
-        if (status.valid) {
-            tokenStatus.innerHTML = `<span style="color: var(--success);">✅ Connected as ${status.user.username}</span>`;
-            
-            // Sync data
-            const remoteCoffees = await fetchCoffeesFromBackend();
-            if (remoteCoffees) {
-                window.coffees = remoteCoffees;
-                localStorage.setItem('coffees', JSON.stringify(window.coffees));
-                if (typeof renderCoffees === 'function') renderCoffees();
-            }
-        } else {
-            clearToken();
-            tokenStatus.innerHTML = `<span style="color: var(--error);">❌ ${status.error}</span>`;
-        }
-    });
-
-    // Clear token
-    clearTokenBtn.addEventListener('click', () => {
-        clearToken();
-        tokenInput.value = '';
-        tokenStatus.innerHTML = '<span style="color: var(--text-secondary);">Token cleared</span>';
-    });
-}
-
-// ==========================================
 // AUTO-INIT
 // ==========================================
 
