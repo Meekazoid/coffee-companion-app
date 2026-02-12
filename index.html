@@ -16,126 +16,6 @@
     <link rel="stylesheet" href="style.css">
     <title>BrewBuddy</title>
 
-    <style>
-        /* ═══════════════════════════════════════════
-           COFFEE SHOT — SIGNATURE BUTTON
-           Brown-coffee palette, works dark + light
-           No hover animation (mobile camera fires instantly)
-        ═══════════════════════════════════════════ */
-
-        /* Nullify old class in case style.css still references it */
-        .camera-button { display: none !important; }
-
-        .cs-btn {
-            position: relative;
-            display: flex;
-            width: 100%;
-            max-width: 340px;
-            margin: 0 auto;
-            padding: 0;
-            background: none;
-            border: none;
-            cursor: pointer;
-            border-radius: 14px;
-            overflow: hidden;
-            /* Pressed feedback instead of hover — works on mobile */
-            transition: transform 0.12s ease, box-shadow 0.12s ease;
-            /* Coffee-brown shadow */
-            box-shadow: 0 4px 18px rgba(139, 90, 43, 0.28), 0 1px 4px rgba(0,0,0,0.3);
-        }
-
-        .cs-btn:active {
-            transform: scale(0.97);
-            box-shadow: 0 2px 8px rgba(139, 90, 43, 0.18), 0 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .cs-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .cs-content {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 15px 22px;
-            width: 100%;
-            /* Dark mode: warm brown gradient */
-            background: linear-gradient(135deg, #5c3a1e 0%, #3d2410 60%, #2e1a0c 100%);
-            border: 1px solid rgba(180, 120, 60, 0.25);
-            border-radius: 14px;
-            transition: background 0.2s;
-        }
-
-        /* Light mode override */
-        body.light-mode .cs-content {
-            background: linear-gradient(135deg, #7a4a22 0%, #5c3318 60%, #4a2810 100%);
-            border-color: rgba(200, 140, 70, 0.3);
-        }
-
-        /* Icon */
-        .cs-icon-wrap {
-            flex-shrink: 0;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.9);
-        }
-
-        .cs-rings {
-            width: 36px;
-            height: 36px;
-        }
-
-        /* Text */
-        .cs-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .cs-label {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #ffffff;
-            letter-spacing: 0.01em;
-            line-height: 1.1;
-        }
-
-        .cs-sub {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.45);
-            letter-spacing: 0.03em;
-            line-height: 1;
-        }
-
-        /* ═══════════════════════════════════════════
-           GRINDER OPTIONS — same shadow treatment
-           Pressed state instead of hover-lift on mobile
-        ═══════════════════════════════════════════ */
-        .grinder-option {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-            transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s, border-color 0.2s, color 0.2s !important;
-        }
-
-        .grinder-option:active:not(.active) {
-            transform: scale(0.97);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-
-        .grinder-option.active {
-            box-shadow: 0 3px 12px rgba(212, 165, 116, 0.35) !important;
-        }
-
-        @media (max-width: 400px) {
-            .cs-label { font-size: 0.92rem; }
-            .cs-icon-wrap { width: 30px; height: 30px; }
-            .cs-rings { width: 30px; height: 30px; }
-            .cs-content { padding: 13px 18px; gap: 12px; }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -192,7 +72,7 @@
                 <img id="imagePreview" alt="Preview" style="display: none; margin-top: 16px; width: 100%; border-radius: 12px;">
                 <div id="loadingMessage" class="loading hidden">
                     <div class="spinner"></div>
-                    <p style="margin-top: 12px;">Analyzing coffee...</p>
+                    <p class="loading-text">Analyzing coffee...</p>
                 </div>
                 <div id="errorMessage" class="error-message hidden"></div>
                 <div id="successMessage" class="success-message hidden"></div>
@@ -282,7 +162,7 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
         <div id="emptyState" class="empty-state">
             <div class="empty-state-icon">☕</div>
             <h2>No coffees yet</h2>
-            <p style="margin-top: 12px;">Add your first coffee to get started</p>
+            <p class="empty-state-text">Add your first coffee to get started</p>
         </div>
     </div>
 
@@ -324,11 +204,9 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
             </div>
             <div class="form-group">
                 <input type="text" id="accessCodeInput" placeholder="Insert Token">
-                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
-                    Enter the code you received to activate this device.
-                </p>
+                <p class="form-helper">Enter the code you received to activate this device.</p>
             </div>
-            <div id="activationStatus" style="display: none; padding: 16px; border-radius: 8px; margin-top: 16px; margin-bottom: 16px;"></div>
+            <div id="activationStatus" class="activation-status" style="display: none;"></div>
             <button id="activateDeviceBtn">Activate Device</button>
         </div>
     </div>
@@ -340,65 +218,53 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
                 <h2>💧 Water Hardness</h2>
                 <button class="close-btn" id="closeWaterBtn">✕</button>
             </div>
-            <div style="margin-bottom: 24px; padding: 16px; background: var(--bg-card); border-radius: 12px; border-left: 4px solid #42a5f5;">
-                <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6;">
+            <div class="water-info-box">
+                <p class="water-info-text">
                     Water hardness affects coffee extraction. Soft water requires a finer grind and higher temperature, while hard water requires a coarser grind and lower temperature.
                 </p>
             </div>
             <div class="form-group">
                 <label>Postal Code (ZIP)</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input type="text" id="zipCodeInput" placeholder="e.g. 10115" maxlength="5" pattern="[0-9]{5}" style="flex: 1;">
-                    <button id="saveWaterBtn" style="width: auto; padding: 14px 20px; white-space: nowrap;">Save</button>
+                <div class="input-btn-row">
+                    <input type="text" id="zipCodeInput" placeholder="e.g. 10115" maxlength="5" pattern="[0-9]{5}">
+                    <button id="saveWaterBtn" class="inline-save-btn">Save</button>
                 </div>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
-                    Enter your 5-digit postal code to determine the local water hardness.
-                </p>
+                <p class="form-helper">Enter your 5-digit postal code to determine the local water hardness.</p>
             </div>
             
-            <div class="form-group" style="margin-top: 24px;">
+            <div class="form-group form-group--mt">
                 <label>Manual Water Hardness (°dH)</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input type="number" id="manualHardnessInput" placeholder="e.g. 16" min="0" max="50" step="0.1" style="flex: 1;">
-                    <button id="saveManualHardnessBtn" style="width: auto; padding: 14px 20px; white-space: nowrap;">Save Manual</button>
+                <div class="input-btn-row">
+                    <input type="number" id="manualHardnessInput" placeholder="e.g. 16" min="0" max="50" step="0.1">
+                    <button id="saveManualHardnessBtn" class="inline-save-btn">Save Manual</button>
                 </div>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">
-                    Override automatic detection with your own measurement. This value takes priority.
-                </p>
+                <p class="form-helper">Override automatic detection with your own measurement. This value takes priority.</p>
             </div>
             
-            <div id="waterHardnessDisplay" style="display: none; margin-top: 24px; padding: 20px; background: var(--bg-card); border-radius: 12px;">
-                <div style="text-align: center; margin-bottom: 16px;">
-                    <div style="font-size: 3rem; margin-bottom: 8px;">💧</div>
-                    <div style="font-size: 1.8rem; font-weight: 700; color: var(--accent); margin-bottom: 4px;" id="hardnessValueDisplay">-</div>
-                    <div style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 8px;" id="hardnessCategoryDisplay">-</div>
-                    <div style="font-size: 0.75rem; padding: 4px 12px; background: rgba(212, 165, 116, 0.15); border-radius: 12px; display: inline-block; color: var(--accent); font-weight: 600;" id="hardnessSourceDisplay">-</div>
+            <div id="waterHardnessDisplay" class="water-result-box" style="display: none;">
+                <div class="water-result-center">
+                    <div class="water-result-emoji">💧</div>
+                    <div class="water-result-value" id="hardnessValueDisplay">-</div>
+                    <div class="water-result-category" id="hardnessCategoryDisplay">-</div>
+                    <div class="water-result-source" id="hardnessSourceDisplay">-</div>
                 </div>
-                <div style="padding: 16px; background: var(--bg-secondary); border-radius: 8px; margin-bottom: 16px;">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">
-                        <strong style="color: var(--text-primary);">Region:</strong> <span id="hardnessRegion">-</span>
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--text-secondary);">
-                        <strong style="color: var(--text-primary);">Source:</strong> <span id="hardnessSource">-</span>
-                    </div>
+                <div class="water-result-meta">
+                    <div class="water-meta-row"><strong>Region:</strong> <span id="hardnessRegion">-</span></div>
+                    <div class="water-meta-row"><strong>Source:</strong> <span id="hardnessSource">-</span></div>
                 </div>
-                <div style="padding: 16px; background: rgba(66, 165, 245, 0.1); border: 1px solid rgba(66, 165, 245, 0.3); border-radius: 8px; margin-bottom: 16px;">
-                    <div style="font-size: 0.75rem; font-weight: 600; color: #42a5f5; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
-                        Brew Adjustments
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;" id="hardnessDescriptionDisplay">-</div>
+                <div class="water-brew-adjustments">
+                    <div class="water-brew-label">Brew Adjustments</div>
+                    <div class="water-brew-text" id="hardnessDescriptionDisplay">-</div>
                 </div>
             </div>
-            <div style="margin-top: 24px; padding: 16px; background: var(--bg-card); border-radius: 8px;">
-                <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
-                    Water Hardness Scale (°dH)
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem; color: var(--text-secondary);">
-                    <div>0-7 °dH: <strong style="color: var(--text-primary);">Very soft</strong></div>
-                    <div>7-14 °dH: <strong style="color: var(--text-primary);">Soft</strong></div>
-                    <div>14-21 °dH: <strong style="color: var(--text-primary);">Medium</strong></div>
-                    <div>21-28 °dH: <strong style="color: var(--text-primary);">Hard</strong></div>
-                    <div>28+ °dH: <strong style="color: var(--text-primary);">Very hard</strong></div>
+            <div class="water-scale-box">
+                <div class="water-scale-title">Water Hardness Scale (°dH)</div>
+                <div class="water-scale-list">
+                    <div>0–7 °dH: <strong>Very soft</strong></div>
+                    <div>7–14 °dH: <strong>Soft</strong></div>
+                    <div>14–21 °dH: <strong>Medium</strong></div>
+                    <div>21–28 °dH: <strong>Hard</strong></div>
+                    <div>28+ °dH: <strong>Very hard</strong></div>
                 </div>
             </div>
         </div>
@@ -406,11 +272,11 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
 
     <!-- ====== COMPOST MODAL ====== -->
     <div id="decafModal" class="modal">
-        <div class="modal-content" style="max-width: 480px;">
-            <div class="modal-header" style="margin-bottom: 0; padding-bottom: 20px; border-bottom: 1px solid var(--border); align-items: flex-start; flex-direction: column; gap: 0;">
-                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <div style="display: flex; align-items: center; gap: 14px;">
-                        <div style="width: 46px; height: 46px; background: rgba(200,169,126,0.1); border: 1px solid rgba(200,169,126,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <div class="modal-content modal-content--narrow">
+            <div class="modal-header modal-header--compost">
+                <div class="modal-header-row">
+                    <div class="modal-header-identity">
+                        <div class="compost-icon-tile">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M6.5 13h11l-1.8 7H8.3L6.5 13z"/>
                                 <line x1="5.5" y1="13" x2="18.5" y2="13"/>
@@ -420,17 +286,17 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
                             </svg>
                         </div>
                         <div>
-                            <h2 style="font-size: 1.2rem; font-weight: 600; color: var(--text-primary); line-height: 1.2;">Compost</h2>
-                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; font-weight: 300;">Deleted &amp; archived coffees</p>
+                            <h2 class="compost-title">Compost</h2>
+                            <p class="compost-subtitle">Deleted &amp; archived coffees</p>
                         </div>
                     </div>
                     <button class="close-btn" id="closeDecafBtn">✕</button>
                 </div>
             </div>
-            <div id="decafList" style="margin-top: 20px;"></div>
-            <div id="decafEmpty" class="decaf-empty" style="display: none; padding: 48px 20px;">
-                <div style="width: 76px; height: 76px; background: rgba(200,169,126,0.06); border: 1px solid rgba(200,169,126,0.12); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.4;">
+            <div id="decafList" class="decaf-list"></div>
+            <div id="decafEmpty" class="decaf-empty" style="display: none;">
+                <div class="compost-empty-icon">
+                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" class="compost-empty-svg">
                         <path d="M6.5 13h11l-1.8 7H8.3L6.5 13z"/>
                         <line x1="5.5" y1="13" x2="18.5" y2="13"/>
                         <line x1="12" y1="13" x2="12" y2="8"/>
@@ -438,8 +304,8 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
                         <path d="M12 9 C14.5 9 17 7.5 17 4 C15 4 12.5 6.5 12 9z"/>
                     </svg>
                 </div>
-                <p style="font-size: 0.95rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px;">Compost is empty</p>
-                <p style="font-size: 0.8rem; color: var(--text-secondary); opacity: 0.5; font-weight: 300;">Deleted coffees will appear here</p>
+                <p class="compost-empty-title">Compost is empty</p>
+                <p class="compost-empty-sub">Deleted coffees will appear here</p>
             </div>
         </div>
     </div>
