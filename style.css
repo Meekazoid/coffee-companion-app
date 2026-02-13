@@ -122,10 +122,11 @@ header {
 
     /* WICHTIG: Alle alten Filter entfernen! */
     filter: none !important; 
+    -webkit-filter: none !important;
 }
 
-body.light-mode .header-logo {
-    /* Light mode: warm brown #d4a574 */
+body.light-mode .header-logo,
+body.dark-mode .header-logo {
     filter: none !important;
 }
 
