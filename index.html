@@ -22,18 +22,9 @@
         <!-- ====== HEADER ====== -->
         <header>
             <div class="logo-title-group">
-                <!-- Picture element to switch between light/dark SVGs via prefers-color-scheme -->
-                <picture class="header-logo-wrap">
-                    <!-- dark mode -->
-                    <source media="(prefers-color-scheme: dark)" srcset="logodunkelmode.svg">
-                    <!-- light mode -->
-                    <source media="(prefers-color-scheme: light)" srcset="logosvghellmode.svg">
-                    <!-- fallback/default -->
-                    <img class="header-logo" id="header-logo" src="logodunkelmode.svg" alt="BrewBuddy Logo">
-                </picture>
-
+                <img class="header-logo" id="header-logo" src="logo-512.png" alt="pourpose Logo">
                 <div class="brand-text-group">
-                    <h1 id="brand-title">p o u r <span class="brand-dot">·</span> p o r t</h1>
+                    <h1 id="brand-title">p o u r <span class="brand-dot">·</span> p o s e</h1>
                     <div class="header-subtitle" id="brand-subtitle">Brew with Intention.</div>
                 </div>
             </div>
@@ -367,7 +358,7 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
       }
     </script>
     <script>
-      // Match logo height to combined height of title + subtitle and scale up by 10%
+      // Match logo height to combined height of title + subtitle
       function alignHeader() {
         const logo     = document.getElementById('header-logo');
         const title    = document.getElementById('brand-title');
@@ -375,45 +366,11 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
         if (!logo || !title || !subtitle) return;
         const gap    = parseInt(getComputedStyle(subtitle).marginTop) || 2;
         const totalH = title.offsetHeight + subtitle.offsetHeight + gap;
-        const scale  = 1.10; // 10% larger
-        logo.style.height = Math.round(totalH * scale) + 'px';
+        logo.style.height = totalH + 'px';
         logo.style.width  = 'auto';
       }
       window.addEventListener('load', alignHeader);
       window.addEventListener('resize', alignHeader);
-
-      // If you toggle theme via body.light-mode, update the <img> fallback src
-      function updateLogoForTheme() {
-        const logo = document.getElementById('header-logo');
-        if (!logo) return;
-        // If a light-mode class is used, prefer the light SVG; otherwise use dark.
-        if (document.body.classList.contains('light-mode')) {
-          logo.src = 'logosvghellmode.svg';
-        } else {
-          logo.src = 'logodunkelmode.svg';
-        }
-        // Re-align height after source change (images are SVG so instant)
-        alignHeader();
-      }
-
-      // Hook: if you have a theme toggle button, call updateLogoForTheme() after toggling.
-      const themeToggleBtn = document.getElementById('themeToggleBtn');
-      if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => {
-          document.body.classList.toggle('light-mode');
-          updateLogoForTheme();
-        });
-      }
-
-      // Optional: observe body.class changes (so external theme toggles also update logo)
-      const bodyObserver = new MutationObserver(mutations => {
-        for (const m of mutations) {
-          if (m.attributeName === 'class') {
-            updateLogoForTheme();
-          }
-        }
-      });
-      bodyObserver.observe(document.body, { attributes: true });
     </script>
 </body>
 </html>
