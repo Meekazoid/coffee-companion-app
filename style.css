@@ -108,20 +108,23 @@ header {
     gap: 4px;
 }
 
+/* LOGO (SVGs already contain final colors — do not apply color filters) */
 .header-logo {
-    /* height set dynamically by JS to match title+subtitle */
+    /* height set dynamically by JS to match title+subtitle (and scaled +10%) */
     height: 52px;
     width: auto;
     display: block;
     flex-shrink: 0;
-    transition: filter 0.3s ease;
-    /* Dark mode: invert black→white, then dim to match --text-secondary */
-    filter: invert(1) grayscale(1) opacity(0.6);
+    transition: height 0.18s ease, transform 0.18s ease;
+    /* Ensure any prior CSS filters do not modify the SVG colors */
+    filter: none !important;
+    opacity: 1 !important;
 }
 
+/* Keep filter none in light-mode as well (SVGs include correct colors) */
 body.light-mode .header-logo {
-    /* Light mode: warm brown #d4a574 */
-    filter: sepia(0.6) saturate(1.5) hue-rotate(350deg) brightness(0.9);
+    filter: none !important;
+    opacity: 1 !important;
 }
 
 h1 {
