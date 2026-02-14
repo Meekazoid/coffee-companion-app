@@ -22,11 +22,10 @@
         <!-- ====== HEADER ====== -->
         <header>
             <div class="logo-title-group">
-                <picture>
-                    <source srcset="logo_hell_dark.svg" media="(prefers-color-scheme: dark)">
-                    <source srcset="logo_dunkel_light.svg" media="(prefers-color-scheme: light)">
-                    <img class="header-logo" id="header-logo" src="logo_hell_dark.svg" alt="brewbuddy Logo">
-                </picture>
+                <div class="logo-swap">
+                    <img class="header-logo logo-dark" id="header-logo-dark" src="logo_hell_dark.svg" alt="drip·mate Logo">
+                    <img class="header-logo logo-light" id="header-logo-light" src="logo_dunkel_light.svg" alt="drip·mate Logo">
+                </div>
                 
                 <div class="brand-text-group">
                     <h1 id="brand-title">d r i p <span class="brand-dot">·</span> m a t e </h1>
@@ -365,14 +364,21 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
     <script>
       // Match logo height to combined height of title + subtitle
       function alignHeader() {
-        const logo     = document.getElementById('header-logo');
-        const title    = document.getElementById('brand-title');
-        const subtitle = document.getElementById('brand-subtitle');
-        if (!logo || !title || !subtitle) return;
+        const logoDark  = document.getElementById('header-logo-dark');
+        const logoLight = document.getElementById('header-logo-light');
+        const title     = document.getElementById('brand-title');
+        const subtitle  = document.getElementById('brand-subtitle');
+        if (!title || !subtitle) return;
+
         const gap    = parseInt(getComputedStyle(subtitle).marginTop) || 2;
         const totalH = title.offsetHeight + subtitle.offsetHeight + gap;
-        logo.style.height = totalH + 'px';
-        logo.style.width  = 'auto';
+
+        // Apply height to both logos so switching is seamless
+        [logoDark, logoLight].forEach(logo => {
+          if (!logo) return;
+          logo.style.height = totalH + 'px';
+          logo.style.width  = 'auto';
+        });
       }
       window.addEventListener('load', alignHeader);
       window.addEventListener('resize', alignHeader);

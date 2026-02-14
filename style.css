@@ -130,6 +130,20 @@ body.dark-mode .header-logo {
     filter: none !important;
 }
 
+/* ─── Logo dark/light swap ─── */
+.logo-swap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Default (dark mode): show the light/bright logo */
+.logo-dark  { display: block; }
+.logo-light { display: none;  }
+
+/* Light mode: swap to the dark logo */
+body.light-mode .logo-dark  { display: none;  }
+body.light-mode .logo-light { display: block; }
+
 h1 {
     font-family: 'Sora', sans-serif;
     font-size: 1.8rem;
