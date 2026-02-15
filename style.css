@@ -301,8 +301,10 @@ body.light-mode .cs-content {
     color: var(--text-primary);
     border: 1px solid rgba(212, 165, 116, 0.12);
     border-radius: 12px;
+    font-family: 'Sora', sans-serif;
     font-size: 0.765rem;
-    font-weight: 500;
+    font-weight: 200;
+    letter-spacing: 0.02em;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -453,20 +455,12 @@ button:hover {
 .grinder-selector-label {
     display: flex;
     align-items: center;
-    gap: 10px;
     color: var(--text-secondary);
     font-family: 'Sora', sans-serif;
     font-size: 0.68rem;
-    font-weight: 300;
-    letter-spacing: 0.5px;
+    font-weight: 200;
+    letter-spacing: 0.02em;
     white-space: nowrap;
-}
-
-.grinder-icon {
-    width: 18px;
-    height: 18px;
-    stroke: var(--accent);
-    flex-shrink: 0;
 }
 
 .grinder-toggle {
@@ -553,8 +547,10 @@ body.light-mode .grinder-option.active {
 }
 
 .grinder-name {
+    font-family: 'Sora', sans-serif;
     font-size: 0.85rem;
-    font-weight: 400;
+    font-weight: 200;
+    letter-spacing: 0.02em;
     position: relative;
     z-index: 1;
     white-space: nowrap;
@@ -1566,6 +1562,23 @@ body.light-mode .step-progress-bar {
     font-weight: 600;
 }
 
+.modal-title-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-title-icon {
+    width: 22px;
+    height: 22px;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    flex-shrink: 0;
+}
+
 .close-btn {
     background: none;
     border: none;
@@ -1718,15 +1731,69 @@ body.light-mode .step-progress-bar {
 }
 
 .empty-state {
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--text-secondary);
+    padding: 48px 20px;
 }
 
-.empty-state-icon {
-    font-size: 4rem;
-    margin-bottom: 24px;
+.onboarding-card {
+    max-width: 340px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 28px;
+    background: linear-gradient(
+        160deg,
+        rgba(212, 165, 116, 0.06) 0%,
+        rgba(212, 165, 116, 0.02) 40%,
+        var(--bg-secondary) 100%
+    );
+    border: 1px solid rgba(212, 165, 116, 0.1);
+    border-radius: 16px;
+}
+
+.onboarding-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 24px;
+    background: rgba(212, 165, 116, 0.06);
+    border: 1px solid rgba(212, 165, 116, 0.12);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.onboarding-text {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 200;
+    line-height: 1.7;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+    margin-bottom: 20px;
+}
+
+.onboarding-cta {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
     opacity: 0.5;
+}
+
+body.light-mode .onboarding-card {
+    background: linear-gradient(
+        160deg,
+        rgba(139, 111, 71, 0.04) 0%,
+        rgba(139, 111, 71, 0.015) 40%,
+        var(--bg-secondary) 100%
+    );
+    border-color: rgba(139, 111, 71, 0.1);
+}
+
+body.light-mode .onboarding-icon {
+    background: rgba(139, 111, 71, 0.05);
+    border-color: rgba(139, 111, 71, 0.1);
 }
 
 /* ==========================================
@@ -2162,9 +2229,5 @@ body.light-mode .step-progress-bar {
 }
 
 .loading-text {
-    margin-top: 12px;
-}
-
-.empty-state-text {
     margin-top: 12px;
 }

@@ -132,21 +132,6 @@
         <!-- ====== GLOBAL GRINDER SELECTOR (sticky) ====== -->
         <div class="global-grinder-selector">
             <div class="grinder-selector-label">
-                <svg class="grinder-icon" viewBox="0 0 97 97" fill="currentColor" stroke="none" preserveAspectRatio="xMidYMid meet">
-                    <g transform="translate(0.000000,97.000000) scale(0.100000,-0.100000)">
-                        <path d="M671 801 c-23 -23 -25 -38 -11 -75 l9 -25 -97 -3 -97 -3 -3 -47 -3
--47 -92 -3 -92 -3 -3 -52 c-3 -45 6 -77 36 -135 2 -5 -8 -8 -22 -8 -14 0 -35
--9 -46 -20 -17 -17 -20 -33 -20 -124 0 -89 3 -107 21 -130 l20 -26 220 0 c274
-0 259 -9 259 153 0 126 -9 147 -63 147 l-27 0 21 39 c15 29 19 54 17 98 l-3
-58 -87 3 c-86 3 -88 3 -88 27 0 25 0 25 101 25 l100 0 26 56 25 56 -19 27
-c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
-10 4 10 3 0 8 -4 11 -10z m-65 -240 c0 -43 -25 -87 -60 -105 -41 -21 -163 -20
--201 2 -32 19 -59 68 -59 107 l0 26 160 0 160 0 0 -30z m50 -270 l0 -100 -207
-2 -208 3 -3 98 -3 97 211 0 210 0 0 -100z"/>
-                        <path d="M427 273 c-4 -3 -7 -15 -7 -25 0 -16 9 -18 69 -18 72 0 92 10 71 35
--13 15 -120 22 -133 8z"/>
-                    </g>
-                </svg>
                 <span>Grinder</span>
             </div>
             <div class="grinder-toggle">
@@ -166,9 +151,22 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
         <div id="coffeeList" class="coffee-list"></div>
         
         <div id="emptyState" class="empty-state">
-            <div class="empty-state-icon">☕</div>
-            <h2>No coffees yet</h2>
-            <p class="empty-state-text">Add your first coffee to get started</p>
+            <div class="onboarding-card">
+                <div class="onboarding-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 8h1a4 4 0 1 1 0 8h-1"></path>
+                        <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"></path>
+                        <line x1="6" y1="2" x2="6" y2="4"></line>
+                        <line x1="10" y1="2" x2="10" y2="4"></line>
+                        <line x1="14" y1="2" x2="14" y2="4"></line>
+                    </svg>
+                </div>
+                <p class="onboarding-text">
+                    First, take a picture of your coffee bag or add it manually. 
+                    You'll get a card where you can explore your brew settings.
+                </p>
+                <p class="onboarding-cta">Have fun.</p>
+            </div>
         </div>
     </div>
 
@@ -221,7 +219,12 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
     <div id="waterModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>💧 Water Hardness</h2>
+                <h2 class="modal-title-with-icon">
+                    <svg class="modal-title-icon" viewBox="0 0 24 24">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                    </svg>
+                    Water Hardness
+                </h2>
                 <button class="close-btn" id="closeWaterBtn">✕</button>
             </div>
             <div class="water-info-box">
@@ -249,7 +252,11 @@ c-25 33 -56 38 -82 12z m44 -41 c3 -5 1 -10 -4 -10 -6 0 -11 5 -11 10 0 6 2
             
             <div id="waterHardnessDisplay" class="water-result-box" style="display: none;">
                 <div class="water-result-center">
-                    <div class="water-result-emoji">💧</div>
+                    <div class="water-result-emoji">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                        </svg>
+                    </div>
                     <div class="water-result-value" id="hardnessValueDisplay">-</div>
                     <div class="water-result-category" id="hardnessCategoryDisplay">-</div>
                     <div class="water-result-source" id="hardnessSourceDisplay">-</div>
