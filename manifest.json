@@ -1,6 +1,6 @@
 {
-  "name": "BrewBuddy",
-  "short_name": "BrewBuddy",
+  "name": "DripMate",
+  "short_name": "DripMate",
   "description": "Your personal specialty coffee brewing assistant",
   "start_url": "/",
   "display": "standalone",
