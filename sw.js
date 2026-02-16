@@ -3,7 +3,7 @@
  * Provides offline PWA support with intelligent caching strategies
  */
 
-const CACHE_VERSION = 'v10.9';  // war v5.0 (oder was auch immer aktuell ist)
+const CACHE_VERSION = 'v11.0';  // bumped from v10.9 – card editor feature
 
 // Static assets to pre-cache during installation
 const STATIC_ASSETS = [
@@ -21,6 +21,7 @@ const STATIC_ASSETS = [
   '/js/feedback.js',
   '/js/coffee-cards.js',
   '/js/coffee-list.js',
+  '/js/card-editor.js',
   '/js/image-handler.js',
   '/js/manual-entry.js',
   '/js/messages.js',
@@ -59,19 +60,18 @@ self.addEventListener('install', (event) => {
         return cache.addAll(STATIC_ASSETS);
       })
       .then(() => {
-        console.log('[Service Worker] Installation complete');
-        // Skip waiting to activate immediately
+        console.log('[Service Worker] Pre-caching complete');
         return self.skipWaiting();
       })
       .catch((error) => {
-        console.error('[Service Worker] Installation failed:', error);
+        console.error('[Service Worker] Pre-caching failed:', error);
       })
   );
 });
 
 /**
  * ACTIVATE EVENT
- * Clean up old caches and take control immediately
+ * Clean up old caches and take control of all clients
  */
 self.addEventListener('activate', (event) => {
   console.log('[Service Worker] Activating...');
@@ -79,7 +79,6 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
-        // Delete all caches that don't match current version
         return Promise.all(
           cacheNames
             .filter((cacheName) => cacheName !== CACHE_VERSION)
@@ -90,8 +89,7 @@ self.addEventListener('activate', (event) => {
         );
       })
       .then(() => {
-        console.log('[Service Worker] Activation complete');
-        // Take control of all clients immediately
+        console.log('[Service Worker] Now controlling all clients');
         return self.clients.claim();
       })
   );
@@ -99,117 +97,80 @@ self.addEventListener('activate', (event) => {
 
 /**
  * FETCH EVENT
- * Route requests based on caching strategy
+ * Route requests through appropriate caching strategies
  */
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
+  const request = event.request;
   const url = new URL(request.url);
-  
-  // API requests to our backend domain
-  if (url.hostname === API_DOMAIN && url.protocol === 'https:') {
-    // Only cache GET requests — POST/PUT/DELETE cannot be cached
-    if (request.method === 'GET') {
-      event.respondWith(networkFirstStrategy(request));
-    } else {
-      // Non-GET API requests: pass through to network without caching
-      event.respondWith(fetch(request));
-    }
+
+  // Only cache GET requests – POST/PUT/DELETE/PATCH cannot be cached
+  if (request.method !== 'GET') {
+    event.respondWith(fetch(request));
     return;
   }
-  
-  // Static assets: Cache-first with network fallback
-  if (isStaticAsset(request)) {
+
+  // API requests: Network-first strategy
+  if (url.hostname === API_DOMAIN) {
+    event.respondWith(networkFirstStrategy(request));
+    return;
+  }
+
+  // Static assets: Cache-first strategy
+  const isStaticAsset = STATIC_EXTENSIONS.some(ext => url.pathname.endsWith(ext)) || url.pathname === '/';
+  if (isStaticAsset) {
     event.respondWith(cacheFirstStrategy(request));
     return;
   }
-  
-  // Everything else: Network-only (no caching)
-  event.respondWith(fetch(request));
+
+  // Everything else: Network with cache fallback
+  event.respondWith(networkFirstStrategy(request));
 });
 
 /**
- * Cache-First Strategy
- * Serve from cache if available, otherwise fetch from network and cache
+ * Cache-first strategy: Try cache, fall back to network
  */
-function cacheFirstStrategy(request) {
-  return caches.match(request)
-    .then((cachedResponse) => {
-      if (cachedResponse) {
-        // Return cached response
-        return cachedResponse;
-      }
-      
-      // Not in cache - fetch from network
-      return fetch(request)
-        .then((networkResponse) => {
-          // Cache the new response for future use (GET only)
-          if (networkResponse && networkResponse.status === 200 && request.method === 'GET') {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_VERSION)
-              .then((cache) => {
-                cache.put(request, responseToCache);
-              });
-          }
-          return networkResponse;
-        })
-        .catch((error) => {
-          console.error('[Service Worker] Cache-first fetch failed:', error);
-          throw error;
-        });
-    });
-}
+async function cacheFirstStrategy(request) {
+  try {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) return cachedResponse;
 
-/**
- * Network-First Strategy
- * Try network first, fall back to cache if offline
- * Note: Only call this with GET requests (Cache API does not support POST)
- */
-function networkFirstStrategy(request) {
-  return fetch(request)
-    .then((networkResponse) => {
-      // Successfully fetched from network - cache it (GET only safety check)
-      if (networkResponse && networkResponse.status === 200 && request.method === 'GET') {
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_VERSION)
-          .then((cache) => {
-            cache.put(request, responseToCache);
-          });
-      }
-      return networkResponse;
-    })
-    .catch((error) => {
-      // Network failed - try cache
-      return caches.match(request)
-        .then((cachedResponse) => {
-          if (cachedResponse) {
-            console.log('[Service Worker] Serving API response from cache (offline)');
-            return cachedResponse;
-          }
-          // No cache available either
-          console.error('[Service Worker] Network-first fetch failed and no cache:', error);
-          throw error;
-        });
-    });
-}
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      const cache = await caches.open(CACHE_VERSION);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) return cachedResponse;
 
-/**
- * Check if a request is for a static asset
- */
-function isStaticAsset(request) {
-  const url = new URL(request.url);
-  
-  // Check if it's a same-origin request
-  if (url.origin !== location.origin) {
-    return false;
+    // Offline fallback for navigation requests
+    if (request.mode === 'navigate') {
+      return caches.match('/index.html');
+    }
+
+    return new Response('Offline', { status: 503 });
   }
-  
-  const pathname = url.pathname;
-  
-  // Check if it's one of our static files
-  const hasStaticExtension = STATIC_EXTENSIONS.some(ext => pathname.endsWith(ext));
-  
-  // Also check if it's the root path or an explicitly cached file
-  const isRootOrCached = pathname === '/' || STATIC_ASSETS.includes(pathname);
-  
-  return hasStaticExtension || isRootOrCached;
+}
+
+/**
+ * Network-first strategy: Try network, fall back to cache
+ */
+async function networkFirstStrategy(request) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      const cache = await caches.open(CACHE_VERSION);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) return cachedResponse;
+
+    return new Response(JSON.stringify({ error: 'Offline' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 }
