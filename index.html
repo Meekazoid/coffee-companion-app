@@ -130,23 +130,45 @@
         </div>
 
         <!-- ====== GLOBAL GRINDER SELECTOR (sticky) ====== -->
-        <div class="global-grinder-selector">
-            <div class="grinder-selector-label">
-                <span>Grinder</span>
-            </div>
-            <div class="grinder-toggle">
-                <button class="grinder-option active" data-grinder="fellow" id="global-fellow">
-                    <span class="grinder-name">Fellow Ode</span>
-                </button>
-                <button class="grinder-option" data-grinder="comandante" id="global-comandante">
-                    <span class="grinder-name">Comandante</span>
-                </button>
-                <button class="grinder-option" data-grinder="timemore" id="global-timemore">
-                    <span class="grinder-name">Timemore S3</span>
-                </button>
+<div class="global-grinder-selector">
+    <div class="brew-setup-row">
+        <div class="brew-setup-group">
+            <label class="brew-setup-label">Grinder</label>
+            <div class="select-wrapper">
+                <select id="grinder-select" class="brew-setup-select">
+                    <optgroup label="Comandante">
+                        <option value="comandante_mk4">C40 MK4</option>
+                        <option value="comandante_mk3">C40 MK3</option>
+                    </optgroup>
+                    <optgroup label="Fellow">
+                        <option value="fellow_gen2" selected>Ode Gen 2</option>
+                        <option value="fellow_gen1">Ode Gen 1</option>
+                    </optgroup>
+                    <optgroup label="Timemore">
+                        <option value="timemore_s3">Chestnut S3</option>
+                        <option value="timemore_c2">Chestnut C2</option>
+                    </optgroup>
+                    <optgroup label="1Zpresso">
+                        <option value="1zpresso">JX</option>
+                    </optgroup>
+                    <optgroup label="Baratza">
+                        <option value="baratza">Encore</option>
+                    </optgroup>
+                </select>
             </div>
         </div>
-
+        <div class="brew-setup-group">
+            <label class="brew-setup-label">Method</label>
+            <div class="select-wrapper">
+                <select id="method-select" class="brew-setup-select">
+                    <option value="v60" selected>V60</option>
+                    <option value="chemex">Chemex</option>
+                    <option value="aeropress">AeroPress</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
         <!-- ====== COFFEE LIST ====== -->
         <div id="coffeeList" class="coffee-list"></div>
         
