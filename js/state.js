@@ -62,6 +62,19 @@ export function setPreferredGrinder(value) {
   window.preferredGrinder = preferredGrinder;
 }
 
+export let preferredMethod = localStorage.getItem('preferredMethod') || 'v60';
+window.preferredMethod = preferredMethod;
+
+export function setPreferredMethod(value) {
+    preferredMethod = String(value || 'v60');
+    try {
+        localStorage.setItem('preferredMethod', preferredMethod);
+    } catch (e) {
+        console.warn('Failed to persist preferredMethod to localStorage', e);
+    }
+    window.preferredMethod = preferredMethod;
+}
+
 export function setWaterHardness(value) {
   waterHardness = value;
   window.waterHardness = waterHardness;
@@ -133,6 +146,7 @@ export function replaceState(partialState = {}) {
   if (partialState.coffees) setCoffees(partialState.coffees);
   if (partialState.coffeeAmount !== undefined) setCoffeeAmount(partialState.coffeeAmount);
   if (partialState.preferredGrinder) setPreferredGrinder(partialState.preferredGrinder);
+  if (partialState.preferredMethod) setPreferredMethod(partialState.preferredMethod);
   if (partialState.waterHardness !== undefined) setWaterHardness(partialState.waterHardness);
   if (partialState.manualWaterHardness !== undefined) setManualWaterHardness(partialState.manualWaterHardness);
   if (partialState.apiWaterHardness !== undefined) setApiWaterHardness(partialState.apiWaterHardness);
