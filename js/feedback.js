@@ -196,6 +196,10 @@ function formatHistoryDate(iso) {
 }
 
 function formatHistoryDelta(entry) {
+    if (entry.resetToInitial) {
+        return 'Reset to engine baseline values';
+    }
+
     const parts = [];
     if (entry.grindOffsetDelta) {
         const sign = entry.grindOffsetDelta > 0 ? '+' : '';
@@ -276,6 +280,7 @@ export function adjustTempManual(index, direction) {
 
 export function resetCoffeeAdjustments(index) {
     const coffee = coffees[index];
+    const before = getBrewRecommendations(coffee);
 
     // Recompute fresh engine defaults (respects current grinder & water)
     const initial = getInitialBrewValues(coffee);
@@ -289,6 +294,18 @@ export function resetCoffeeAdjustments(index) {
     delete coffee.grindOffset;
     delete coffee.customTemp;
     delete coffee.feedback;
+
+    const after = getBrewRecommendations(coffee);
+    addHistoryEntry(coffee, {
+        timestamp: new Date().toISOString(),
+        previousGrind: before.grindSetting,
+        previousTemp: before.temperature,
+        newGrind: after.grindSetting,
+        newTemp: after.temperature,
+        grindOffsetDelta: 0,
+        customTempApplied: null,
+        resetToInitial: true
+    });
 
     // Direct DOM update – card stays open
     const grindEl = document.getElementById(`grind-value-${index}`);

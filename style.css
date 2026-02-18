@@ -1528,15 +1528,20 @@ body.light-mode .step-progress-bar {
 }
 
 .history-btn {
-    margin-top: 14px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-primary);
+    display: block;
+    width: fit-content;
+    margin: 14px auto 0;
+    padding: 8.5px 17px;
+    font-size: 0.7225rem;
+    background: #4CAF50;
+    border: 1px solid #4CAF50;
+    color: white;
 }
 
 .history-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    background: #45a049;
+    border-color: #45a049;
+    color: white;
 }
 
 .history-list {
