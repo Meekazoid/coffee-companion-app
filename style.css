@@ -484,15 +484,16 @@ button:hover {
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--accent);
-    text-align: center;
+    text-align: left;
+    padding-left: 0.3rem;
 }
 
 .brew-chip-group:first-child {
-    flex: 1.45;
+    flex: 1.55;
 }
 
 .brew-chip-group:last-child {
-    flex: 0.85;
+    flex: 0.75;
 }
 
 /* ── Individual Chip (tappable) ── */
@@ -530,7 +531,7 @@ button:hover {
 }
 
 #grinder-chip .brew-chip-label {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     overflow: visible;
     text-overflow: clip;
 }
@@ -1115,13 +1116,14 @@ body.light-mode .water-hardness-badge {
 }
 
 .param-label {
-    font-family: 'Sora', sans-serif; /* Schriftart hinzufügen */
-    font-size: 0.7rem;
-    font-weight: 200;                /* Schön dünn */
+    font-family: 'Sora', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 300;
     color: var(--text-secondary);
     margin-bottom: 6px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.35px;
+    white-space: nowrap;
 }
 
 .param-value {
@@ -1133,20 +1135,21 @@ body.light-mode .water-hardness-badge {
 
 .param-value-row {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .param-adjust {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
+    flex-direction: row;
+    gap: 4px;
 }
 
 .adjust-btn {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     padding: 0;
     background: var(--bg-secondary);
     color: var(--text-secondary);
@@ -2080,6 +2083,20 @@ body.light-mode .onboarding-icon {
     .param-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
+    }
+
+    .param-label {
+        font-size: 0.58rem;
+    }
+
+    .param-value-row {
+        gap: 5px;
+    }
+
+    .adjust-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 0.72rem;
     }
 
     .timer-display {
