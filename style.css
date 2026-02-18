@@ -2197,58 +2197,62 @@ body.light-mode .onboarding-icon {
     align-items: center;
 }
 
+.water-modal-content {
+    max-height: 86vh;
+}
+
 .input-btn-row input {
     flex: 1;
 }
 
 .inline-save-btn {
     width: auto;
-    padding: 14px 20px;
+    padding: 11px 16px;
+    font-size: 0.8rem;
+    font-weight: 400;
     white-space: nowrap;
 }
 
 .form-group--mt {
-    margin-top: 24px;
+    margin-top: 14px;
 }
 
 .form-helper {
-    font-size: 0.85rem;
+    font-size: 0.76rem;
     color: var(--text-secondary);
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .water-result-box {
-    margin-top: 24px;
-    padding: 20px;
+    margin-top: 0;
+    margin-bottom: 14px;
+    padding: 16px;
     background: var(--bg-card);
+    border: 1px solid rgba(212, 165, 116, 0.16);
     border-radius: 12px;
 }
 
 .water-result-center {
     text-align: center;
-    margin-bottom: 16px;
-}
-
-.water-result-emoji {
-    font-size: 3rem;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .water-result-value {
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: 1.65rem;
+    font-weight: 600;
     color: var(--accent);
     margin-bottom: 4px;
 }
 
 .water-result-category {
-    font-size: 1rem;
+    font-size: 0.84rem;
     color: var(--text-secondary);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
 }
 
 .water-result-source {
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     padding: 4px 12px;
     background: rgba(212, 165, 116, 0.15);
     border-radius: 12px;
@@ -2258,16 +2262,19 @@ body.light-mode .onboarding-icon {
 }
 
 .water-result-meta {
-    padding: 16px;
+    padding: 11px 12px;
     background: var(--bg-secondary);
     border-radius: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 11px;
 }
 
 .water-meta-row {
-    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.76rem;
     color: var(--text-secondary);
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }
 
 .water-meta-row:last-child {
@@ -2279,15 +2286,14 @@ body.light-mode .onboarding-icon {
 }
 
 .water-brew-adjustments {
-    padding: 16px;
+    padding: 11px 12px;
     background: rgba(212, 165, 116, 0.08);
     border: 1px solid rgba(212, 165, 116, 0.2);
     border-radius: 8px;
-    margin-bottom: 16px;
 }
 
 .water-brew-label {
-    font-size: 0.75rem;
+    font-size: 0.66rem;
     font-weight: 600;
     color: var(--accent);
     text-transform: uppercase;
@@ -2296,21 +2302,33 @@ body.light-mode .onboarding-icon {
 }
 
 .water-brew-text {
-    font-size: 0.85rem;
+    font-size: 0.76rem;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.45;
 }
 
-.water-scale-list {
+.water-impact-info {
+    margin-bottom: 10px;
+}
+
+.water-impact-info p {
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+.water-scale-minimal {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 0.8rem;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 0.66rem;
     color: var(--text-secondary);
 }
 
-.water-scale-list strong {
-    color: var(--text-primary);
+.water-scale-minimal span {
+    padding: 4px 8px;
+    border: 1px solid rgba(212, 165, 116, 0.18);
+    border-radius: 999px;
+    background: rgba(212, 165, 116, 0.04);
 }
 
 /* ==========================================
