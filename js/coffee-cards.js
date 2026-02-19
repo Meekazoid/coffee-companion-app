@@ -89,7 +89,7 @@ export function renderCoffeeCard(coffee, index) {
                 
                 <div class="param-grid">
                     <div class="param-box">
-                        <div class="param-label">${brewParams.grinderLabel}</div>
+                        <div class="param-label">Grind Setting</div>
                         <div class="param-value-row">
                             <div class="param-value" id="grind-value-${index}">${brewParams.grindSetting}</div>
                             <div class="param-adjust">
@@ -146,7 +146,7 @@ export function renderCoffeeCard(coffee, index) {
                 
                 <div class="feedback-section">
                     <h4>Brew Feedback</h4>
-                    <div class="feedback-cupping-note">Cupping-style quick rating (low / balanced / high).</div>
+                    <div class="feedback-cupping-note">Cupping-style quick rating</div>
                     <div class="feedback-group">
                         <div class="feedback-label">Bitterness</div>
                         <div class="feedback-scale">
