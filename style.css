@@ -542,8 +542,9 @@ button:hover {
 
 #method-chip .brew-chip-label {
     font-size: 0.78rem;
-    overflow: visible;
-    text-overflow: clip;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 6px;
 }
 
 .brew-chip-caret {
@@ -1513,44 +1514,87 @@ body.light-mode .step-progress-bar {
 
 .feedback-label {
     display: block;
-    margin-bottom: 8px;
     color: var(--accent);
     font-size: 0.76rem;
     font-weight: 500;
 }
 
-.feedback-scale {
+.feedback-label-row {
     display: flex;
-    gap: 5px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 7px;
 }
 
-.scale-option {
-    flex: 1;
-    padding: 7px 6px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    text-align: center;
-    font-size: 0.7rem;
-    line-height: 1;
+.feedback-current {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.feedback-scale-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.feedback-scale-wrap::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 72%, #fff 28%);
+    box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.22);
+    pointer-events: none;
+}
+
+.feedback-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(212, 165, 116, 0.55) 0%, var(--accent) 50%, rgba(212, 165, 116, 0.55) 100%);
+    outline: none;
     cursor: pointer;
-    transition: all 0.2s;
-    color: #bdbdbd;
 }
 
-body.light-mode .scale-option {
-    color: #666;
+.feedback-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #6d3e1f;
+    background: #8b5a2b;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
 }
 
-.scale-option:hover {
-    border-color: var(--accent);
+.feedback-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #6d3e1f;
+    background: #8b5a2b;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
 }
 
-.scale-option.selected {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-    font-weight: 600;
+.feedback-slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.64rem;
+    font-weight: 300;
+    text-transform: lowercase;
+    color: color-mix(in srgb, var(--text-secondary) 78%, #fff 22%);
+}
+
+body.light-mode .feedback-slider-labels {
+    color: #7a7a7a;
 }
 
 .feedback-suggestion {
@@ -2133,9 +2177,18 @@ body.light-mode .onboarding-icon {
         padding: 18px;
     }
 
-    .scale-option {
-        padding: 9px 5px;
-        font-size: 0.7rem;
+    .feedback-slider::-webkit-slider-thumb {
+        width: 16px;
+        height: 16px;
+    }
+
+    .feedback-slider::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+    }
+
+    .feedback-slider-labels {
+        font-size: 0.58rem;
     }
 
     .param-box {
