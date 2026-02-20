@@ -105,7 +105,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: 8px;
 }
 
 .header-logo {
@@ -1167,12 +1167,12 @@ body.light-mode .water-hardness-badge {
 .param-adjust {
     display: flex;
     flex-direction: row;
-    gap: 4px;
+    gap: 8px;
 }
 
 .adjust-btn {
-    width: 26px;
-    height: 26px;
+    width: 29px;
+    height: 29px;
     padding: 0;
     background: transparent;
     color: var(--accent);
@@ -2255,8 +2255,8 @@ body.light-mode .onboarding-icon {
     }
 
     .adjust-btn {
-        width: 24px;
-        height: 24px;
+        width: 26px;
+        height: 26px;
         font-size: 0.75rem;
     }
 
