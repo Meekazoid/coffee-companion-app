@@ -460,10 +460,10 @@ export async function resetCoffeeAdjustments(index) {
 
     if (!confirmed) return;
 
-    performResetCoffeeAdjustments(index);
+    await performResetCoffeeAdjustments(index);
 }
 
-function performResetCoffeeAdjustments(index) {
+async function performResetCoffeeAdjustments(index) {
     const coffee = coffees[index];
     const before = getBrewRecommendations(coffee);
 
@@ -510,7 +510,7 @@ function performResetCoffeeAdjustments(index) {
         suggestionEl.classList.add('hidden');
     }
 
-    saveCoffeesAndSync();
+    await saveCoffeesAndSync();
 }
 
 export function getInitialBrewValues(coffee) {
