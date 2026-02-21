@@ -3,5 +3,5 @@
 // ==========================================
 
 export const CONFIG = {
-    backendUrl: 'https://brew-buddy-backend-production.up.railway.app',
+    backendUrl: 'https://dripmate-backend-production.up.railway.app',
 };

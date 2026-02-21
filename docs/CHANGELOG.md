@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to BrewBuddy are documented in this file.
+All notable changes to dripmate are documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
@@ -130,7 +130,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 - **Decaf (soft delete):** Deleted coffees flagged `deleted: true` with timestamp. Modal lists them with Restore and Permanent Delete.
 - **Favorites system:** Star button per card. Favorites sort to the top by `favoritedAt` timestamp.
 - **Roast freshness badges:** *Still Resting* (< 7 d), *Sweet Spot* (7–30 d), *Fading* (30+ d) with gradient transitions.
-- **Official BrewBuddy logo** in header with CSS filter gold tones for dark/light mode.
+- **Official dripmate logo** in header with CSS filter gold tones for dark/light mode.
 - **Custom grinder SVG icon** replacing generic gear symbol.
 
 ### Changed
@@ -190,7 +190,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [1.0.0] – 2026-02-01 · Initial Release 🏷️
 
-> **Milestone:** BrewBuddy goes live as a closed-beta PWA.
+> **Milestone:** dripmate goes live as a closed-beta PWA.
 
 ### Added
 - Progressive Web App with dark/light mode toggle.

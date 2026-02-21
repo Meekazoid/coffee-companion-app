@@ -1,6 +1,6 @@
-# BrewBuddy Ruleset-Flow: Vom Scan zu Empfehlungen und Feedback-Anpassungen
+# dripmate Ruleset-Flow: Vom Scan zu Empfehlungen und Feedback-Anpassungen
 
-Diese Übersicht zeigt transparent, wie sich Werte in BrewBuddy verändern:
+Diese Übersicht zeigt transparent, wie sich Werte in dripmate verändern:
 
 - **Input aus Scan** (process, origin, cultivar, altitude, roast date, tasting notes)
 - **Initiale Brew-Berechnung** (Mahlgrad/Temperatur/Ratio)

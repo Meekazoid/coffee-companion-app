@@ -1,10 +1,10 @@
-# BrewBuddy
+# dripmate
 
 **Precision meets ritual.**
 
-BrewBuddy is a specialty coffee brewing assistant that turns every pour-over into a deliberate, data-informed ritual. Scan a coffee bag, and the app calculates grind size, temperature, water amount, and pour timing — tailored to your beans, your grinder, and your water.
+dripmate is a specialty coffee brewing assistant that turns every pour-over into a deliberate, data-informed ritual. Scan a coffee bag, and the app calculates grind size, temperature, water amount, and pour timing — tailored to your beans, your grinder, and your water.
 
-**Status:** Closed Beta · **Live:** [brewbuddy-sixty.vercel.app](https://brewbuddy-sixty.vercel.app/)
+**Status:** Closed Beta · **Live:** [dripmate.vercel.app](https://dripmate.vercel.app/)
 
 ---
 

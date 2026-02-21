@@ -1,10 +1,10 @@
-# Grinder Conversion & Calibration Matrix v1.1 (BrewBuddy)
+# Grinder Conversion & Calibration Matrix v1.1 (dripmate)
 
 ## Purpose
-This overview documents how BrewBuddy converts the internal grind reference to each supported grinder scale and how user feedback offsets are applied.
+This overview documents how dripmate converts the internal grind reference to each supported grinder scale and how user feedback offsets are applied.
 
 ## Internal reference model
-- BrewBuddy computes a method/process-adjusted base grind in a **Comandante-equivalent** scale (`grindBase.comandante`).
+- dripmate computes a method/process-adjusted base grind in a **Comandante-equivalent** scale (`grindBase.comandante`).
 - For Fellow, an additional `grindBase.fellow` base is used where available.
 - User feedback changes are applied via a grinder-neutral `grindOffset` and mapped with grinder-specific sensitivity.
 

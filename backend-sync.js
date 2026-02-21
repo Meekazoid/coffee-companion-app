@@ -4,7 +4,7 @@
 // UPDATED: Water Hardness Sync Support
 // ==========================================
 
-const BACKEND_URL = 'https://brew-buddy-backend-production.up.railway.app';
+const BACKEND_URL = 'https://dripmate-backend-production.up.railway.app';
 
 // ==========================================
 // DEVICE ID GENERATION
