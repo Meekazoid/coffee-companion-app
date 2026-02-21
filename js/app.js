@@ -1,5 +1,5 @@
 // ==========================================
-// BREWBUDDY - APP.JS (ES MODULE ENTRY POINT)
+// DRIPMATE - APP.JS (ES MODULE ENTRY POINT)
 // Main entry point that imports all modules
 // ==========================================
 

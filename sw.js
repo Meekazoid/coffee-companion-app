@@ -1,5 +1,5 @@
 /**
- * BrewBuddy Service Worker
+ * dripmate Service Worker
  * Provides offline PWA support with intelligent caching strategies
  */
 
@@ -41,7 +41,7 @@ const STATIC_ASSETS = [
 ];
 
 // API domain for network-first strategy
-const API_DOMAIN = 'brew-buddy-backend-production.up.railway.app';
+const API_DOMAIN = 'dripmate-backend-production.up.railway.app';
 
 // Static file extensions to cache
 const STATIC_EXTENSIONS = ['.html', '.css', '.js', '.json', '.png', '.svg', '.jpg', '.jpeg', '.gif', '.webp', '.ico'];
