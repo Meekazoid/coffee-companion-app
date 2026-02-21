@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drip·mate — Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #111111;
+            --bg-card: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --accent: #d4a574;
+            --accent-hover: #c09563;
+            --border: #222222;
+            --border-light: #2a2a2a;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --muted: #555555;
+            --danger: #f87171;
+        }
+
+        html, body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 300;
+            min-height: 100vh;
+        }
+
+        /* ── LOGIN SCREEN ── */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 32px;
+            padding: 40px 20px;
+        }
+
+        .login-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .login-brand h1 {
+            font-size: 1.8rem;
+            font-weight: 200;
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+        }
+
+        .login-brand h1 span {
+            color: var(--accent);
+        }
+
+        .login-brand p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .login-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .login-box label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .login-box input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .login-box input:focus {
+            border-color: var(--accent);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .login-error {
+            font-size: 0.78rem;
+            color: var(--danger);
+            text-align: center;
+            display: none;
+        }
+
+        /* ── ADMIN SCREEN ── */
+        #admin-screen {
+            display: none;
+            min-height: 100vh;
+            padding: 40px 24px 80px;
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .admin-brand h1 {
+            font-size: 1.4rem;
+            font-weight: 200;
+            letter-spacing: 0.15em;
+        }
+
+        .admin-brand h1 span {
+            color: var(--accent);
+        }
+
+        .admin-brand p {
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: var(--text-secondary);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-logout:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── ADD FORM ── */
+        .section-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .add-form {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1.2fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        @media (max-width: 900px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-grid .btn-add {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-field label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+        }
+
+        .form-field input {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .form-field input:focus {
+            border-color: var(--accent);
+        }
+
+        .form-field input::placeholder {
+            color: var(--muted);
+        }
+
+        .btn-add {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.1s;
+            height: 40px;
+            align-self: end;
+        }
+
+        .btn-add:hover { background: var(--accent-hover); }
+        .btn-add:active { transform: scale(0.97); }
+
+        /* ── STATS ── */
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .stat-chip {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 120px;
+        }
+
+        .stat-chip .stat-num {
+            font-size: 1.6rem;
+            font-weight: 200;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .stat-chip .stat-lbl {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+        }
+
+        .stat-chip.accent .stat-num { color: var(--accent); }
+        .stat-chip.success .stat-num { color: var(--success); }
+        .stat-chip.warning .stat-num { color: var(--warning); }
+
+        /* ── TABLE ── */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 780px;
+        }
+
+        thead tr {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        thead th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 0.63rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--text-secondary);
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        tbody td {
+            padding: 14px 16px;
+            font-size: 0.83rem;
+            color: var(--text-primary);
+            vertical-align: middle;
+        }
+
+        .td-email {
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        .td-muted {
+            color: var(--text-secondary);
+        }
+
+        .td-token {
+            font-family: 'Courier New', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .status-registered {
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+
+        .status-sent {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .status-invited {
+            background: rgba(136, 136, 136, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+
+        /* Inline edit */
+        .editable {
+            cursor: pointer;
+            border-bottom: 1px dashed transparent;
+            transition: border-color 0.2s;
+            padding: 2px 0;
+            min-width: 60px;
+            display: inline-block;
+        }
+
+        .editable:hover {
+            border-color: var(--accent);
+        }
+
+        .editable-input {
+            background: var(--bg-card);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 4px 8px;
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.83rem;
+            font-weight: 300;
+            outline: none;
+            width: 100%;
+            min-width: 120px;
+        }
+
+        /* Delete button */
+        .btn-delete {
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-delete:hover {
+            color: var(--danger);
+            background: rgba(248, 113, 113, 0.08);
+        }
+
+        /* Website link */
+        .website-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.78rem;
+            transition: color 0.2s;
+        }
+
+        .website-link:hover {
+            color: var(--accent);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state p {
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 0.82rem;
+            color: var(--text-primary);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success { border-color: rgba(74,222,128,0.3); color: var(--success); }
+        .toast.error   { border-color: rgba(248,113,113,0.3); color: var(--danger); }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--border-light);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Max width */
+        .admin-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ LOGIN ════════════════════════════════ -->
+<div id="login-screen">
+    <div class="login-brand">
+        <h1>drip<span>·</span>mate</h1>
+        <p>Admin</p>
+    </div>
+    <div class="login-box">
+        <div>
+            <label>Passwort</label>
+            <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn-primary" onclick="doLogin()">Einloggen</button>
+        <div class="login-error" id="login-error">Falsches Passwort</div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════ ADMIN ════════════════════════════════ -->
+<div id="admin-screen">
+    <div class="admin-inner">
+
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="admin-brand">
+                <h1>drip<span>·</span>mate</h1>
+                <p>Whitelist · Beta Roasters</p>
+            </div>
+            <button class="btn-logout" onclick="doLogout()">Ausloggen</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row" id="stats-row">
+            <div class="stat-chip accent">
+                <span class="stat-num" id="stat-total">–</span>
+                <span class="stat-lbl">Eingeladen</span>
+            </div>
+            <div class="stat-chip warning">
+                <span class="stat-num" id="stat-sent">–</span>
+                <span class="stat-lbl">Token gesendet</span>
+            </div>
+            <div class="stat-chip success">
+                <span class="stat-num" id="stat-registered">–</span>
+                <span class="stat-lbl">Registriert</span>
+            </div>
+        </div>
+
+        <!-- Add Form -->
+        <div class="add-form">
+            <div class="section-label">Roaster einladen</div>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>E-Mail *</label>
+                    <input type="email" id="f-email" placeholder="hallo@roestery.de">
+                </div>
+                <div class="form-field">
+                    <label>Name</label>
+                    <input type="text" id="f-name" placeholder="Five Elephant">
+                </div>
+                <div class="form-field">
+                    <label>Webseite</label>
+                    <input type="text" id="f-website" placeholder="five-elephant.de">
+                </div>
+                <div class="form-field">
+                    <label>Notiz</label>
+                    <input type="text" id="f-note" placeholder="Berlin, erstes Gespräch Feb 21">
+                </div>
+                <button class="btn-add" onclick="addEntry()">+ Hinzufügen</button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="section-label">Whitelist</div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>E-Mail</th>
+                        <th>Name</th>
+                        <th>Webseite</th>
+                        <th>Notiz</th>
+                        <th>Token</th>
+                        <th>Status</th>
+                        <th>Hinzugefügt</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <span class="spinner"></span>
+                                <p>Lade Daten…</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════
+const BACKEND_URL = 'https://dripmate-backend-production.up.railway.app';
+const ADMIN_PASSWORD = 'dripmate-admin-2026'; // ← hier dein Passwort setzen
+
+// ══════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════
+function doLogin() {
+    const pw = document.getElementById('pw-input').value;
+    if (pw === ADMIN_PASSWORD) {
+        sessionStorage.setItem('admin_auth', '1');
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-screen').style.display = 'block';
+        loadData();
+    } else {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('pw-input').value = '';
+        document.getElementById('pw-input').focus();
+    }
+}
+
+function doLogout() {
+    sessionStorage.removeItem('admin_auth');
+    location.reload();
+}
+
+document.getElementById('pw-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+});
+
+// Auto-login wenn Session aktiv
+if (sessionStorage.getItem('admin_auth') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    loadData();
+}
+
+// ══════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════
+let entries = [];
+
+async function loadData() {
+    try {
+        const res = await fetch(`${BACKEND_URL}/api/admin/whitelist`, {
+            headers: { 'X-Admin-Password': ADMIN_PASSWORD }
+        });
+        if (!res.ok) throw new Error('Fehler beim Laden');
+        const data = await res.json();
+        entries = data.entries || [];
+        renderTable();
+        renderStats();
+    } catch (e) {
+        // Fallback: Demo-Daten für UI-Test ohne Backend
+        entries = [];
+        renderTable();
+        renderStats();
+    }
+}
+
+async function addEntry() {
+    const email   = document.getElementById('f-email').value.trim();
+    const name    = document.getElementById('f-name').value.trim();
+    const website = document.getElementById('f-website').value.trim();
+    const note    = document.getElementById('f-note').value.trim();
+
+    if (!email || !email.includes('@')) {
+        showToast('Bitte eine gültige E-Mail eingeben', 'error');
+        return;
+    }
+
+    if (entries.find(e => e.email === email)) {
+        showToast('Diese E-Mail ist bereits auf der Whitelist', 'error');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${BACKEND_URL}/api/admin/whitelist`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Admin-Password': ADMIN_PASSWORD
+            },
+            body: JSON.stringify({ email, name, website, note })
+        });
+
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+
+        entries.unshift({
+            id: data.id || Date.now(),
+            email,
+            name: name || '–',
+            website: website || '',
+            note: note || '',
+            token: null,
+            status: 'invited',
+            added_at: new Date().toISOString()
+        });
+
+        renderTable();
+        renderStats();
+        clearForm();
+        showToast('✓ Roaster hinzugefügt', 'success');
+    } catch {
+        showToast('Fehler beim Hinzufügen', 'error');
+    }
+}
+
+async function deleteEntry(id) {
+    if (!confirm('Diesen Eintrag wirklich entfernen?')) return;
+
+    try {
+        await fetch(`${BACKEND_URL}/api/admin/whitelist/${id}`, {
+            method: 'DELETE',
+            headers: { 'X-Admin-Password': ADMIN_PASSWORD }
+        });
+        entries = entries.filter(e => e.id !== id);
+        renderTable();
+        renderStats();
+        showToast('Eintrag entfernt', 'success');
+    } catch {
+        showToast('Fehler beim Löschen', 'error');
+    }
+}
+
+async function updateField(id, field, value) {
+    try {
+        await fetch(`${BACKEND_URL}/api/admin/whitelist/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Admin-Password': ADMIN_PASSWORD
+            },
+            body: JSON.stringify({ [field]: value })
+        });
+        const entry = entries.find(e => e.id === id);
+        if (entry) entry[field] = value;
+        showToast('✓ Gespeichert', 'success');
+    } catch {
+        showToast('Fehler beim Speichern', 'error');
+    }
+}
+
+// ══════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════
+function renderTable() {
+    const tbody = document.getElementById('table-body');
+
+    if (entries.length === 0) {
+        tbody.innerHTML = `
+            <tr><td colspan="8">
+                <div class="empty-state">
+                    <div style="font-size:1.5rem;margin-bottom:8px">☕</div>
+                    <p>Noch keine Roaster eingeladen.</p>
+                </div>
+            </td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = entries.map(e => {
+        const statusBadge = getStatusBadge(e.status, e.token);
+        const websiteHTML = e.website
+            ? `<a class="website-link" href="${formatUrl(e.website)}" target="_blank">${e.website}</a>`
+            : `<span class="td-muted editable" onclick="makeEditable(this, ${e.id}, 'website')">–</span>`;
+        const date = e.added_at ? new Date(e.added_at).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'2-digit' }) : '–';
+
+        return `
+        <tr>
+            <td class="td-email">${e.email}</td>
+            <td>
+                <span class="editable" onclick="makeEditable(this, ${e.id}, 'name')">${e.name || '–'}</span>
+            </td>
+            <td>${websiteHTML}</td>
+            <td>
+                <span class="editable" onclick="makeEditable(this, ${e.id}, 'note')">${e.note || '–'}</span>
+            </td>
+            <td class="td-token">${e.token || '–'}</td>
+            <td>${statusBadge}</td>
+            <td class="td-muted" style="font-size:0.75rem">${date}</td>
+            <td>
+                <button class="btn-delete" onclick="deleteEntry(${e.id})">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                    Entfernen
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function getStatusBadge(status, token) {
+    if (status === 'registered' || status === 'active') {
+        return `<span class="status-badge status-registered">✓ Registriert</span>`;
+    }
+    if (token) {
+        return `<span class="status-badge status-sent">⏳ Token gesendet</span>`;
+    }
+    return `<span class="status-badge status-invited">📋 Eingeladen</span>`;
+}
+
+function renderStats() {
+    const total      = entries.length;
+    const registered = entries.filter(e => e.status === 'registered' || e.status === 'active').length;
+    const sent       = entries.filter(e => e.token && e.status !== 'registered' && e.status !== 'active').length;
+
+    document.getElementById('stat-total').textContent      = total;
+    document.getElementById('stat-registered').textContent = registered;
+    document.getElementById('stat-sent').textContent       = sent;
+}
+
+// ══════════════════════════════════════════════════
+// INLINE EDIT
+// ══════════════════════════════════════════════════
+function makeEditable(span, id, field) {
+    const current = span.textContent === '–' ? '' : span.textContent;
+    const input = document.createElement('input');
+    input.className = 'editable-input';
+    input.value = current;
+    span.replaceWith(input);
+    input.focus();
+
+    function save() {
+        const newVal = input.value.trim() || '–';
+        const newSpan = document.createElement('span');
+        newSpan.className = 'editable';
+        newSpan.textContent = newVal;
+        newSpan.onclick = () => makeEditable(newSpan, id, field);
+        input.replaceWith(newSpan);
+        if (input.value.trim() !== current) {
+            updateField(id, field, input.value.trim());
+        }
+    }
+
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); save(); }
+        if (e.key === 'Escape') { input.value = current; save(); }
+    });
+}
+
+// ══════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════
+function clearForm() {
+    ['f-email','f-name','f-website','f-note'].forEach(id => {
+        document.getElementById(id).value = '';
+    });
+    document.getElementById('f-email').focus();
+}
+
+function formatUrl(url) {
+    if (!url.startsWith('http')) return 'https://' + url;
+    return url;
+}
+
+function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => { t.className = 'toast'; }, 2800);
+}
+</script>
+</body>
+</html>
