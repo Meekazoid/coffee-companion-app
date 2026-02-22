@@ -9,15 +9,22 @@ import { coffees, sanitizeHTML } from './state.js';
 export function openSettings() {
     document.getElementById('settingsModal').classList.add('active');
     const token = localStorage.getItem('token');
-    const statusDiv = document.getElementById('activationStatus');
+    const statusDiv   = document.getElementById('activationStatus');
+    const subtitle    = document.getElementById('activationSubtitle');
+    const inputWrap   = document.getElementById('activationInputWrap');
+    const activateBtn = document.getElementById('activateDeviceBtn');
 
     if (token) {
-        statusDiv.style.display = 'block';
-        statusDiv.style.background = 'rgba(40, 167, 69, 0.1)';
-        statusDiv.style.border = '1px solid rgba(40, 167, 69, 0.3)';
-        statusDiv.style.color = '#5fda7d';
-        statusDiv.innerHTML = '✅ Device already activated';
+        // Activated state
+        if (subtitle)    { subtitle.textContent = 'Device already activated'; subtitle.style.color = '#5fda7d'; }
+        if (inputWrap)   inputWrap.style.display = 'none';
+        if (activateBtn) activateBtn.style.display = 'none';
+        statusDiv.style.display = 'none';
     } else {
+        // Not activated state
+        if (subtitle)    { subtitle.textContent = 'Enter the code you received to activate this device.'; subtitle.style.color = ''; }
+        if (inputWrap)   inputWrap.style.display = 'block';
+        if (activateBtn) activateBtn.style.display = 'block';
         statusDiv.style.display = 'none';
     }
 }
