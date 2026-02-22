@@ -22,7 +22,8 @@ import {
     closeSettings, 
     activateDevice,
     openDecafModal,
-    closeDecafModal
+    closeDecafModal,
+    handleMagicLink
 } from './settings.js';
 import { updateRoastDate } from './freshness.js';
 import { 
@@ -120,6 +121,9 @@ function closeModal(id) {
 
 // Main initialization function
 function initApp() {
+    // Handle magic link token from email
+    handleMagicLink();
+
     // Initialize theme early
     initTheme();
 
