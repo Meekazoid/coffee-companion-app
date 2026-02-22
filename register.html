@@ -1,406 +1,275 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>drip·mate — Zugang anfordern</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <title>drip·mate — Request Access</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
         :root {
-            --bg:      #000000;
-            --card:    #0d0d0d;
-            --border:  #222222;
-            --accent:  #d4a574;
-            --accent2: #c09563;
-            --text:    #ffffff;
-            --muted:   #666666;
-            --success: #4ade80;
-            --error:   #f87171;
+            --bg: #f6efe7;
+            --bg-accent: #eadbc9;
+            --card: #fffdf9;
+            --text: #2f2118;
+            --muted: #6f5c4f;
+            --border: #dbc5ad;
+            --focus: #8b5e3c;
+            --cta: #5f3d27;
+            --cta-hover: #4f311f;
+            --cta-text: #fff7f0;
+            --success-bg: #e9f7ef;
+            --success-text: #1f6a43;
+            --warning-bg: #fff5e6;
+            --warning-text: #7a4d1e;
+            --error-bg: #ffeceb;
+            --error-text: #9c2a23;
+            --shadow: 0 18px 35px rgba(72, 42, 23, 0.14);
+            --radius: 18px;
         }
 
-        html, body {
-            background: var(--bg);
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: var(--text);
-            font-family: 'Sora', sans-serif;
-            font-weight: 300;
-            min-height: 100vh;
+            background:
+                radial-gradient(circle at 12% 10%, rgba(194, 145, 102, 0.2), transparent 45%),
+                radial-gradient(circle at 88% 88%, rgba(132, 98, 69, 0.16), transparent 40%),
+                linear-gradient(150deg, var(--bg) 0%, var(--bg-accent) 100%);
+            display: grid;
+            place-items: center;
+            padding: 24px 16px;
+            line-height: 1.5;
         }
 
-        /* ── Layout ── */
-        .page {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
+        .container {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .wordmark {
+            margin: 0;
+            font-size: clamp(1.8rem, 5vw, 2.25rem);
+            letter-spacing: 0.03em;
+            font-weight: 700;
+            color: #422919;
+        }
+
+        .wordmark-dot { color: #9a6843; }
+
+        .tagline {
+            margin: 6px 0 0;
+            font-size: 0.92rem;
+            color: var(--muted);
         }
 
         .card {
-            width: 100%;
-            max-width: 420px;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        /* ── Brand ── */
-        .brand {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .brand h1 {
-            font-size: 2rem;
-            font-weight: 200;
-            letter-spacing: 0.15em;
-            line-height: 1;
-        }
-
-        .brand h1 span {
-            color: var(--accent);
-        }
-
-        .brand p {
-            font-size: 0.75rem;
-            color: var(--muted);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-
-        /* ── Form box ── */
-        .form-box {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
         }
 
-        .form-box h2 {
-            font-size: 1rem;
-            font-weight: 300;
-            color: var(--text);
-            line-height: 1.5;
+        h2 {
+            margin: 0 0 8px;
+            font-size: 1.45rem;
+            line-height: 1.2;
         }
 
-        .form-box h2 strong {
-            font-weight: 400;
-            color: var(--accent);
-        }
-
-        /* Input */
-        .input-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .input-wrap label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
+        .intro {
+            margin: 0 0 20px;
             color: var(--muted);
+            font-size: 0.97rem;
         }
 
-        .input-wrap input {
-            background: #000;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px 16px;
-            color: var(--text);
-            font-family: 'Sora', sans-serif;
-            font-size: 1rem;
-            font-weight: 300;
-            outline: none;
-            transition: border-color 0.2s;
-            width: 100%;
+        .field {
+            margin-bottom: 12px;
         }
 
-        .input-wrap input:focus {
-            border-color: var(--accent);
-        }
-
-        .input-wrap input::placeholder {
-            color: #333;
-        }
-
-        /* Button */
-        .btn {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: 10px;
-            padding: 15px 24px;
-            font-family: 'Sora', sans-serif;
-            font-size: 0.9rem;
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
             font-weight: 600;
-            cursor: pointer;
+        }
+
+        input[type="email"] {
             width: 100%;
-            transition: background 0.2s, transform 0.1s, opacity 0.2s;
-            letter-spacing: 0.03em;
-        }
-
-        .btn:hover:not(:disabled) { background: var(--accent2); }
-        .btn:active:not(:disabled) { transform: scale(0.98); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* ── States ── */
-
-        /* Loading */
-        .btn .spinner {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(0,0,0,0.3);
-            border-top-color: #000;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            vertical-align: middle;
-            margin-right: 6px;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* Success screen */
-        #success-screen {
-            display: none;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        .success-box {
-            background: var(--card);
-            border: 1px solid #1a3a1a;
-            border-radius: 20px;
-            padding: 36px 32px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            text-align: center;
-        }
-
-        .success-icon {
-            width: 56px;
-            height: 56px;
-            background: rgba(74, 222, 128, 0.1);
-            border: 1px solid rgba(74, 222, 128, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .success-box h2 {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: var(--text);
-        }
-
-        .success-box p {
-            font-size: 0.85rem;
-            color: var(--muted);
-            line-height: 1.7;
-        }
-
-        .success-box p strong {
-            color: var(--text);
-            font-weight: 400;
-        }
-
-        /* Error message */
-        .error-msg {
-            display: none;
-            background: rgba(248, 113, 113, 0.08);
-            border: 1px solid rgba(248, 113, 113, 0.2);
-            border-radius: 10px;
-            padding: 14px 16px;
-            font-size: 0.83rem;
-            color: var(--error);
-            line-height: 1.5;
-        }
-
-        /* Not whitelisted */
-        .not-invited {
-            display: none;
-            background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 36px 32px;
-            text-align: center;
-            flex-direction: column;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .not-invited-icon {
-            font-size: 2rem;
-        }
-
-        .not-invited h2 {
+            border-radius: 12px;
+            padding: 13px 14px;
             font-size: 1rem;
-            font-weight: 300;
             color: var(--text);
+            background: #fff;
         }
 
-        .not-invited p {
+        input[type="email"]::placeholder { color: #a68f7a; }
+
+        input[type="email"]:focus-visible,
+        button:focus-visible {
+            outline: 3px solid rgba(139, 94, 60, 0.25);
+            outline-offset: 2px;
+            border-color: var(--focus);
+        }
+
+        .btn {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 16px;
+            background: var(--cta);
+            color: var(--cta-text);
+            font-size: 1rem;
+            font-weight: 650;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.08s ease;
+        }
+
+        .btn:hover:not(:disabled) { background: var(--cta-hover); }
+        .btn:active:not(:disabled) { transform: translateY(1px); }
+        .btn:disabled { opacity: 0.7; cursor: wait; }
+
+        .status {
+            display: none;
+            margin-top: 14px;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 0.92rem;
+        }
+
+        .status.visible { display: block; }
+        .status.error { background: var(--error-bg); color: var(--error-text); border: 1px solid #f5c3bf; }
+        .status.success { background: var(--success-bg); color: var(--success-text); border: 1px solid #bee6cc; }
+        .status.warning { background: var(--warning-bg); color: var(--warning-text); border: 1px solid #f2d7ad; }
+
+        .footnote {
+            margin-top: 16px;
             font-size: 0.82rem;
             color: var(--muted);
-            line-height: 1.7;
-        }
-
-        .not-invited a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* ── Footer ── */
-        .footer {
-            font-size: 0.7rem;
-            color: #333;
             text-align: center;
-            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 420px) {
+            .card { padding: 20px; }
+            h2 { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
-<div class="page">
-    <div class="card">
+<main class="container" aria-labelledby="register-title">
+    <header class="brand" aria-label="drip mate branding">
+        <h1 class="wordmark">drip<span class="wordmark-dot">·</span>mate</h1>
+        <p class="tagline">Precision meets ritual.</p>
+    </header>
 
-        <!-- Brand -->
-        <div class="brand">
-            <h1>drip<span>·</span>mate</h1>
-            <p>Beta-Zugang</p>
-        </div>
+    <section class="card" aria-live="polite">
+        <h2 id="register-title">Welcome to drip·mate</h2>
+        <p class="intro">Request your access token to get started. We’ll send it straight to your inbox in just a moment.</p>
 
-        <!-- ── Register Form ── -->
-        <div id="form-screen">
-            <div class="form-box">
-                <h2>Gib deine E-Mail ein um deinen <strong>Zugangs-Token</strong> zu erhalten.</h2>
-
-                <div class="input-wrap">
-                    <label>E-Mail</label>
-                    <input type="email" id="email-input" placeholder="hallo@roestery.de" autocomplete="email">
-                </div>
-
-                <div class="error-msg" id="error-msg"></div>
-
-                <button class="btn" id="submit-btn" onclick="submitEmail()">
-                    Token anfordern
-                </button>
+        <form id="register-form" novalidate>
+            <div class="field">
+                <label for="email-input">Email address</label>
+                <input
+                    id="email-input"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    inputmode="email"
+                    required
+                    aria-describedby="status-message"
+                    placeholder="you@roastery.com"
+                >
             </div>
-        </div>
 
-        <!-- ── Success ── -->
-        <div id="success-screen">
-            <div class="success-box">
-                <div class="success-icon">☕</div>
-                <h2>Token unterwegs!</h2>
-                <p>
-                    Wir haben deinen Zugangs-Token an<br>
-                    <strong id="success-email"></strong><br>
-                    gesendet. Schau in dein Postfach.
-                </p>
-                <p style="font-size:0.75rem;color:#444;">
-                    Nicht angekommen? Schau im Spam-Ordner nach<br>oder schreib uns.
-                </p>
-            </div>
-        </div>
+            <button id="submit-btn" class="btn" type="submit">Send me my token</button>
+            <p id="status-message" class="status" role="status" aria-live="polite"></p>
+        </form>
 
-        <!-- ── Not Invited ── -->
-        <div class="not-invited" id="not-invited-screen">
-            <div class="not-invited-icon">🔒</div>
-            <h2>Nur auf Einladung</h2>
-            <p>
-                dripmate ist aktuell nur für ausgewählte<br>
-                Röstereien verfügbar.<br><br>
-                Interesse? Schreib uns unter<br>
-                <a href="mailto:hello@dripmate.app">hello@dripmate.app</a>
-            </p>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">drip·mate · Precision meets Ritual.</div>
-
-    </div>
-</div>
+        <p class="footnote">Need help? Reach us at hello@dripmate.app</p>
+    </section>
+</main>
 
 <script>
-    const BACKEND_URL = 'https://dripmate-backend-production.up.railway.app';
+    const form = document.getElementById('register-form');
+    const emailInput = document.getElementById('email-input');
+    const submitBtn = document.getElementById('submit-btn');
+    const statusEl = document.getElementById('status-message');
 
-    async function submitEmail() {
-        const email = document.getElementById('email-input').value.trim();
-        const btn   = document.getElementById('submit-btn');
-        const errEl = document.getElementById('error-msg');
+    function setStatus(message, type) {
+        statusEl.textContent = message;
+        statusEl.className = `status visible ${type}`;
+    }
 
-        // Validierung
-        if (!email || !email.includes('@')) {
-            showError('Bitte eine gültige E-Mail eingeben.');
+    function clearStatus() {
+        statusEl.textContent = '';
+        statusEl.className = 'status';
+    }
+
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    async function handleRegister(event) {
+        event.preventDefault();
+        clearStatus();
+
+        const email = emailInput.value.trim();
+
+        if (!isValidEmail(email)) {
+            setStatus('Please enter a valid email address.', 'error');
+            emailInput.focus();
             return;
         }
 
-        // Loading
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span>Wird gesendet…';
-        errEl.style.display = 'none';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
 
         try {
-            const res  = await fetch(`${BACKEND_URL}/api/auth/register`, {
+            const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })
             });
 
-            const data = await res.json();
+            const data = await response.json().catch(() => ({}));
 
-            if (res.ok && data.success) {
-                // Erfolg
-                document.getElementById('success-email').textContent = email;
-                document.getElementById('form-screen').style.display   = 'none';
-                document.getElementById('success-screen').style.display = 'flex';
+            if (response.ok) {
+                if (data.resent === true) {
+                    setStatus('Your existing token was re-sent. Please check your inbox.', 'success');
+                } else {
+                    setStatus('Your token is on the way. Please check your inbox in a moment.', 'success');
+                }
+                form.reset();
                 return;
             }
 
             if (data.error === 'not_whitelisted') {
-                // Nicht eingeladen
-                document.getElementById('form-screen').style.display       = 'none';
-                document.getElementById('not-invited-screen').style.display = 'flex';
+                setStatus('You are not on the invite list yet. Thanks for your interest—we’ll reach out soon.', 'warning');
                 return;
             }
 
-            showError('Ein Fehler ist aufgetreten. Bitte versuche es nochmal.');
+            if (data.error === 'Invalid email address') {
+                setStatus('Something went wrong. Please try again in a moment.', 'error');
+                return;
+            }
 
-        } catch (err) {
-            showError('Keine Verbindung zum Server. Bitte versuche es später nochmal.');
+            setStatus('Something went wrong. Please try again in a moment.', 'error');
+        } catch (error) {
+            setStatus('We could not reach the server. Please try again in a moment.', 'error');
         } finally {
-            btn.disabled = false;
-            btn.innerHTML = 'Token anfordern';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send me my token';
         }
     }
 
-    function showError(msg) {
-        const el = document.getElementById('error-msg');
-        el.textContent    = msg;
-        el.style.display  = 'block';
-    }
-
-    // Enter-Taste
-    document.getElementById('email-input').addEventListener('keydown', e => {
-        if (e.key === 'Enter') submitEmail();
-    });
+    form.addEventListener('submit', handleRegister);
 </script>
 </body>
 </html>
