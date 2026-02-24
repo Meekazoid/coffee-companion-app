@@ -79,6 +79,14 @@ function displayWaterHardness(hardness, source = 'api') {
     }
     
     document.getElementById('waterHardnessDisplay').style.display = 'block';
+    
+    // Update Brew Impact box
+    const brewImpactText = document.getElementById('brewImpactText');
+    const brewImpactBox = document.getElementById('waterBrewImpact');
+    if (brewImpactText && brewImpactBox) {
+        brewImpactText.textContent = hardness.description || getHardnessDescription(category);
+        brewImpactBox.style.display = 'block';
+    }
 }
 
 function getHardnessDescription(category) {
