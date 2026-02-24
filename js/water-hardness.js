@@ -71,15 +71,13 @@ function displayWaterHardness(hardness, source = 'api') {
         sourceDisplay.style.background = 'rgba(76, 175, 80, 0.15)';
         sourceDisplay.style.color = '#4CAF50';
     } else {
-        sourceDisplay.textContent = 'ZIP LOOKUP';
+        // Show city/region name from ZIP lookup
+        const regionName = hardness.region ? hardness.region.toUpperCase() : 'ZIP LOOKUP';
+        sourceDisplay.textContent = regionName;
         sourceDisplay.style.background = 'rgba(212, 165, 116, 0.15)';
         sourceDisplay.style.color = 'var(--accent)';
     }
     
-    document.getElementById('hardnessRegion').textContent = hardness.region || (source === 'manual' ? 'Manual entry' : 'ZIP location');
-    document.getElementById('hardnessSource').textContent = source === 'manual' ? 'Manual override' : 'Automatic ZIP lookup';
-    document.getElementById('hardnessDescriptionDisplay').textContent = 
-        hardness.description || getHardnessDescription(category);
     document.getElementById('waterHardnessDisplay').style.display = 'block';
 }
 
