@@ -686,6 +686,58 @@ body.light-mode .picker-option.active {
     border-color: rgba(139, 100, 60, 0.25);
 }
 
+/* ── Process chip in manual form ── */
+.process-chip {
+    width: 100%;
+    justify-content: space-between;
+}
+
+.process-chip .brew-chip-label {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.process-chip.has-value .brew-chip-label {
+    color: var(--text-primary);
+}
+
+/* ── Process Picker Modal ── */
+#processModal .modal-content {
+    max-width: 408px;
+    padding: 27px;
+}
+
+#processModal .popup-header-standard {
+    padding-bottom: 12px;
+    margin-bottom: 17px;
+}
+
+#processModal .popup-header-standard svg {
+    width: 20px;
+    height: 20px;
+}
+
+#processModal .popup-header-standard h2 {
+    font-size: 1.02rem;
+}
+
+#processModal .picker-option {
+    padding: 12px 14px;
+    gap: 10px;
+}
+
+#processModal .picker-option-name {
+    font-size: 0.75rem;
+}
+
+#processModal .picker-option-detail {
+    font-size: 0.6rem;
+}
+
+#processModal .picker-check {
+    font-size: 0.85rem;
+}
+
 /* ==========================================
    8. COFFEE CARDS
    ========================================== */

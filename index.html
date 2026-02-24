@@ -114,19 +114,11 @@
                 </div>
                 <div class="form-group">
                     <label>Processing Method</label>
-                    <select id="process">
-                        <option value="">-- Select (optional)--</option>
-                        <option value="unknown">Unknown</option>
-                        <option value="washed">Washed</option>
-                        <option value="natural">Natural</option>
-                        <option value="honey">Honey</option>
-                        <option value="anaerobic natural">Anaerobic Natural</option>
-                        <option value="anaerobic washed">Anaerobic Washed</option>
-                        <option value="carbonic maceration">Carbonic Maceration</option>
-                        <option value="yeast inoculated natural">Yeast Inoculated Natural</option>
-                        <option value="nitro washed">Nitro Washed</option>
-                        <option value="extended fermentation">Extended Fermentation</option>
-                    </select>
+                    <button type="button" class="brew-chip process-chip" id="process-chip" aria-label="Choose processing method">
+                        <span class="brew-chip-label" id="process-chip-label">– optional –</span>
+                        <svg class="brew-chip-caret" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+                    </button>
+                    <input type="hidden" id="process" value="">
                 </div>
                 <div class="form-group">
                     <label>Variety</label>
@@ -487,6 +479,74 @@
                 <button class="picker-option" data-value="v60">
                     <span class="picker-option-name">Hario V60</span>
                     <span class="picker-option-detail">Pour-over · cone · 1:16</span>
+                    <span class="picker-check">✓</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== PROCESS PICKER MODAL ====== -->
+    <div id="processModal" class="modal">
+        <div class="modal-content modal-content--narrow">
+            <div class="popup-header-standard">
+                <div class="popup-title-group">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h2>Processing Method</h2>
+                </div>
+                <button class="close-btn" id="closeProcessBtn">✕</button>
+            </div>
+            <div class="picker-list" id="process-picker-list">
+                <button class="picker-option" data-value="">
+                    <span class="picker-option-name">Unknown / Skip</span>
+                    <span class="picker-option-detail">Use balanced defaults</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="washed">
+                    <span class="picker-option-name">Washed</span>
+                    <span class="picker-option-detail">Clean · bright · standard</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="natural">
+                    <span class="picker-option-name">Natural</span>
+                    <span class="picker-option-detail">Full fruit body · coarser grind</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="honey">
+                    <span class="picker-option-name">Honey</span>
+                    <span class="picker-option-detail">Sweet · fruity · balanced</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="anaerobic natural">
+                    <span class="picker-option-name">Anaerobic Natural</span>
+                    <span class="picker-option-detail">Funky · fruity · controlled</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="anaerobic washed">
+                    <span class="picker-option-name">Anaerobic Washed</span>
+                    <span class="picker-option-detail">Clean but complex · cooler temp</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="carbonic maceration">
+                    <span class="picker-option-name">Carbonic Maceration</span>
+                    <span class="picker-option-detail">Wine-like · slow extraction</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="yeast inoculated natural">
+                    <span class="picker-option-name">Yeast Inoculated Natural</span>
+                    <span class="picker-option-detail">Unique fermentation notes</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="nitro washed">
+                    <span class="picker-option-name">Nitro Washed</span>
+                    <span class="picker-option-detail">Very delicate · volatile compounds</span>
+                    <span class="picker-check">✓</span>
+                </button>
+                <button class="picker-option" data-value="extended fermentation">
+                    <span class="picker-option-name">Extended Fermentation</span>
+                    <span class="picker-option-detail">Intense flavors · careful extraction</span>
                     <span class="picker-check">✓</span>
                 </button>
             </div>
