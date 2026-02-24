@@ -112,6 +112,9 @@ async function analyzeCoffeeImage(imageData, mediaType) {
         if (response.status === 401 || response.status === 403) {
             throw new Error('Access invalid or expired. Please reactivate your device in Settings (⚙️).');
         }
+        if (response.status === 422) {
+            throw new Error(backendMessage || 'This doesn\'t look like a coffee bag. Please photograph a coffee package or label.');
+        }
         if (response.status === 413) {
             throw new Error('Image is too large. Please try a smaller image or crop the photo.');
         }
