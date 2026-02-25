@@ -72,10 +72,19 @@ export function initGlobalGrinder() {
 // CHIP LABELS
 // ==========================================
 
+// Chip-only abbreviations (full names stay in picker popup)
+function abbreviateForChip(name) {
+    return name
+        .replace('Comandante C40 MK3', 'Comandante MK3')
+        .replace('Comandante C40 MK4', 'Comandante MK4')
+        .replace('Timemore Chestnut C2', 'Timemore C2')
+        .replace('Timemore Chestnut S3', 'Timemore S3');
+}
+
 function updateChipLabels() {
     const gLabel = document.getElementById('grinder-chip-label');
     const mLabel = document.getElementById('method-chip-label');
-    if (gLabel) gLabel.textContent = getGrinderLabel(preferredGrinder);
+    if (gLabel) gLabel.textContent = abbreviateForChip(getGrinderLabel(preferredGrinder));
     if (mLabel) mLabel.textContent = getMethodLabel(preferredMethod || 'v60');
 }
 
