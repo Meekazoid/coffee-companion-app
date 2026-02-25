@@ -494,6 +494,7 @@ button:hover {
     color: var(--accent);
     text-align: center;
     opacity: 0.7;
+    white-space: nowrap;
 }
 
 .brew-chip-group:first-child {
