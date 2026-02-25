@@ -274,6 +274,7 @@ body.light-mode .add-section {
 /* Chevron arrows in the Coffee Shot icon — accent color */
 .cs-chevrons {
     color: var(--accent);
+    opacity: 0.88;
 }
 
 .cs-text {
