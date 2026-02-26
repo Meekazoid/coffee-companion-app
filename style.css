@@ -241,16 +241,16 @@ h1 {
     width: 100%;
     background: linear-gradient(135deg, #5c3a1e 0%, #3d2410 55%, #2e1a0c 100%);
     border: 1px solid rgba(180, 120, 60, 0.25);
-    border-left: 2px solid var(--accent);
-    border-right: 2px solid var(--accent);
+    border-left: 3px solid var(--accent);
+    border-right: 3px solid var(--accent);
     border-radius: 14px;
 }
 
 body.light-mode .cs-content {
     background: linear-gradient(135deg, #7a4a22 0%, #5c3318 55%, #4a2810 100%);
     border-color: rgba(200, 140, 70, 0.3);
-    border-left: 2px solid var(--accent);
-    border-right: 2px solid var(--accent);
+    border-left: 3px solid var(--accent);
+    border-right: 3px solid var(--accent);
 }
 
 body.light-mode .add-section {
@@ -259,22 +259,16 @@ body.light-mode .add-section {
 
 .cs-icon-wrap {
     flex-shrink: 0;
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .cs-viewfinder {
-    width: 48px;
-    height: 48px;
-}
-
-.cs-bag {
-    transform-box: fill-box;
-    transform-origin: center;
-    transform: scale(1.15);
+    width: 42px;
+    height: 42px;
 }
 
 /* Chevron arrows in the Coffee Shot icon — accent color */
@@ -282,11 +276,6 @@ body.light-mode .add-section {
     color: var(--accent);
     opacity: 0.88;
 }
-
-.cs-chevrons path:nth-child(1) { transform: translateY(-2px); }
-.cs-chevrons path:nth-child(2) { transform: translateY(2px); }
-.cs-chevrons path:nth-child(3) { transform: translateX(-2px); }
-.cs-chevrons path:nth-child(4) { transform: translateX(2px); }
 
 .cs-text {
     display: flex;
@@ -309,20 +298,6 @@ body.light-mode .add-section {
     letter-spacing: 0.03em;
     line-height: 1;
     font-weight: 200;
-}
-
-body.light-mode .cs-chevrons {
-    color: #b88a3c;
-    opacity: 0.96;
-}
-
-body.light-mode .cs-sub {
-    color: rgba(184, 138, 60, 0.86);
-}
-
-body.light-mode .brew-chip-group-label {
-    color: #9b7430;
-    opacity: 0.95;
 }
 
 .upload-button,
@@ -792,7 +767,7 @@ body.light-mode .picker-option.active {
         var(--bg-secondary) 55%
     );
     border: 1px solid var(--border);
-    border-left: 1.5px solid var(--accent);
+    border-left: 2px solid var(--accent);
     border-radius: 16px;
     padding: 24px;
     cursor: pointer;
@@ -1133,7 +1108,7 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
 }
 
 .roast-label {
-    font-size: 0.76rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: var(--text-secondary);
     flex-shrink: 0;
@@ -1142,36 +1117,17 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
 .roast-date-input {
     width: 100%;
     height: 30px;
-<<<<<<< codex/style-buttons-and-improve-slider-in-coffecard-qish7b
-    padding: 4px 34px 4px 12px;
-=======
-    padding: 4px 28px 4px 10px;
->>>>>>> main
+    padding: 4px 8px;
     background: var(--bg-secondary);
     border: 1px solid color-mix(in srgb, var(--border) 80%, transparent 20%);
     border-radius: 8px;
     color: var(--text-primary);
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-family: inherit;
     line-height: 1;
     transition: all 0.2s;
     cursor: pointer;
-    text-align: center;
-<<<<<<< codex/style-buttons-and-improve-slider-in-coffecard-qish7b
-    text-align-last: center;
-=======
->>>>>>> main
 }
-
-.roast-date-input::-webkit-datetime-edit {
-    text-align: center;
-}
-
-.roast-date-input::-webkit-datetime-edit-fields-wrapper {
-    display: flex;
-    justify-content: center;
-}
-
 
 .roast-date-input:focus {
     outline: none;
@@ -1180,13 +1136,11 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
 
 .roast-date-placeholder {
     position: absolute;
-    left: 50%;
+    left: 10px;
     top: 50%;
-    width: calc(100% - 26px);
-    transform: translate(-50%, -50%);
-    text-align: center;
+    transform: translateY(-50%);
     font-size: 0.72rem;
-    color: color-mix(in srgb, var(--text-secondary) 48%, transparent 52%);
+    color: color-mix(in srgb, var(--text-secondary) 28%, transparent 72%);
     pointer-events: none;
     opacity: 1;
     transition: opacity 0.15s ease;
@@ -1201,17 +1155,7 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
 .roast-date-input::-webkit-calendar-picker-indicator {
     cursor: pointer;
     filter: invert(0.5);
-<<<<<<< codex/style-buttons-and-improve-slider-in-coffecard-qish7b
-    margin-right: 8px;
-=======
-    margin-right: 4px;
->>>>>>> main
 }
-
-.roast-date-input::-moz-focus-inner {
-    border: 0;
-}
-
 
 body.light-mode .roast-date-input::-webkit-calendar-picker-indicator {
     filter: invert(0.2);
