@@ -283,6 +283,11 @@ body.light-mode .add-section {
     opacity: 0.88;
 }
 
+.cs-chevrons path:nth-child(1) { transform: translateY(-2px); }
+.cs-chevrons path:nth-child(2) { transform: translateY(2px); }
+.cs-chevrons path:nth-child(3) { transform: translateX(-2px); }
+.cs-chevrons path:nth-child(4) { transform: translateX(2px); }
+
 .cs-text {
     display: flex;
     flex-direction: column;
