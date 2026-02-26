@@ -452,6 +452,7 @@ button:hover {
     z-index: 100;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
+    border-left: 1px solid var(--border);
     border-radius: 16px;
     padding: 12px 20px;
     margin-bottom: 32px;
@@ -766,6 +767,7 @@ body.light-mode .picker-option.active {
         var(--bg-secondary) 55%
     );
     border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
     border-radius: 16px;
     padding: 24px;
     cursor: pointer;
@@ -1087,6 +1089,13 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
     gap: 10px;
 }
 
+.roast-date-input-shell {
+    position: relative;
+    width: 100%;
+    min-width: 148px;
+    max-width: 172px;
+}
+
 .roast-icon {
     width: 20px;
     height: 20px;
@@ -1107,9 +1116,7 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
 
 .roast-date-input {
     width: 100%;
-    min-width: 148px;
-    max-width: 172px;
-    height: 34px;
+    height: 30px;
     padding: 4px 8px;
     background: var(--bg-secondary);
     border: 1px solid color-mix(in srgb, var(--border) 80%, transparent 20%);
@@ -1126,6 +1133,24 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
     outline: none;
     border-color: var(--accent);
 }
+
+.roast-date-placeholder {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.72rem;
+    color: color-mix(in srgb, var(--text-secondary) 28%, transparent 72%);
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.15s ease;
+}
+
+.roast-date-input.has-date + .roast-date-placeholder,
+.roast-date-input:focus + .roast-date-placeholder {
+    opacity: 0;
+}
+
 
 .roast-date-input::-webkit-calendar-picker-indicator {
     cursor: pointer;
@@ -1228,14 +1253,14 @@ body.light-mode .water-hardness-badge {
 }
 
 .adjust-btn {
-    width: 29px;
-    height: 29px;
+    width: 30px;
+    height: 30px;
     padding: 0;
     background: transparent;
     color: var(--accent);
     border: 1px solid var(--accent);
-    border-radius: 50%;
-    font-size: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -1352,9 +1377,10 @@ body.light-mode .water-hardness-badge {
     -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    border-radius: 4px;
-    background: white;
-    border: 2px solid var(--text-secondary);
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid #6d3e1f;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
     cursor: grab;
     margin-top: -7.5px;
 }
@@ -1366,9 +1392,10 @@ body.light-mode .water-hardness-badge {
 .ratio-slider input[type="range"]::-moz-range-thumb {
     width: 18px;
     height: 18px;
-    border-radius: 4px;
-    background: white;
-    border: 2px solid var(--text-secondary);
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid #6d3e1f;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
     cursor: grab;
 }
 
@@ -1377,11 +1404,11 @@ body.light-mode .water-hardness-badge {
 }
 
 body.light-mode .ratio-slider input[type="range"]::-webkit-slider-thumb {
-    border-color: var(--border);
+    border-color: #8b5a2b;
 }
 
 body.light-mode .ratio-slider input[type="range"]::-moz-range-thumb {
-    border-color: var(--border);
+    border-color: #8b5a2b;
 }
 
 /* ==========================================
@@ -1598,7 +1625,7 @@ body.light-mode .step-progress-bar {
 .feedback-slider-track-layer {
     position: relative;
     height: 18px;
-    width: 87%;
+    width: 96%;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -1611,7 +1638,7 @@ body.light-mode .step-progress-bar {
     left: 0;
     right: 0;
     top: 50%;
-    height: 2.4px;
+    height: 1.6px;
     border-radius: 999px;
     background: var(--accent);
     transform: translateY(-50%);
@@ -1626,21 +1653,21 @@ body.light-mode .step-progress-bar {
     height: 18px;
     background: transparent;
     outline: none;
-    cursor: default;
-    pointer-events: none;
+    cursor: ew-resize;
+    pointer-events: all;
     position: relative;
     z-index: 3;
 }
 
 .feedback-slider::-webkit-slider-runnable-track {
-    height: 2.4px;
+    height: 1.6px;
     border-radius: 999px;
     background: transparent;
     pointer-events: none;
 }
 
 .feedback-slider::-moz-range-track {
-    height: 2.4px;
+    height: 1.6px;
     border-radius: 999px;
     background: transparent;
     pointer-events: none;
@@ -1660,6 +1687,9 @@ body.light-mode .step-progress-bar {
     touch-action: none;
 }
 
+.feedback-slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+}
 .feedback-slider::-moz-range-thumb {
     width: 18px;
     height: 18px;
@@ -1669,6 +1699,10 @@ body.light-mode .step-progress-bar {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
     pointer-events: all;
     cursor: grab;
+}
+
+.feedback-slider::-moz-range-thumb:active {
+    cursor: grabbing;
 }
 
 .feedback-slider-marks {
@@ -1705,7 +1739,7 @@ body.light-mode .step-progress-bar {
 }
 
 .feedback-slider-labels {
-    width: 87%;
+    width: 96%;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1743,7 +1777,7 @@ body.light-mode .feedback-slider-labels {
 
 .feedback-suggestion {
     background: var(--bg-secondary);
-    border-left: 4px solid var(--accent);
+    border: 1px solid var(--border);
     padding: 20px;
     border-radius: 8px;
     margin-top: 24px;
@@ -2317,9 +2351,9 @@ body.light-mode .onboarding-icon {
     }
 
     .adjust-btn {
-        width: 26px;
-        height: 26px;
-        font-size: 0.75rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
     }
 
     .timer-display {
