@@ -71,11 +71,11 @@ function feedbackToSliderValue(value) {
 
 export function updateFeedbackSlider(index, category, sliderValue) {
     const value = sliderValueToFeedback(sliderValue);
-    selectFeedback(index, category, value);
+    selectFeedback(index, category, value, false);
 }
 
 
-export function selectFeedback(index, category, value) {
+export function selectFeedback(index, category, value, syncSlider = true) {
     const coffee = coffees[index];
     if (!coffee.feedback) coffee.feedback = {};
 
@@ -87,7 +87,9 @@ export function selectFeedback(index, category, value) {
     });
 
     const sliderEl = document.querySelector(`[data-feedback-slider="${index}-${category}"]`);
-    if (sliderEl) sliderEl.value = feedbackToSliderValue(value);
+    if (sliderEl && syncSlider) sliderEl.value = feedbackToSliderValue(value);
+
+    if (previousValue === value) return;
 
     if (previousValue === value) return;
 

@@ -452,6 +452,7 @@ button:hover {
     z-index: 100;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
+    border-left: 1px solid var(--border);
     border-radius: 16px;
     padding: 12px 20px;
     margin-bottom: 32px;
@@ -766,6 +767,7 @@ body.light-mode .picker-option.active {
         var(--bg-secondary) 55%
     );
     border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
     border-radius: 16px;
     padding: 24px;
     cursor: pointer;
@@ -1087,6 +1089,13 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
     gap: 10px;
 }
 
+.roast-date-input-shell {
+    position: relative;
+    width: 100%;
+    min-width: 148px;
+    max-width: 172px;
+}
+
 .roast-icon {
     width: 20px;
     height: 20px;
@@ -1107,9 +1116,7 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
 
 .roast-date-input {
     width: 100%;
-    min-width: 148px;
-    max-width: 172px;
-    height: 34px;
+    height: 30px;
     padding: 4px 8px;
     background: var(--bg-secondary);
     border: 1px solid color-mix(in srgb, var(--border) 80%, transparent 20%);
@@ -1126,6 +1133,24 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
     outline: none;
     border-color: var(--accent);
 }
+
+.roast-date-placeholder {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.72rem;
+    color: color-mix(in srgb, var(--text-secondary) 28%, transparent 72%);
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.15s ease;
+}
+
+.roast-date-input.has-date + .roast-date-placeholder,
+.roast-date-input:focus + .roast-date-placeholder {
+    opacity: 0;
+}
+
 
 .roast-date-input::-webkit-calendar-picker-indicator {
     cursor: pointer;
@@ -1352,9 +1377,10 @@ body.light-mode .water-hardness-badge {
     -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    border-radius: 4px;
-    background: white;
-    border: 2px solid var(--text-secondary);
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid #6d3e1f;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
     cursor: grab;
     margin-top: -7.5px;
 }
@@ -1366,9 +1392,10 @@ body.light-mode .water-hardness-badge {
 .ratio-slider input[type="range"]::-moz-range-thumb {
     width: 18px;
     height: 18px;
-    border-radius: 4px;
-    background: white;
-    border: 2px solid var(--text-secondary);
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid #6d3e1f;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
     cursor: grab;
 }
 
@@ -1377,11 +1404,11 @@ body.light-mode .water-hardness-badge {
 }
 
 body.light-mode .ratio-slider input[type="range"]::-webkit-slider-thumb {
-    border-color: var(--border);
+    border-color: #8b5a2b;
 }
 
 body.light-mode .ratio-slider input[type="range"]::-moz-range-thumb {
-    border-color: var(--border);
+    border-color: #8b5a2b;
 }
 
 /* ==========================================
@@ -1750,7 +1777,7 @@ body.light-mode .feedback-slider-labels {
 
 .feedback-suggestion {
     background: var(--bg-secondary);
-    border-left: 4px solid var(--accent);
+    border: 1px solid var(--border);
     padding: 20px;
     border-radius: 8px;
     margin-top: 24px;
