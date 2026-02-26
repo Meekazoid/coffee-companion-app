@@ -787,7 +787,7 @@ body.light-mode .picker-option.active {
         var(--bg-secondary) 55%
     );
     border: 1px solid var(--border);
-    border-left: 1.5px solid var(--accent);
+    border-left: 1.1px solid var(--accent);
     border-radius: 16px;
     padding: 24px;
     cursor: pointer;
