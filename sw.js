@@ -3,11 +3,7 @@
  * Provides offline PWA support with intelligent caching strategies
  */
 
-<<<<<<< codex/style-buttons-and-improve-slider-in-coffecard-qish7b
-const CACHE_VERSION = 'v22.2';  // bumped from v10.9 – card editor feature
-=======
-const CACHE_VERSION = 'v22.7';  // bumped from v10.9 – card editor feature
->>>>>>> main
+const CACHE_VERSION = 'v30.1';  // bumped from v10.9 – card editor feature
 
 // Static assets to pre-cache during installation
 const STATIC_ASSETS = [
