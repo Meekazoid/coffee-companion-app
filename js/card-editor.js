@@ -4,6 +4,7 @@
 // ==========================================
 
 import { coffees, saveCoffeesAndSync, sanitizeHTML } from './state.js';
+import { flashClass } from './ui-flash.js';
 
 const BACKEND_URL = 'https://dripmate-backend-production.up.railway.app';
 
@@ -118,7 +119,10 @@ async function saveEdits(index, card) {
     if (iconEl) iconEl.innerHTML = PENCIL_SVG;
 
     const btnEl = document.getElementById(`edit-btn-${index}`);
-    if (btnEl) btnEl.classList.remove('editing');
+    if (btnEl) {
+        btnEl.classList.remove('editing');
+        flashClass(btnEl, 'btn-pressed', 420);
+    }
 
     // Replace inputs with display elements
     replaceInputWithDisplay(

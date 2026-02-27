@@ -9,6 +9,7 @@ import { initGlobalGrinder } from './grinder.js';
 import { closeFeedbackHistory, migrateCoffeesInitialValues } from './feedback.js';
 import { renderCoffees } from './coffee-list.js';
 import { processImageUpload } from './image-handler.js';
+import { flashClass } from './ui-flash.js';
 import { saveCoffeeManual, initProcessPicker } from './manual-entry.js';
 import { 
     openWaterModal, 
@@ -53,7 +54,7 @@ console.log('✅ Brew timer functions attached to window:', {
 function initEventListeners() {
     // Camera & Upload
     document.getElementById('cameraBtn').addEventListener('click', () => document.getElementById('imageInput').click());
-    document.getElementById('uploadBtn').addEventListener('click', () => document.getElementById('uploadInput').click());
+    document.getElementById('uploadBtn').addEventListener('click', (e) => { flashClass(e.currentTarget); document.getElementById('uploadInput').click(); });
 
     document.getElementById('imageInput').addEventListener('change', async (e) => {
         const file = e.target.files[0];
@@ -70,7 +71,7 @@ function initEventListeners() {
     });
 
     // Manual entry
-    document.getElementById('manualBtn').addEventListener('click', toggleManual);
+    document.getElementById('manualBtn').addEventListener('click', (e) => { flashClass(e.currentTarget); toggleManual(); });
     document.getElementById('saveManualBtn').addEventListener('click', saveCoffeeManual);
     initProcessPicker();
 

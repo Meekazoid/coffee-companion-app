@@ -5,6 +5,7 @@
 
 import { coffees, brewTimers, animationFrames } from './state.js';
 import { getBrewRecommendations } from './brew-engine.js';
+import { flashClass } from './ui-flash.js';
 
 function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
@@ -58,7 +59,9 @@ export function startBrewTimer(index) {
     updateBrewProgress(index);
 }
 
-export function pauseBrewTimer(index) {
+export function pauseBrewTimer(index, buttonEl = null) {
+    const pauseBtn = buttonEl || document.getElementById(`pause-brew-${index}`);
+    flashClass(pauseBtn);
     const timer = brewTimers[index];
     if (!timer) return;
 
@@ -67,19 +70,19 @@ export function pauseBrewTimer(index) {
         timer.isPaused = false;
         timer.isRunning = true;
         updateBrewProgress(index);
-        const pauseBtn = document.getElementById(`pause-brew-${index}`);
         if (pauseBtn) pauseBtn.textContent = 'Pause';
     } else {
         timer.pausedAt = performance.now() - timer.startTime;
         timer.isPaused = true;
         timer.isRunning = false;
         if (animationFrames[index]) cancelAnimationFrame(animationFrames[index]);
-        const pauseBtn = document.getElementById(`pause-brew-${index}`);
         if (pauseBtn) pauseBtn.textContent = 'Resume';
     }
 }
 
-export function resetBrewTimer(index) {
+export function resetBrewTimer(index, buttonEl = null) {
+    const resetBtn = buttonEl || document.getElementById(`reset-brew-${index}`);
+    flashClass(resetBtn);
     const timer = brewTimers[index];
     if (!timer) return;
 

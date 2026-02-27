@@ -364,6 +364,34 @@ body.light-mode .manual-button:hover {
     cursor: not-allowed;
 }
 
+.upload-button.btn-pressed,
+.manual-button.btn-pressed,
+.adjust-btn.btn-pressed,
+.timer-btn-secondary.btn-pressed,
+.edit-btn.btn-pressed {
+    border-color: var(--accent) !important;
+    color: #d9d9d9 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 1;
+}
+
+body.light-mode .upload-button.btn-pressed,
+body.light-mode .manual-button.btn-pressed,
+body.light-mode .adjust-btn.btn-pressed,
+body.light-mode .timer-btn-secondary.btn-pressed,
+body.light-mode .edit-btn.btn-pressed {
+    background: #e4e4e4 !important;
+    color: var(--text-primary) !important;
+}
+
+.upload-button.btn-pressed svg,
+.manual-button.btn-pressed svg {
+    stroke: currentColor !important;
+    opacity: 0.95 !important;
+}
+
 .button-icon {
     width: 14px;
     height: 14px;
@@ -1583,6 +1611,18 @@ body.light-mode .step-progress-bar {
     border-color: var(--accent);
 }
 
+.timer-btn-secondary:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+body.light-mode .timer-btn-secondary:hover {
+    background: #ffffff;
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
 .timer-btn.active {
     background: var(--accent);
     color: white;
@@ -1680,6 +1720,7 @@ body.light-mode .step-progress-bar {
     pointer-events: all;
     position: relative;
     z-index: 3;
+    touch-action: pan-y;
 }
 
 .feedback-slider::-webkit-slider-runnable-track {
@@ -1707,7 +1748,6 @@ body.light-mode .step-progress-bar {
     margin-top: -7.8px;
     pointer-events: all;
     cursor: grab;
-    touch-action: none;
 }
 
 .feedback-slider::-webkit-slider-thumb:active {
