@@ -60,7 +60,9 @@ export function startBrewTimer(index) {
     updateBrewProgress(index);
 }
 
-export function pauseBrewTimer(index) {
+export function pauseBrewTimer(index, buttonEl = null) {
+    const pauseBtn = buttonEl || document.getElementById(`pause-brew-${index}`);
+    flashClass(pauseBtn);
     const timer = brewTimers[index];
     if (!timer) return;
 
@@ -87,7 +89,9 @@ export function pauseBrewTimer(index) {
     }
 }
 
-export function resetBrewTimer(index) {
+export function resetBrewTimer(index, buttonEl = null) {
+    const resetBtn = buttonEl || document.getElementById(`reset-brew-${index}`);
+    flashClass(resetBtn);
     const timer = brewTimers[index];
     if (!timer) return;
 

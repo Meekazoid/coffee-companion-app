@@ -70,6 +70,52 @@ function feedbackToSliderValue(value) {
     return '50';
 }
 
+
+function getClientXFromEvent(event) {
+    if (typeof event.clientX === 'number') return event.clientX;
+    const touch = event.touches && event.touches[0];
+    return touch ? touch.clientX : null;
+}
+
+function isPointerNearThumb(sliderEl, clientX) {
+    if (!sliderEl || clientX == null) return false;
+
+    const rect = sliderEl.getBoundingClientRect();
+    if (!rect.width) return false;
+
+    const min = Number(sliderEl.min || 0);
+    const max = Number(sliderEl.max || 100);
+    const value = Number(sliderEl.value || 0);
+    const ratio = max === min ? 0.5 : (value - min) / (max - min);
+    const thumbCenter = rect.left + (rect.width * ratio);
+    const allowedDistance = 16;
+
+    return Math.abs(clientX - thumbCenter) <= allowedDistance;
+}
+
+export function initFeedbackSliderIntentGuards(root = document) {
+    const sliders = root.querySelectorAll('.feedback-slider');
+
+    sliders.forEach((sliderEl) => {
+        if (sliderEl.dataset.intentGuardBound === '1') return;
+        sliderEl.dataset.intentGuardBound = '1';
+
+        sliderEl.style.touchAction = 'pan-y';
+
+        const guard = (event) => {
+            const clientX = getClientXFromEvent(event);
+            if (!isPointerNearThumb(sliderEl, clientX)) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        };
+
+        sliderEl.addEventListener('pointerdown', guard, { passive: false });
+        sliderEl.addEventListener('mousedown', guard);
+        sliderEl.addEventListener('touchstart', guard, { passive: false });
+    });
+}
+
 export function updateFeedbackSlider(index, category, sliderValue) {
     const value = sliderValueToFeedback(sliderValue);
     selectFeedback(index, category, value, false);

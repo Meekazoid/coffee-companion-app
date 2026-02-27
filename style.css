@@ -1720,6 +1720,18 @@ body.light-mode .step-progress-bar {
     border-color: var(--accent);
 }
 
+.timer-btn-secondary:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+body.light-mode .timer-btn-secondary:hover {
+    background: #ffffff;
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
 .timer-btn.active {
     background: var(--accent);
     color: white;
@@ -1845,7 +1857,6 @@ body.light-mode .step-progress-bar {
     margin-top: -7.8px;
     pointer-events: all;
     cursor: grab;
-    touch-action: none;
 }
 
 .feedback-slider::-webkit-slider-thumb:active {

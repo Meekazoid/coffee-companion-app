@@ -9,6 +9,7 @@ import { initGlobalGrinder } from './grinder.js';
 import { closeFeedbackHistory, migrateCoffeesInitialValues } from './feedback.js';
 import { renderCoffees } from './coffee-list.js';
 import { processImageUpload } from './image-handler.js';
+import { flashClass } from './ui-flash.js';
 import { saveCoffeeManual, initProcessPicker } from './manual-entry.js';
 import { 
     openWaterModal, 
