@@ -53,7 +53,7 @@ export function initFeedbackSliderInteractions() {
 
         const touch = event.touches[0];
         const rect = slider.getBoundingClientRect();
-        const thumbHitSize = 40;
+        const thumbHitSize = 64;
         const min = Number(slider.min || 0);
         const max = Number(slider.max || 100);
         const ratio = (Number(slider.value) - min) / (max - min || 1);
@@ -206,8 +206,8 @@ function clearSuggestionHideTimer(index) {
 
 function sliderValueToFeedback(value) {
     const numeric = Number(value);
-    if (numeric <= 35) return 'low';
-    if (numeric >= 65) return 'high';
+    if (numeric <= 20) return 'low';
+    if (numeric >= 80) return 'high';
     return 'balanced';
 }
 

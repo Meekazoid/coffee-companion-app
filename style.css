@@ -1904,39 +1904,6 @@ body.light-mode .adjust-btn.is-pressed {
     border-color: #16a34a;
 }
 
-.feedback-slider-marks {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    width: 100%;
-    height: 0;
-    pointer-events: none;
-    z-index: 2;
-}
-
-.feedback-slider-mark {
-    position: absolute;
-    top: 0;
-    width: 9px;
-    height: 9px;
-    border-radius: 999px;
-    background: var(--accent);
-    transform: translate(-50%, -50%);
-}
-
-.feedback-slider-mark:nth-child(1) {
-    left: 0;
-}
-
-.feedback-slider-mark:nth-child(2) {
-    left: 50%;
-}
-
-.feedback-slider-mark:nth-child(3) {
-    left: 100%;
-}
-
 .feedback-slider-labels {
     width: 96%;
     margin: 0 auto;
