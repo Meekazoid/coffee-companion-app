@@ -1184,6 +1184,53 @@ body.light-mode .roast-date-input::-webkit-calendar-picker-indicator {
     filter: invert(0.2);
 }
 
+/* ── Extra coffee info fields (Variety / Altitude / Tasting Notes) ── */
+.coffee-extra-info {
+    margin-bottom: 12px;
+}
+
+.coffee-extra-line {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.extra-label {
+    font-weight: 500;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+}
+
+.extra-label::after {
+    content: ':';
+}
+
+.extra-value {
+    color: var(--text-secondary);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ── Roast date: mobile centering, arrow offset, Android font ── */
+@media (max-width: 600px) {
+    .roast-date-input-wrapper {
+        justify-content: center;
+    }
+
+    /* Move calendar picker arrow slightly left on mobile */
+    .roast-date-input::-webkit-calendar-picker-indicator {
+        margin-right: 10px;
+    }
+
+    /* Slightly smaller roast date font on mobile / Android */
+    .roast-date-input.has-date {
+        font-size: 0.68rem;
+    }
+}
+
 /* ==========================================
    12. WATER HARDNESS BADGE
    ========================================== */
