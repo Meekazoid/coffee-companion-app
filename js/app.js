@@ -4,7 +4,7 @@
 // ==========================================
 
 // Import all modules
-import { initTheme, toggleTheme, toggleManual } from './theme.js';
+import { initTheme, toggleTheme, toggleManual, collapseManual } from './theme.js';
 import { initGlobalGrinder } from './grinder.js';
 import { closeFeedbackHistory, migrateCoffeesInitialValues } from './feedback.js';
 import { renderCoffees } from './coffee-list.js';
@@ -38,6 +38,7 @@ import {
     setWaterHardness,
     setApiWaterHardness
 } from './state.js';
+import { flashClass } from './ui-flash.js';
 
 // Make updateRoastDate available globally for onclick handlers
 window.updateRoastDate = updateRoastDate;
@@ -50,11 +51,21 @@ console.log('✅ Brew timer functions attached to window:', {
     pauseBrewTimer: typeof window.pauseBrewTimer,
     resetBrewTimer: typeof window.resetBrewTimer
 });
+
 // Initialize event listeners
 function initEventListeners() {
-    // Camera & Upload
-    document.getElementById('cameraBtn').addEventListener('click', () => document.getElementById('imageInput').click());
-    document.getElementById('uploadBtn').addEventListener('click', (e) => { flashClass(e.currentTarget); document.getElementById('uploadInput').click(); });
+    // Camera (CoffeeShot) — no pressed flash needed, it opens file picker directly
+    document.getElementById('cameraBtn').addEventListener('click', () => {
+        collapseManual();
+        document.getElementById('imageInput').click();
+    });
+
+    // Upload Image — flash pressed state, then trigger file picker
+    document.getElementById('uploadBtn').addEventListener('click', () => {
+        flashClass(document.getElementById('uploadBtn'));
+        collapseManual();
+        document.getElementById('uploadInput').click();
+    });
 
     document.getElementById('imageInput').addEventListener('change', async (e) => {
         const file = e.target.files[0];
@@ -70,8 +81,12 @@ function initEventListeners() {
         e.target.value = '';
     });
 
-    // Manual entry
-    document.getElementById('manualBtn').addEventListener('click', (e) => { flashClass(e.currentTarget); toggleManual(); });
+    // Manual — flash pressed state, then toggle
+    document.getElementById('manualBtn').addEventListener('click', () => {
+        flashClass(document.getElementById('manualBtn'));
+        toggleManual();
+    });
+
     document.getElementById('saveManualBtn').addEventListener('click', saveCoffeeManual);
     initProcessPicker();
 
@@ -134,12 +149,10 @@ function initApp() {
 
     // Load water hardness with priority: manual > API
     if (manualWaterHardness) {
-        // Manual override exists - use it
         setWaterHardness(manualWaterHardness);
         const waterBtn = document.getElementById('waterControlBtn');
         if (waterBtn) waterBtn.classList.add('active');
     } else if (userZipCode && typeof WaterHardness !== 'undefined') {
-        // No manual override - load from ZIP
         WaterHardness.getHardness(userZipCode).then(data => {
             setApiWaterHardness(data);
             setWaterHardness(data);
@@ -159,7 +172,6 @@ function initApp() {
 }
 
 // Run on DOM ready
-// Note: ES modules are deferred by default, so DOMContentLoaded may have already fired
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initApp);
 } else {

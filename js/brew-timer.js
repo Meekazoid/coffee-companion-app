@@ -50,7 +50,8 @@ export function startBrewTimer(index) {
         const brewSteps = card.querySelector('.brew-steps');
         if (brewSteps) {
             const targetTimeBox = card.querySelector('.param-grid');
-            const offset = targetTimeBox ? targetTimeBox.offsetHeight + 60 : 100;
+            const offset = targetTimeBox ?
+                targetTimeBox.offsetHeight + 60 : 100;
             const elementPosition = brewSteps.getBoundingClientRect().top;
             window.scrollTo({ top: elementPosition + window.pageYOffset - offset, behavior: 'smooth' });
         }
@@ -65,18 +66,26 @@ export function pauseBrewTimer(index, buttonEl = null) {
     const timer = brewTimers[index];
     if (!timer) return;
 
+    const pauseBtn = document.getElementById(`pause-brew-${index}`);
+
     if (timer.isPaused) {
         timer.startTime = performance.now() - (timer.pausedAt || 0);
         timer.isPaused = false;
         timer.isRunning = true;
         updateBrewProgress(index);
-        if (pauseBtn) pauseBtn.textContent = 'Pause';
+        if (pauseBtn) {
+            pauseBtn.textContent = 'Pause';
+            flashClass(pauseBtn, 'btn-pressed', 380);
+        }
     } else {
         timer.pausedAt = performance.now() - timer.startTime;
         timer.isPaused = true;
         timer.isRunning = false;
         if (animationFrames[index]) cancelAnimationFrame(animationFrames[index]);
-        if (pauseBtn) pauseBtn.textContent = 'Resume';
+        if (pauseBtn) {
+            pauseBtn.textContent = 'Resume';
+            flashClass(pauseBtn, 'btn-pressed', 380);
+        }
     }
 }
 
@@ -103,7 +112,11 @@ export function resetBrewTimer(index, buttonEl = null) {
 
     if (startBtn) { startBtn.textContent = 'Start Brew'; startBtn.classList.remove('brewing'); startBtn.disabled = false; }
     if (pauseBtn) { pauseBtn.textContent = 'Pause'; pauseBtn.disabled = true; }
-    if (resetBtn) resetBtn.disabled = true;
+    if (resetBtn) {
+        // Flash before disabling so user sees the press
+        flashClass(resetBtn, 'btn-pressed', 380);
+        setTimeout(() => { resetBtn.disabled = true; }, 380);
+    }
 
     delete brewTimers[index];
     delete animationFrames[index];

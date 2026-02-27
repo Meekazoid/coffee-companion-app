@@ -121,7 +121,8 @@ async function saveEdits(index, card) {
     const btnEl = document.getElementById(`edit-btn-${index}`);
     if (btnEl) {
         btnEl.classList.remove('editing');
-        flashClass(btnEl, 'btn-pressed', 420);
+        // Brief golden confirmation flash — pencil just returned after a save
+        flashClass(btnEl, 'edit-confirmed', 600);
     }
 
     // Replace inputs with display elements
