@@ -1,4 +1,4 @@
-﻿﻿﻿﻿/**
+/**
  * dripmate Service Worker
  * Provides offline PWA support with intelligent caching strategies
  */
