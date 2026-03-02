@@ -1,4 +1,4 @@
-﻿// ==========================================
+// ==========================================
 // BREW TIMER STUBS
 // Global wrapper functions that delegate to
 // the module-loaded timer once app.js is ready.
