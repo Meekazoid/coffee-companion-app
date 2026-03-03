@@ -45,14 +45,14 @@ html {
 }
 
 body.light-mode {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8f8f8;
-    --bg-card: #ffffff;
-    --text-primary: #000000;
-    --text-secondary: #666666;
+    --bg-primary: #fdf8f2;          /* Warmes Creme-Weiss           (war: #ffffff) */
+    --bg-secondary: #f5ede0;          /* Leicht warmes Beige          (war: #f8f8f8) */
+    --bg-card: #fdf8f2;               /* Gleich wie bg-primary        (war: #ffffff) */
+    --text-primary: #1a1008;          /* Fast-Schwarz mit Waerme      (war: #000000) */
+    --text-secondary: #7a6050;        /* Warm-Ton wie Dark Mode       (war: #666666) */
     --accent: #8b6f47;
     --accent-hover: #7a5f3d;
-    --border: #e0e0e0;
+    --border: #dfd0be;                /* Warmes Beige-Grau            (war: #e0e0e0) */
     --shadow: rgba(0, 0, 0, 0.1);
     --color-danger: #c62828;
     --color-success: #2E7D32;
