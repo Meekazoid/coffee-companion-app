@@ -106,7 +106,6 @@ export function renderCoffeeCard(coffee, index) {
                                 value="${coffee.roastDate || ''}"
                                 onchange="updateRoastDate(${index}, this.value); event.stopPropagation();"
                                 onclick="event.stopPropagation();" />
-                            <span class="roast-date-placeholder" aria-hidden="true">insert date</span>
                         </div>
                     </div>
                 </div>
