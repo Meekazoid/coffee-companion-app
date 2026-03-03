@@ -244,8 +244,11 @@ export function selectFeedback(index, category, value, syncSlider = true) {
 
     const sliderEl = document.querySelector(`[data-feedback-slider="${index}-${category}"]`);
     if (sliderEl && syncSlider) {
+        // Suppress thumb animation when syncing programmatically (e.g. button tap)
+        sliderEl.classList.add('no-transition');
         sliderEl.value = feedbackToSliderValue(value);
         updateSliderVisual(sliderEl);
+        requestAnimationFrame(() => requestAnimationFrame(() => sliderEl.classList.remove('no-transition')));
     }
 
     if (previousValue === value) return;
@@ -443,7 +446,12 @@ export function addHistoryEntry(coffee, entry) {
 function formatHistoryDate(iso) {
     const date = new Date(iso);
     if (Number.isNaN(date.getTime())) return 'Unknown date';
-    return date.toLocaleString();
+    const dd   = String(date.getDate()).padStart(2, '0');
+    const mm   = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    const hh   = String(date.getHours()).padStart(2, '0');
+    const min  = String(date.getMinutes()).padStart(2, '0');
+    return `${dd}.${mm}.${yyyy}  ${hh}:${min}`;
 }
 
 function formatHistoryDelta(entry) {
@@ -487,7 +495,7 @@ export function openFeedbackHistory(index) {
 
     modal.dataset.coffeeIndex = index;  // used by clearFeedbackHistory()
 
-    titleEl.textContent = `Adjustment History · ${coffee.name || 'Coffee'}`;
+    titleEl.textContent = `History \u00b7 ${coffee.name || 'Coffee'}`;
 
     const history = Array.isArray(coffee.feedbackHistory) ? coffee.feedbackHistory : [];
     if (history.length === 0) {
@@ -508,16 +516,18 @@ export function openFeedbackHistory(index) {
                 <div class="history-item-brew-label">${deltaStr}</div>
             </div>`;
             }
+            const grindChanged = entry.previousGrind !== entry.newGrind;
+            const tempChanged  = entry.previousTemp  !== entry.newTemp;
+            const grindCell = grindChanged ? `<div class="history-cell"><span>Grind</span><strong>${sanitizeHTML(entry.previousGrind)} &rarr; ${sanitizeHTML(entry.newGrind)}</strong></div>` : '';
+            const tempCell  = tempChanged  ? `<div class="history-cell"><span>Temp</span><strong>${sanitizeHTML(entry.previousTemp)} &rarr; ${sanitizeHTML(entry.newTemp)}</strong></div>` : '';
+            const grid = (grindCell || tempCell) ? `<div class="history-item-grid">${grindCell}${tempCell}</div>` : '';
             return `
             <div class="history-item">
                 <div class="history-item-top">
                     <strong>${dateStr}</strong>
-                    <span>${deltaStr}</span>
                 </div>
-                <div class="history-item-grid">
-                    <div><span>Grind</span><strong>${sanitizeHTML(entry.previousGrind)} → ${sanitizeHTML(entry.newGrind)}</strong></div>
-                    <div><span>Temp</span><strong>${sanitizeHTML(entry.previousTemp)} → ${sanitizeHTML(entry.newTemp)}</strong></div>
-                </div>
+                <div class="history-item-delta">${deltaStr}</div>
+                ${grid}
             </div>`;
         }).join('');
     }

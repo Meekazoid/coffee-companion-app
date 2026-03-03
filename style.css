@@ -1139,8 +1139,8 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
     position: relative;
     flex-shrink: 0;
     width: auto;
-    min-width: 100px;
-    max-width: 132px;
+    min-width: 120px;
+    max-width: 150px;
 }
 
 .roast-icon {
@@ -1164,7 +1164,7 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
 .roast-date-input {
     width: 100%;
     height: 30px;
-    padding: 4px 8px;
+    padding: 4px 26px 4px 8px;
     background: var(--bg-secondary);
     border: 1px solid color-mix(in srgb, var(--border) 80%, transparent 20%);
     border-radius: 8px;
@@ -1172,17 +1172,18 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
     font-size: 0.72rem;
     font-family: inherit;
     line-height: 1;
-    text-align: center;
+    text-align: left;
     transition: border-color 0.2s;
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    box-sizing: border-box;
 }
 
 /* No date set: hide text segments, keep icon visible � custom overlay handles this state. */
 .roast-date-input:not(.has-date) {
-    color: transparent;
+    color: var(--bg-secondary);
     caret-color: transparent;
 }
 
@@ -1207,6 +1208,12 @@ body.light-mode .freshness-badge-inline .freshness-badge.fading {
     cursor: pointer;
     filter: invert(0.5);
     opacity: 0.7;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
 }
 /* Was: hide icon when no date - removed, icon always visible � custom placeholder handles this state */
 
@@ -1377,16 +1384,17 @@ body.light-mode .water-hardness-badge {
 
 .reset-adjustments-btn {
     display: block;
-    margin: 20px auto 0;
-    padding: 8px 20px;
+    margin: 14px auto 0;
+    padding: 5px 14px;
     background: transparent;
     color: var(--color-danger);
     border: 1px solid var(--color-danger);
-    border-radius: 8px;
-    font-size: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.68rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    opacity: 0.8;
 }
 
 .reset-adjustments-btn:hover {
@@ -1811,7 +1819,7 @@ body.light-mode .step-progress-bar {
     margin-top: -10.5px;
     pointer-events: all;
     cursor: grab;
-    transition: transform 140ms ease, box-shadow 140ms ease;
+    transition: none;
 }
 
 .feedback-slider:active::-webkit-slider-thumb {
@@ -1829,13 +1837,22 @@ body.light-mode .step-progress-bar {
     box-shadow: 0 7px 18px rgba(0, 0, 0, 0.28), 0 1px 0 rgba(255, 255, 255, 0.48) inset;
     pointer-events: all;
     cursor: grab;
-    transition: transform 140ms ease, box-shadow 140ms ease;
+    transition: none;
 }
 
 .feedback-slider:active::-moz-range-thumb {
     transform: scale(1.06);
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.34), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
     cursor: grabbing;
+}
+
+/* Suppress thumb snap animation when synced via button tap */
+.feedback-slider.no-transition::-webkit-slider-thumb,
+.feedback-slider.no-transition::-webkit-slider-runnable-track {
+    transition: none !important;
+}
+.feedback-slider.no-transition::-moz-range-thumb {
+    transition: none !important;
 }
 
 .upload-button:active,
@@ -2005,87 +2022,106 @@ body.light-mode .feedback-slider-labels {
 }
 
 .history-list {
-    margin-top: 16px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 7px;
 }
 
 .history-item {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
+    border-radius: 8px;
+    padding: 7px 10px;
 }
 
 /* Brew-start entries: subtler styling � no parameter diff, just a timestamp marker */
 .history-item--brew-start {
     border-color: rgba(74, 222, 128, 0.45);
     background: rgba(74, 222, 128, 0.05);
+    padding: 7px 10px;
 }
 
 .history-item-brew-badge {
     display: inline-block;
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     color: rgb(74, 222, 128);
     background: rgba(74, 222, 128, 0.12);
     border: 1px solid rgba(74, 222, 128, 0.3);
-    border-radius: 6px;
-    padding: 2px 8px;
-    margin-bottom: 8px;
+    border-radius: 5px;
+    padding: 1px 7px;
+    margin-bottom: 5px;
 }
 
 body.light-mode .history-item--brew-start {
-    border-color: rgba(22, 163, 74, 0.4);
-    background: rgba(22, 163, 74, 0.05);
+    border-color: rgba(74, 222, 128, 0.45);
+    background: rgba(74, 222, 128, 0.05);
+    padding: 7px 10px;
 }
 
 body.light-mode .history-item-brew-badge {
-    color: rgb(22, 163, 74);
-    background: rgba(22, 163, 74, 0.1);
-    border-color: rgba(22, 163, 74, 0.3);
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: rgb(74, 222, 128);
+    background: rgba(74, 222, 128, 0.12);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 5px;
+    padding: 1px 7px;
+    margin-bottom: 5px;
 }
 
 .history-item-brew-label {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     color: var(--text-secondary);
-    line-height: 1.5;
-    margin-top: 2px;
+    line-height: 1.4;
+    margin-top: 1px;
 }
 
 .history-item-top {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
     color: var(--text-secondary);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
 }
 
 .history-item-top strong {
     color: var(--text-primary);
-    font-size: 0.88rem;
+    font-size: 0.80rem;
+    white-space: nowrap;
+}
+
+.history-item-delta {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    line-height: 1.3;
 }
 
 .history-item-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
 .history-item-grid div {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     background: var(--bg-secondary);
-    padding: 8px 10px;
-    border-radius: 8px;
+    padding: 5px 9px;
+    border-radius: 6px;
+    min-width: 100px;
 }
 
 .history-item-grid span {
-    font-size: 0.72rem;
+    font-size: 0.65rem;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.4px;
@@ -2093,7 +2129,7 @@ body.light-mode .history-item-brew-badge {
 
 .history-item-grid strong {
     color: var(--text-primary);
-    font-size: 0.84rem;
+    font-size: 0.78rem;
     font-weight: 600;
 }
 
@@ -2310,8 +2346,18 @@ body.light-mode .success-message {
 
 /* Light-mode contrast for destructive actions */
 body.light-mode .reset-adjustments-btn {
+    display: block;
+    margin: 14px auto 0;
+    padding: 5px 14px;
+    background: transparent;
     color: var(--color-danger);
-    border-color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+    border-radius: 6px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.8;
 }
 
 body.light-mode .reset-adjustments-btn:hover {
@@ -3144,4 +3190,69 @@ body.light-mode .edit-btn.editing:hover {
     font-size: 0.75rem;
     color: var(--text-secondary, #888);
     font-style: italic;
+}
+
+
+/* ==========================================
+   HISTORY MODAL - TIMELINE BAR + COMPACT CELLS
+   ========================================== */
+
+.history-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--bg-secondary);
+    padding: 5px 9px;
+    border-radius: 6px;
+    min-width: 90px;
+    flex: 1;
+}
+
+.history-cell span {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.history-cell strong {
+    color: var(--text-primary);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.history-timeline-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 5px 10px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.history-timeline-text {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+.history-clear-inline-btn {
+    background: transparent;
+    border: 1px solid var(--color-danger);
+    color: var(--color-danger);
+    border-radius: 5px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    opacity: 0.85;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+}
+
+.history-clear-inline-btn:hover {
+    opacity: 1;
 }
