@@ -3,7 +3,7 @@
 // Pour-over timer logic with pause/resume
 // ==========================================
 
-import { coffees, brewTimers, animationFrames } from './state.js';
+import { coffees, brewTimers, animationFrames, coffeeAmount } from './state.js';
 import { getBrewRecommendations } from './brew-engine.js';
 import { addHistoryEntry } from './feedback.js';
 
@@ -42,20 +42,23 @@ export function startBrewTimer(index) {
     const brewStartedAt = Date.now();
     brewTimers[index] = { startTime: performance.now(), steps, isRunning: true, isPaused: false, brewStartedAt };
 
+    // Snapshot brew parameters at start time (values may change after 30s)
+    const methodLabels = { v60: 'V60', chemex: 'Chemex', aeropress: 'AeroPress' };
+    const methodLabel = methodLabels[brewParams.method] || brewParams.method || 'V60';
+    const brewAmount = coffee.customAmount || coffeeAmount;
+    const brewGrind = brewParams.grindSetting || '-';
+    const brewTemp = coffee.customTemp || brewParams.temperature || '-';
+    const brewSnapshot = `Brewed ${brewAmount}g on ${methodLabel}  \u203a  Grind ${brewGrind}  \u203a  ${brewTemp}`;
+
     // Automatically log history entry after 30 seconds
     brewTimers[index].historyTimeout = setTimeout(() => {
         const timer = brewTimers[index];
         if (!timer || timer.historyLogged) return;
         timer.historyLogged = true;
-        const rec = getBrewRecommendations(coffee);
-        const amount = coffee.amount || 20;
-        const method = coffee.method || rec.method || 'V60';
-        const grind = rec.grindSetting || '-';
-        const temp = coffee.customTemp || rec.temperature || '-';
         addHistoryEntry(coffee, {
             timestamp: new Date().toISOString(),
             brewStart: true,
-            brewLabel: Brewed \g on \  \u203a  Grind \  \u203a  \
+            brewLabel: brewSnapshot
         });
         try { localStorage.setItem('coffees', JSON.stringify(coffees)); } catch(e) {}
     }, 30000);
