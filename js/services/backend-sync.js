@@ -112,7 +112,7 @@ export async function fetchCoffeesFromBackend() {
 export async function syncCoffeesToBackend(coffees) {
     const token    = getToken();
     const deviceId = getOrCreateDeviceId();
-    if (!token) { console.log('[sync] No token — coffee sync skipped'); return false; }
+    if (!token) { console.log('[sync] No token â€” coffee sync skipped'); return false; }
     try {
         const response = await fetchWithTimeout(`${CONFIG.backendUrl}/api/coffees`, {
             method: 'POST',
@@ -135,7 +135,7 @@ export async function syncCoffeesToBackend(coffees) {
 export async function syncGrinderPreference(grinder) {
     const token    = getToken();
     const deviceId = getOrCreateDeviceId();
-    if (!token) { console.log('[sync] No token — grinder sync skipped'); return false; }
+    if (!token) { console.log('[sync] No token â€” grinder sync skipped'); return false; }
     try {
         const response = await fetchWithTimeout(`${CONFIG.backendUrl}/api/user/grinder`, {
             method: 'POST',
@@ -175,7 +175,7 @@ export async function fetchGrinderPreference() {
 export async function syncWaterHardness(hardnessValue) {
     const token    = getToken();
     const deviceId = getOrCreateDeviceId();
-    if (!token) { console.log('[sync] No token — water hardness sync skipped'); return false; }
+    if (!token) { console.log('[sync] No token â€” water hardness sync skipped'); return false; }
     try {
         const response = await fetchWithTimeout(`${CONFIG.backendUrl}/api/user/water-hardness`, {
             method: 'POST',
@@ -263,18 +263,24 @@ async function initBackendSync() {
                 const looksIncomplete = normalized.length > 0 && !hasFeedbackHistoryCoverage(remoteCoffees);
 
                 if (looksIncomplete && localCoffees.length > 0) {
-                    console.warn('[sync] Remote coffees missing feedbackHistory — keeping local data');
+                    console.warn('[sync] Remote coffees missing feedbackHistory â€” keeping local data');
                 } else {
                     window.coffees = normalized;
-                    localStorage.setItem('coffees', JSON.stringify(window.coffees));
-                    if (typeof renderCoffees === 'function') renderCoffees();
+                    localStorage.setItem('coffees', JSON.stringify(normalized));
+                    // renderCoffees is an ES module export - call via window if exposed
+                    if (typeof window.renderCoffees === 'function') {
+                        window.renderCoffees();
+                    } else {
+                        // Fallback: trigger a soft reload of the coffee list
+                        document.dispatchEvent(new CustomEvent('coffees-updated', { detail: { coffees: normalized } }));
+                    }
                 }
             }
         } else {
             console.log('[sync] No valid token. Enter access code in Settings.');
         }
     } catch (error) {
-        // Non-fatal — app continues in local mode
+        // Non-fatal â€” app continues in local mode
         console.warn('[sync] Backend sync failed:', error.message);
         console.log('[sync] App continues in local mode.');
     }

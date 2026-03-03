@@ -42,11 +42,13 @@ import {
 
 // Make updateRoastDate available globally for onclick handlers
 window.updateRoastDate = updateRoastDate;
+// Expose renderCoffees globally so backend-sync can trigger re-render after load
+window.renderCoffees = renderCoffees;
 // Make brew timer functions available globally for onclick handlers
 window.startBrewTimer = startBrewTimer;
 window.pauseBrewTimer = pauseBrewTimer;
 window.resetBrewTimer = resetBrewTimer;
-console.log('✅ Brew timer functions attached to window:', {
+console.log('âœ… Brew timer functions attached to window:', {
     startBrewTimer: typeof window.startBrewTimer,
     pauseBrewTimer: typeof window.pauseBrewTimer,
     resetBrewTimer: typeof window.resetBrewTimer
@@ -54,7 +56,7 @@ console.log('✅ Brew timer functions attached to window:', {
 
 // Initialize event listeners
 function initEventListeners() {
-    // Camera & Upload — collapse manual entry when switching to image-based flows
+    // Camera & Upload â€” collapse manual entry when switching to image-based flows
     document.getElementById('cameraBtn').addEventListener('click', () => { collapseManual(); document.getElementById('imageInput').click(); });
     document.getElementById('uploadBtn').addEventListener('click', () => { collapseManual(); document.getElementById('uploadInput').click(); });
 

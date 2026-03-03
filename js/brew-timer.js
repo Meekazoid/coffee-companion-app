@@ -5,7 +5,15 @@
 
 import { coffees, brewTimers, animationFrames, coffeeAmount } from './state.js';
 import { getBrewRecommendations } from './brew-engine.js';
-import { addHistoryEntry } from './feedback.js';
+
+// Local implementation to avoid circular dependency with feedback.js
+function addBrewHistoryEntry(coffee, entry) {
+    if (!coffee.feedbackHistory) coffee.feedbackHistory = [];
+    coffee.feedbackHistory.unshift(entry);
+    if (coffee.feedbackHistory.length > 30) {
+        coffee.feedbackHistory = coffee.feedbackHistory.slice(0, 30);
+    }
+}
 
 function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
@@ -55,7 +63,7 @@ export function startBrewTimer(index) {
         const timer = brewTimers[index];
         if (!timer || timer.historyLogged) return;
         timer.historyLogged = true;
-        addHistoryEntry(coffee, {
+        addBrewHistoryEntry(coffee, {
             timestamp: new Date().toISOString(),
             brewStart: true,
             brewLabel: brewSnapshot
@@ -166,7 +174,7 @@ function updateBrewProgress(index) {
     animationFrames[index] = requestAnimationFrame(() => updateBrewProgress(index));
 }
 
-// Register real functions — stubs in index.html delegate to these
+// Register real functions â€” stubs in index.html delegate to these
 window._startBrewTimer = startBrewTimer;
 window._pauseBrewTimer = pauseBrewTimer;
 window._resetBrewTimer = resetBrewTimer;
