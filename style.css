@@ -3297,16 +3297,24 @@ body.light-mode .edit-btn.editing:hover {
         font-size: 14px;
     }
 
+    body {
+        padding: 24px 16px 80px;
+    }
+
     .header-logo {
         height: 72px;
     }
 
     header {
-        padding: 28px 0 20px;
+        margin-bottom: 28px;
+        padding: 0;
+    }
+
+    .logo-title-group {
         gap: 10px;
     }
 
     .coffee-card {
-        padding: 18px 16px;
+        padding: 16px 14px;
     }
 }
