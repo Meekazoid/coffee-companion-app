@@ -14,14 +14,12 @@
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
 }
 
 html {
     font-size: 18px;                  /* Anchor rem units ? Firefox & Safari use this */
-    -webkit-text-size-adjust: 100%;   /* Prevent iOS Safari auto-zoom on orientation change */
-    text-size-adjust: 100%;           /* Standard equivalent */
+    -webkit-text-size-adjust: none;   /* Disable Chrome Android text inflation that scales rem-based UI */
+    text-size-adjust: none;           /* Standard equivalent */
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
