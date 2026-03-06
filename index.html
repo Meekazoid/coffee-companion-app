@@ -88,37 +88,37 @@
                             <svg class="cs-viewfinder" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <filter id="bag-glow" x="-40%" y="-40%" width="180%" height="180%">
-                                        <!-- Step 1: invert the black PNG to white-on-transparent -->
+                                        <!-- 1: black→white, keep alpha -->
                                         <feColorMatrix in="SourceGraphic" type="matrix"
                                             values="-1 0 0 0 1
                                                     0 -1 0 0 1
                                                     0 0 -1 0 1
-                                                    0 0 0 1 0" result="inverted"/>
-                                        <!-- Step 2: tint inverted image to gold #C8945A -->
-                                        <feColorMatrix in="inverted" type="matrix"
+                                                    0 0 0  1 0" result="white"/>
+                                        <!-- 2: tint white→gold #C8945A rgb(0.784, 0.580, 0.353) -->
+                                        <feColorMatrix in="white" type="matrix"
                                             values="0.784 0 0 0 0
                                                     0 0.580 0 0 0
                                                     0 0 0.353 0 0
-                                                    0 0 0 1   0" result="goldtint"/>
-                                        <!-- Step 3: blur for glow -->
-                                        <feGaussianBlur in="goldtint" stdDeviation="3.5" result="blur"/>
-                                        <!-- Step 4: boost glow intensity -->
-                                        <feColorMatrix in="blur" type="matrix"
-                                            values="2.2 0 0 0 0
-                                                    0 1.6 0 0 0
-                                                    0 0 0.8 0 0
-                                                    0 0 0 1.2 0" result="glowboosted"/>
-                                        <!-- Step 5: merge glow under gold icon -->
+                                                    0 0 0     1 0" result="gold"/>
+                                        <!-- 3: blur gold for warm glow -->
+                                        <feGaussianBlur in="gold" stdDeviation="3.0" result="glow"/>
+                                        <!-- 4: boost glow warmth -->
+                                        <feColorMatrix in="glow" type="matrix"
+                                            values="1.8 0 0 0 0.05
+                                                    0 1.2 0 0 0
+                                                    0 0 0.5 0 0
+                                                    0 0 0   1 0" result="glowwarm"/>
+                                        <!-- 5: glow behind gold icon -->
                                         <feMerge>
-                                            <feMergeNode in="glowboosted"/>
-                                            <feMergeNode in="goldtint"/>
+                                            <feMergeNode in="glowwarm"/>
+                                            <feMergeNode in="gold"/>
                                         </feMerge>
                                     </filter>
                                 </defs>
                                 <image class="cs-bag" href="assets/coffee-bag-shot.png"
-                                    x="6.5" y="1.5" width="35" height="45"
+                                    x="10" y="6" width="28" height="36"
                                     filter="url(#bag-glow)"
-                                    opacity="0.95"/>
+                                    opacity="0.92"/>
                             </svg>
                         </span>
                         <span class="cs-text">
