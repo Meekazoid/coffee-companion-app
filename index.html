@@ -86,39 +86,9 @@
                         <span class="cs-icon-wrap">
                             <!-- Coffee Bag Icon -->
                             <svg class="cs-viewfinder" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <filter id="bag-glow" x="-40%" y="-40%" width="180%" height="180%">
-                                        <!-- 1: black→white, keep alpha -->
-                                        <feColorMatrix in="SourceGraphic" type="matrix"
-                                            values="-1 0 0 0 1
-                                                    0 -1 0 0 1
-                                                    0 0 -1 0 1
-                                                    0 0 0  1 0" result="white"/>
-                                        <!-- 2: tint white→gold #C8945A rgb(0.784, 0.580, 0.353) -->
-                                        <feColorMatrix in="white" type="matrix"
-                                            values="0.784 0 0 0 0
-                                                    0 0.580 0 0 0
-                                                    0 0 0.353 0 0
-                                                    0 0 0     1 0" result="gold"/>
-                                        <!-- 3: blur gold for warm glow -->
-                                        <feGaussianBlur in="gold" stdDeviation="3.0" result="glow"/>
-                                        <!-- 4: boost glow warmth -->
-                                        <feColorMatrix in="glow" type="matrix"
-                                            values="1.8 0 0 0 0.05
-                                                    0 1.2 0 0 0
-                                                    0 0 0.5 0 0
-                                                    0 0 0   1 0" result="glowwarm"/>
-                                        <!-- 5: glow behind gold icon -->
-                                        <feMerge>
-                                            <feMergeNode in="glowwarm"/>
-                                            <feMergeNode in="gold"/>
-                                        </feMerge>
-                                    </filter>
-                                </defs>
                                 <image class="cs-bag" href="assets/coffee-bag-shot.png"
-                                    x="10" y="6" width="28" height="36"
-                                    filter="url(#bag-glow)"
-                                    opacity="0.92"/>
+                                    x="4" y="1" width="40" height="46"
+                                    style="filter: invert(1) sepia(1) saturate(2.5) hue-rotate(5deg) brightness(1.05) drop-shadow(0 0 4px rgba(200,140,60,0.8)) drop-shadow(0 0 8px rgba(180,110,30,0.5));"/>
                             </svg>
                         </span>
                         <span class="cs-text">
