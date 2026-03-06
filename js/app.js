@@ -103,11 +103,20 @@ function initEventListeners() {
         }); 
     });
 
-    // Magic Link Toggle
+    // Magic Link Toggle (not activated state)
     const showMagicBtn = document.getElementById('showMagicLinkBtn');
     if (showMagicBtn) {
         showMagicBtn.addEventListener('click', () => {
             const form = document.getElementById('magicLinkForm');
+            if (form) form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+
+    // Magic Link Toggle (activated state)
+    const showMagicBtn2 = document.getElementById('showMagicLinkBtn2');
+    if (showMagicBtn2) {
+        showMagicBtn2.addEventListener('click', () => {
+            const form = document.getElementById('magicLinkForm2');
             if (form) form.style.display = form.style.display === 'none' ? 'block' : 'none';
         });
     }
@@ -125,6 +134,26 @@ function initEventListeners() {
             sendMagicBtn.disabled = false;
             sendMagicBtn.textContent = 'Login-Link senden';
             status.style.display = 'block';
+            status.textContent = result.success
+                ? '✓ Link gesendet — schau in dein Postfach!'
+                : (result.error || 'Fehler beim Senden.');
+        });
+    }
+
+    // Send Magic Link from activated-state section
+    const sendMagicBtn2 = document.getElementById('sendMagicLinkBtn2');
+    if (sendMagicBtn2) {
+        sendMagicBtn2.addEventListener('click', async () => {
+            const email  = document.getElementById('magicLinkEmailInput2').value.trim();
+            const status = document.getElementById('magicLinkStatus2');
+            if (!email) { status.textContent = 'Bitte E-Mail eingeben.'; status.style.display = 'block'; return; }
+            sendMagicBtn2.disabled = true;
+            sendMagicBtn2.textContent = 'Wird gesendet…';
+            const result = await requestMagicLink(email);
+            sendMagicBtn2.disabled = false;
+            sendMagicBtn2.textContent = 'Login-Link senden';
+            status.style.display = 'block';
+            status.style.color = result.success ? '#5fda7d' : '#ff6b7a';
             status.textContent = result.success
                 ? '✓ Link gesendet — schau in dein Postfach!'
                 : (result.error || 'Fehler beim Senden.');
