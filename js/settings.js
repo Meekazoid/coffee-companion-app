@@ -299,7 +299,7 @@ export async function requestMagicLink(email) {
 // MAGIC LINK & EMAIL RECOVERY — Event Listeners
 // ==========================================
 
-document.addEventListener('DOMContentLoaded', () => {
+// Event Listeners - direkt ausgefuhrt (ES module = bereits defer, DOM ist bereit)
 
     // Toggle magic link form visibility
     const showMagicBtn = document.getElementById('showMagicLinkBtn');
@@ -377,4 +377,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
+// end settings listeners
