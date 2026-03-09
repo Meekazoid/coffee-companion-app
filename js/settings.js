@@ -140,25 +140,27 @@ export function renderDecafList() {
     `).join('');
 }
 
-// ==========================================
+// ------------------------------------------
 // MAGIC LINK — Auto-login from URL token
 // Called once on app start from app.js:
 //   import { handleMagicLink } from './settings.js';
 //   handleMagicLink();
-// ==========================================
+// ------------------------------------------
 
 export async function handleMagicLink() {
     const params = new URLSearchParams(window.location.search);
     const magic  = params.get('magic');
-<<<<<<< codex/implement-magic-link-authentication-flow-68jx0r
 
     if (!magic) return;
+
+    trackAuthBootstrap('auth_bootstrap_magic_attempt');
 
     try {
         const redeemRes = await fetch(`${CONFIG.backendUrl}/api/auth/magic-link/redeem?magic=${encodeURIComponent(magic)}`);
         const redeemData = await redeemRes.json().catch(() => ({}));
 
         if (redeemRes.status === 401) {
+            trackAuthBootstrap('auth_bootstrap_magic_fail_401');
             showAuthRecoveryMessage('Link invalid or expired');
             return;
         }
@@ -166,51 +168,12 @@ export async function handleMagicLink() {
         if (!redeemRes.ok || !redeemData.success || !redeemData.token) {
             showAuthRecoveryMessage(redeemData.error || 'Link invalid or expired');
             return;
-=======
-    const token  = params.get('token');
-
-    if (magic) {
-        trackAuthBootstrap('auth_bootstrap_magic_attempt');
-
-        try {
-            const redeemRes = await fetch(`${CONFIG.backendUrl}/api/auth/magic-link/redeem?magic=${encodeURIComponent(magic)}`);
-            const redeemData = await redeemRes.json().catch(() => ({}));
-
-            if (redeemRes.status === 401) {
-                trackAuthBootstrap('auth_bootstrap_magic_fail_401');
-                showAuthRecoveryMessage('Link invalid or expired');
-                return;
-            }
-
-            if (!redeemRes.ok || !redeemData.success || !redeemData.token) {
-                showAuthRecoveryMessage(redeemData.error || 'Link invalid or expired');
-                return;
-            }
-
-            const validateResult = await validateAndPersistToken(redeemData.token);
-
-            if (validateResult.valid) {
-                trackAuthBootstrap('auth_bootstrap_magic_success');
-                showActivationPopup();
-                if (typeof initBackendSync === 'function') await initBackendSync();
-                return;
-            }
-
-            showAuthRecoveryMessage(validateResult.error || 'Link invalid or expired');
-        } catch (err) {
-            console.error('[settings] Magic link error:', err.message);
-            showAuthRecoveryMessage('Link invalid or expired');
-        } finally {
-            cleanAuthParamsFromUrl();
->>>>>>> main
         }
-        return;
-    }
 
-<<<<<<< codex/implement-magic-link-authentication-flow-68jx0r
         const validateResult = await validateAndPersistToken(redeemData.token);
 
         if (validateResult.valid) {
+            trackAuthBootstrap('auth_bootstrap_magic_success');
             showActivationPopup();
             await maybeInitBackendSync();
             return;
@@ -267,78 +230,14 @@ function showAuthRecoveryMessage(message) {
     }
 }
 
+function trackAuthBootstrap(eventName) {
+    console.log(`[telemetry] ${eventName}`);
+}
+
 async function maybeInitBackendSync() {
     if (window.backendSync && typeof window.backendSync.initBackendSync === 'function') {
         await window.backendSync.initBackendSync();
-=======
-    if (!token) return;
-
-    trackAuthBootstrap('auth_bootstrap_token_legacy_attempt');
-    try {
-        const validateResult = await validateAndPersistToken(token);
-        if (validateResult.valid) {
-            trackAuthBootstrap('auth_bootstrap_token_legacy_success');
-            showActivationPopup();
-            if (typeof initBackendSync === 'function') await initBackendSync();
-            return;
-        }
-
-        trackAuthBootstrap('auth_bootstrap_token_legacy_fail');
-        showAuthRecoveryMessage(validateResult.error || 'Login link invalid or expired');
-    } catch (err) {
-        trackAuthBootstrap('auth_bootstrap_token_legacy_fail');
-        console.error('[settings] Legacy token bootstrap error:', err.message);
-        showAuthRecoveryMessage('Login link invalid or expired');
-    } finally {
-        cleanAuthParamsFromUrl();
->>>>>>> main
     }
-}
-
-function cleanAuthParamsFromUrl() {
-    window.history.replaceState({}, document.title, window.location.pathname);
-}
-
-async function validateAndPersistToken(token) {
-    const deviceId = getOrCreateDeviceId();
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 10000);
-
-    try {
-        const response = await fetch(`${CONFIG.backendUrl}/api/auth/validate`, {
-            headers: { 'Authorization': `Bearer ${token}`, 'X-Device-ID': deviceId },
-            signal: controller.signal
-        });
-
-        const data = await response.json().catch(() => ({}));
-
-        if (!response.ok || !data.valid) {
-            return { valid: false, error: data.error || 'Token validation failed' };
-        }
-
-        saveToken(token);
-        localStorage.setItem('deviceId', deviceId);
-        return { valid: true };
-    } finally {
-        clearTimeout(timer);
-    }
-}
-
-function showAuthRecoveryMessage(message) {
-    openSettings();
-
-    const status = document.getElementById('magicLinkStatus');
-    const form = document.getElementById('magicLinkForm');
-
-    if (form) form.style.display = 'block';
-    if (status) {
-        status.style.display = 'block';
-        status.textContent = message;
-    }
-}
-
-function trackAuthBootstrap(eventName) {
-    console.log(`[telemetry] ${eventName}`);
 }
 
 function showActivationPopup() {
