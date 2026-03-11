@@ -277,7 +277,9 @@ function showActivationPopup(mode = 'firstLogin') {
 
     popup.innerHTML = `
         <div style="display:flex;align-items:flex-start;gap:14px;">
-            <div style="font-size:1.6rem;flex-shrink:0;">&#x2615;</div>
+            <div style="flex-shrink:0;width:26px;height:26px;color:#7a6050;display:flex;align-items:center;justify-content:center;">
+                <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>
+            </div>
             <div>
                 <p style="margin:0 0 6px;font-size:0.85rem;font-weight:600;color:#1a1a1a;letter-spacing:0.02em;">
                     ${popupCopy.title}
