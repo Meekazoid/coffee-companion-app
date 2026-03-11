@@ -252,7 +252,7 @@ function showActivationPopup(mode = 'firstLogin') {
         bottom: 32px;
         left: 50%;
         transform: translateX(-50%) translateY(20px);
-        background: #ffffff;
+        background: #f5ede0;
         border: 1px solid #e0e0e0;
         border-radius: 16px;
         padding: 20px 24px;
