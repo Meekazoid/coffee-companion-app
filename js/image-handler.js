@@ -93,16 +93,25 @@ async function analyzeCoffeeImage(imageData, mediaType) {
     });
 
     if (!response.ok) {
-        let backendMessage = '';
+        let errorPayload = {};
         try {
-            const errorPayload = await response.json();
-            backendMessage = errorPayload?.error || '';
+            errorPayload = await response.json();
         } catch (_) {
-            backendMessage = '';
+            errorPayload = {};
+        }
+
+        const backendMessage = errorPayload?.error || '';
+        const backendErrorCode = errorPayload?.errorCode || '';
+
+        if (response.status === 403 && backendErrorCode === 'DAILY_SCAN_LIMIT_REACHED') {
+            throw new Error(
+                backendMessage ||
+                'You\'ve reached your daily limit of 5 successful scans. Please try again tomorrow after the daily reset.'
+            );
         }
 
         if (response.status === 429) {
-            throw new Error('AI is currently overloaded. Please try again in 10 minutes.');
+            throw new Error(backendMessage || 'AI is currently overloaded. Please try again later.');
         }
         if (response.status === 502) {
             throw new Error('AI service is temporarily unavailable.');
