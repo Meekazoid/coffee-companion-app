@@ -464,7 +464,7 @@ button:hover {
     display: flex;
     gap: 14px;
     width: 100%;
-    max-width: 620px;
+    max-width: 540px;
     justify-content: center;
 }
 
@@ -504,11 +504,7 @@ button:hover {
     align-items: stretch;
     padding: 0;
     height: 46px;
-<<<<<<< codex/rework-grinder-and-brewmethod-buttons-6mgx5k
-    background: var(--bg-secondary);
-=======
     background: rgba(200, 148, 90, 0.05);
->>>>>>> main
     border: 1px solid var(--border);
     border-radius: 14px;
     cursor: pointer;
@@ -521,22 +517,6 @@ button:hover {
 
 .brew-chip-top {
     height: 16px;
-<<<<<<< codex/rework-grinder-and-brewmethod-buttons-6mgx5k
-    background: rgba(200, 148, 90, 0.05);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-}
-
-.brew-chip-bottom {
-    flex: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 6px;
-=======
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border);
     display: flex;
@@ -551,7 +531,6 @@ button:hover {
     align-items: center;
     justify-content: center;
     gap: 6px;
->>>>>>> main
     padding: 0 10px;
     min-width: 0;
 }
@@ -567,16 +546,12 @@ button:hover {
 }
 
 body.light-mode .brew-chip:focus, body.light-mode .brew-chip:focus-visible {
-<<<<<<< codex/rework-grinder-and-brewmethod-buttons-6mgx5k
-    background: var(--bg-secondary);
-=======
     background: #ffffff;
     border-color: var(--border);
 }
 
 .brew-chip:focus, .brew-chip:focus-visible {
     outline: none;
->>>>>>> main
     border-color: var(--border);
 }
 
@@ -589,8 +564,7 @@ body.light-mode .brew-chip:focus, body.light-mode .brew-chip:focus-visible {
     font-weight: 300;
     color: var(--text-primary);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
     min-width: 0;
     text-align: center;
 }
@@ -614,20 +588,12 @@ body.light-mode .brew-chip:focus, body.light-mode .brew-chip:focus-visible {
 }
 
 body.light-mode .brew-chip {
-<<<<<<< codex/rework-grinder-and-brewmethod-buttons-6mgx5k
-    background: var(--bg-secondary);
-=======
     background: rgba(200, 148, 90, 0.05);
->>>>>>> main
     border-color: var(--border);
 }
 
 body.light-mode .brew-chip-top {
-<<<<<<< codex/rework-grinder-and-brewmethod-buttons-6mgx5k
-    background: rgba(200, 148, 90, 0.05);
-=======
     background: var(--bg-secondary);
->>>>>>> main
 }
 
 body.light-mode .brew-chip:hover {
@@ -2462,10 +2428,14 @@ h1 {
     gap: 10px;
 }
 
-.brew-chip-group:first-child,
+.brew-chip-group:first-child {
+    min-width: 0;
+    flex: 1.6;
+}
+
 .brew-chip-group:last-child {
     min-width: 0;
-    flex: 1;
+    flex: 1.08;
 }
 
 #method-chip .brew-chip-group-label {
