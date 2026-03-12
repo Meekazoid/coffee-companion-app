@@ -36,7 +36,7 @@ body.light-mode {
     /* Warmes Creme-Weiss           (war: #ffffff) */     --bg-secondary: #f5ede0;
     /* Leicht warmes Beige          (war: #f8f8f8) */     --bg-card: #fdf8f2;
     /* Gleich wie bg-primary        (war: #ffffff) */     --text-primary: #1a1008;
-    /* Fast-Schwarz mit Waerme      (war: #000000) */     --text-secondary: #7a6050;
+    /* Fast-Schwarz mit Waerme      (war: #000000) */     --text-secondary: #5d4637;
     /* Warm-Ton wie Dark Mode       (war: #666666) */     --accent: #8b6f47;
     --accent-hover: #7a5f3d;
     --border: #dfd0be;
@@ -1281,14 +1281,15 @@ body.light-mode .water-hardness-badge {
 }
 
 .adjust-btn {
-    width: 30px;
-    height: 30px;
+    /* Visuelle Größe kann kompakt wirken, aber die Klickfläche wird vergrößert */
+    width: 44px;      /* Erhöht von 30px */
+    height: 44px;     /* Erhöht von 30px */
     padding: 0;
     background: transparent;
     color: var(--accent);
     border: 1px solid var(--accent);
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 1.2rem; /* Etwas größer für bessere Sichtbarkeit */
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -2465,9 +2466,9 @@ h1 {
 }
 
 .adjust-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
 }
 
 .timer-display {
