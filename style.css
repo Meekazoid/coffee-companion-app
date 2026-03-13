@@ -831,40 +831,32 @@ body.light-mode .coffee-card.expanded {
 .color-picker-wrapper {
     position: relative;
     display: none; /* Nur im Edit-Modus sichtbar */
-    margin-bottom: 12px; /* Schiebt das Eingabefeld exakt eine Zeile nach unten! */
     z-index: 10;
 }
 .coffee-card.editing .color-picker-wrapper {
-    display: block;
+    display: block; 
 }
 
 .color-picker-btn {
     width: 32px;
     height: 32px;
     background: var(--bg-secondary);
-    border: 1px solid var(--border); /* Rahmen ist wieder da (wie bei Mülleimer/Stift) */
-    border-radius: 8px; /* Standard-Rundung deiner Buttons */
+    border: 1px solid var(--border);
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-secondary);
-    transition: all 0.2s ease;
     padding: 0;
-}
-.color-picker-btn:hover {
-    border-color: var(--text-primary);
-    color: var(--text-primary);
-}
-.color-picker-btn.has-color {
-    background: var(--bg-card);
+    /* KEINE Transitions oder Hover-Farben mehr. Bleibt immer Standard! */
 }
 
 .color-picker-popup {
     display: none;
     position: absolute;
-    top: 38px; /* Öffnet sich direkt unter dem Button */
-    left: 0;
+    top: 38px;
+    right: 0; /* Popup öffnet sich am rechten Rand nach links */
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -905,10 +897,6 @@ body.light-mode .coffee-card.expanded {
     margin-top: 4px;
     padding-top: 8px;
     border-top: 1px solid var(--border);
-    transition: color 0.2s;
-}
-.clear-color-btn:hover {
-    color: var(--text-primary);
 }
 
 .coffee-header {
