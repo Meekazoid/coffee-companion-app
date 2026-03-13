@@ -952,9 +952,9 @@ body.light-mode .coffee-card:hover .coffee-name {
 }
 
 /* ==========================================    9. CARD ACTION BUTTONS (Delete, Favorite)    ========================================== */  .delete-btn {
-    position: absolute;
-    top: -10px;
-    right: -10px;
+    position: static;
+    top: auto;
+    right: auto;
     background: var(--bg-card);
     color: var(--text-secondary);
     border: 1px solid var(--border);
@@ -992,9 +992,9 @@ body.light-mode .delete-btn {
 }
 
 .favorite-btn {
-    position: absolute;
-    top: -10px;
-    right: 58px;
+    position: static;
+    top: auto;
+    right: auto;
     background: var(--bg-card);
     color: var(--text-secondary);
     border: 1px solid var(--border);
@@ -3038,9 +3038,9 @@ body.light-mode .coffee-roastery {
 /* -- 28b. Edit Button -- */
 
 .edit-btn {
-    position: absolute;
-    top: -10px;
-    right: 24px;
+    position: static;
+    top: auto;
+    right: auto;
     background: var(--bg-card);
     color: var(--text-secondary);
     border: 1px solid var(--border);
@@ -3146,11 +3146,6 @@ body.light-mode .coffee-card .inline-edit-input {
 body.light-mode .coffee-card .inline-edit-input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 2px rgba(139, 90, 43, 0.12);
-}
-
-/* -- Fix: Im Edit-Modus Textfelder unter die Buttons r?cken -- */
-.coffee-card.editing .coffee-header > div:first-child {
-    padding-top: 28px;
 }
 
 /* -- Edit-Button Hover-Glow im Editing-State -- */
