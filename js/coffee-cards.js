@@ -124,23 +124,29 @@ export function renderCoffeeCard(coffee, index) {
     return `
         <div class="coffee-card" data-original-index="${index}" style="${colorStyle}">
             <div class="coffee-header">
+
                 <div>
+                    <div class="color-picker-wrapper">
+                        <button class="color-picker-btn ${currentHex ? 'has-color' : ''}"
+                                style="${currentHex ? `color: ${currentHex}; border-color: ${currentHex};` : ''}"
+                                id="color-picker-btn-${index}"
+                                onclick="event.stopPropagation(); window.toggleColorPicker(${index});">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22a10 10 0 1 0-10-10c0 4.1 2 7.7 5 10a1.8 1.8 0 0 0 2-1.8V19a2 2 0 0 1 2-2h1.5a5.5 5.5 0 0 0 5.5-5.5V10c0-4.4-3.6-8-8-8z"></path>
+                                <circle cx="7.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                                <circle cx="11.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                                <circle cx="15.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                            </svg>
+                        </button>
+                        <div class="color-picker-popup" id="color-popup-${index}" onclick="event.stopPropagation();">
+                            ${swatchesHTML}
+                            <div class="clear-color-btn" onclick="event.stopPropagation(); window.selectColor(${index}, '');">Keine Farbe</div>
+                        </div>
+                    </div>
+
                     ${roasteryHTML}
                     <div class="coffee-name" id="name-display-${index}">${sanitizeHTML(coffee.name)}</div>
                     <div class="coffee-origin" id="origin-display-${index}">${sanitizeHTML(formatCoffeeOrigin(coffee.origin))}</div>
-                </div>
-
-                <button class="color-picker-btn ${currentHex ? 'has-color' : ''}" style="${currentHex ? `color: ${currentHex};` : ''}" id="color-picker-btn-${index}" onclick="event.stopPropagation(); window.toggleColorPicker(${index});">
-                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22a10 10 0 1 0-10-10c0 4.1 2 7.7 5 10a1.8 1.8 0 0 0 2-1.8V19a2 2 0 0 1 2-2h1.5a5.5 5.5 0 0 0 5.5-5.5V10c0-4.4-3.6-8-8-8z"></path>
-                        <circle cx="7.5" cy="10.5" r=".5" fill="currentColor"></circle>
-                        <circle cx="11.5" cy="7.5" r=".5" fill="currentColor"></circle>
-                        <circle cx="15.5" cy="10.5" r=".5" fill="currentColor"></circle>
-                    </svg>
-                </button>
-                <div class="color-picker-popup" id="color-popup-${index}" onclick="event.stopPropagation();">
-                    ${swatchesHTML}
-                    <div class="clear-color-btn" onclick="event.stopPropagation(); window.selectColor(${index}, '');">Keine Farbe</div>
                 </div>
 
                 <button class="favorite-btn ${coffee.favorite ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${index});">
@@ -162,14 +168,14 @@ export function renderCoffeeCard(coffee, index) {
                     </svg>
                 </button>
             </div>
-            
+
             <div class="process-freshness-row">
                 <div class="coffee-process-small">${sanitizeHTML(coffee.process)}</div>
                 <div class="freshness-badge-inline" id="freshness-badge-${index}">
                     ${getRoastFreshnessBadge(coffee.roastDate)}
                 </div>
             </div>
-            
+
             <div class="brew-params">
                 ${extraInfoHTML}
                 <div class="roast-date-section">
@@ -187,7 +193,7 @@ export function renderCoffeeCard(coffee, index) {
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="ratio-control">
                     <h4 id="amount-header-${index}">Coffee Amount – Ratio 1:${brewParams.ratioNumber}</h4>
                     <div class="ratio-slider">
@@ -196,8 +202,8 @@ export function renderCoffeeCard(coffee, index) {
                         </div>
                         <div class="slider-track">
                             <span>10g</span>
-                            <input type="range" min="10" max="30" value="${amount}" 
-                                oninput="updateCoffeeAmountLive(this.value, ${index}); event.stopPropagation();" 
+                            <input type="range" min="10" max="30" value="${amount}"
+                                oninput="updateCoffeeAmountLive(this.value, ${index}); event.stopPropagation();"
                                 onmousedown="event.stopPropagation();"
                                 ontouchstart="event.stopPropagation();"
                                 onclick="event.stopPropagation();">
@@ -205,7 +211,7 @@ export function renderCoffeeCard(coffee, index) {
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="param-grid">
                     <div class="param-box">
                         <div class="param-label">Grind Setting</div>
@@ -236,7 +242,7 @@ export function renderCoffeeCard(coffee, index) {
                         <div class="param-value">${brewParams.targetTime}</div>
                     </div>
                 </div>
-                
+
                 <div class="brew-timer-section">
                     <div class="timer-display" id="brew-timer-display-${index}">00:00</div>
                     <div class="timer-controls-main">
@@ -250,7 +256,7 @@ export function renderCoffeeCard(coffee, index) {
                         <button class="timer-btn timer-btn-secondary" id="reset-brew-${index}" onclick="event.stopPropagation(); resetBrewTimer(${index});" disabled>Reset</button>
                     </div>
                 </div>
-                
+
                 <div class="brew-steps">
                     <h4>${brewParams.method === 'aeropress' ? 'AeroPress Brew Steps' : brewParams.method === 'chemex' ? 'Chemex Pour-Over Steps' : 'V60 Pour-Over Steps'}</h4>
                     ${brewParams.steps.map((step, stepIndex) => `
@@ -263,7 +269,7 @@ export function renderCoffeeCard(coffee, index) {
                         </div>
                     `).join('')}
                 </div>
-                
+
                 <div class="feedback-section">
                     <h4>Brew Feedback</h4>
                     <div class="feedback-cupping-note">Cupping-style quick rating</div>
@@ -297,7 +303,7 @@ export function renderCoffeeCard(coffee, index) {
                     <button class="history-btn" onclick="event.stopPropagation(); openFeedbackHistory(${index});">View Adjustment History</button>
                     <button class="reset-adjustments-btn" onclick="event.stopPropagation(); resetCoffeeAdjustments(${index});">Reset Adjustments</button>
                 </div>
-                
+
                 <div style="margin-top: 20px; padding: 16px; background: var(--bg-secondary); border-radius: 8px; font-size: 0.9rem;">
                     <div style="display: flex; align-items: flex-start; gap: 10px;">
                         <svg style="width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

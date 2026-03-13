@@ -265,7 +265,7 @@ export function selectColor(index, color) {
     if (color) {
         card.style.setProperty('--card-accent-color', color);
     } else {
-        // NEU: Zwingt die Farbe aktiv auf transparent, was den Cache-Bug beim Löschen behebt!
+        // Zwingt die Farbe aktiv auf transparent, behebt den Cache-Bug beim Löschen!
         card.style.setProperty('--card-accent-color', 'transparent');
     }
 
@@ -276,15 +276,17 @@ export function selectColor(index, color) {
     const popup = document.getElementById(`color-popup-${index}`);
     if (popup) popup.classList.remove('active');
 
-    // Button-Icon-Farbe anpassen
+    // Button-Icon UND Rahmen-Farbe anpassen
     const btn = document.getElementById(`color-picker-btn-${index}`);
     if (btn) {
         if(color) {
             btn.classList.add('has-color');
             btn.style.color = color;
+            btn.style.borderColor = color;
         } else {
             btn.classList.remove('has-color');
             btn.style.color = 'var(--text-secondary)';
+            btn.style.borderColor = 'var(--border)';
         }
     }
 }

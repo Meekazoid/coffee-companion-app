@@ -9,7 +9,7 @@
 
 html {
     /* Stufenlose Skalierung statt abrupter Sprünge */
-    font-size: clamp(14px, 4vw + 2px, 18px); 
+    font-size: clamp(14px, 4vw + 2px, 18px);
     -webkit-text-size-adjust: 100%; /* WICHTIG: 100% statt none */
     text-size-adjust: 100%;         /* WICHTIG: 100% statt none */
     overflow-x: hidden;
@@ -54,13 +54,13 @@ body.light-mode {
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100dvh; /* dvh statt vh - ignoriert einklappende Adressleisten */
-    
+
     /* iOS Safe Areas einbinden, damit Buttons nicht im Home-Balken hängen */
-    padding: env(safe-area-inset-top, 40px) 
-             env(safe-area-inset-right, 20px) 
-             calc(100px + env(safe-area-inset-bottom, 0px)) 
+    padding: env(safe-area-inset-top, 40px)
+             env(safe-area-inset-right, 20px)
+             calc(100px + env(safe-area-inset-bottom, 0px))
              env(safe-area-inset-left, 20px);
-             
+
     transition: background-color 0.3s ease;
 }
 
@@ -780,7 +780,7 @@ body.light-mode .picker-option.active {
 
 .coffee-card {
     --card-accent-color: transparent;
-    background: 
+    background:
         /* NEU: Ellipse (180px breit, 100px hoch) statt Kreis, damit es nicht zu tief geht! */
         radial-gradient(ellipse 180px 100px at 0% 0%, color-mix(in srgb, var(--card-accent-color) 25%, transparent) 0%, transparent 100%),
         linear-gradient(135deg, rgba(212, 165, 116, 0.10) 0%, rgba(212, 165, 116, 0.04) 28%, var(--bg-secondary) 55%);
@@ -799,7 +799,7 @@ body.light-mode .picker-option.active {
 }
 
 body.light-mode .coffee-card {
-    background: 
+    background:
         /* NEU: Deckkraft von 20% auf 45% erhöht für den Light-Mode */
         radial-gradient(ellipse 180px 100px at 0% 0%, color-mix(in srgb, var(--card-accent-color) 45%, transparent) 0%, transparent 100%),
         linear-gradient(135deg, rgba(139, 90, 43, 0.07) 0%, rgba(139, 90, 43, 0.025) 28%, var(--bg-secondary) 55%);
@@ -812,7 +812,7 @@ body.light-mode .coffee-card {
 }
 
 .coffee-card.expanded {
-    background: 
+    background:
         radial-gradient(ellipse 180px 100px at 0% 0%, color-mix(in srgb, var(--card-accent-color) 25%, transparent) 0%, transparent 100%),
         var(--bg-secondary);
     box-shadow: 0 12px 32px var(--shadow);
@@ -822,42 +822,48 @@ body.light-mode .coffee-card {
 }
 
 body.light-mode .coffee-card.expanded {
-    background: 
+    background:
         radial-gradient(ellipse 180px 100px at 0% 0%, color-mix(in srgb, var(--card-accent-color) 45%, transparent) 0%, transparent 100%),
         var(--bg-secondary);
 }
 
 /* --- COLOR PICKER BUTTON & POPUP --- */
-.color-picker-btn {
-    position: absolute;
-    /* Positioniert innerhalb der Karte, exakt beim Text */
-    top: 24px;
-    left: 24px;
-    background: transparent; /* NEU: Komplett transparent wie Stift/Mülleimer */
-    border: none;            /* NEU: Kein Rand */
-    cursor: pointer;
+.color-picker-wrapper {
+    position: relative;
+    display: none; /* Nur im Edit-Modus sichtbar */
+    margin-bottom: 12px; /* Schiebt das Eingabefeld exakt eine Zeile nach unten! */
     z-index: 10;
-    display: none;
+}
+.coffee-card.editing .color-picker-wrapper {
+    display: block;
+}
+
+.color-picker-btn {
+    width: 32px;
+    height: 32px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border); /* Rahmen ist wieder da (wie bei Mülleimer/Stift) */
+    border-radius: 8px; /* Standard-Rundung deiner Buttons */
+    cursor: pointer;
+    display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-secondary);
-    transition: color 0.2s;
+    transition: all 0.2s ease;
     padding: 0;
 }
-.coffee-card.editing .color-picker-btn {
-    display: flex;
-}
 .color-picker-btn:hover {
-    color: var(--accent);
+    border-color: var(--text-primary);
+    color: var(--text-primary);
 }
 .color-picker-btn.has-color {
-    opacity: 1;
+    background: var(--bg-card);
 }
 
 .color-picker-popup {
     display: none;
     position: absolute;
-    top: 25px;
+    top: 38px; /* Öffnet sich direkt unter dem Button */
     left: 0;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -1687,7 +1693,7 @@ body.light-mode .step-progress-bar {
     content: '';
     position: absolute;
     /* inset: 0 setzt das Element exakt auf die Größe des Buttons */
-    inset: 0; 
+    inset: 0;
     border-radius: inherit;
     border: 2px solid #c8945a;
     z-index: -1;
@@ -1698,11 +1704,11 @@ body.light-mode .step-progress-bar {
 
 /* Keyframes für die GPU-beschleunigte Animation */
 @keyframes ring-pulse {
-    0% { 
-        transform: scale(1); 
-        opacity: 0.8; 
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
     }
-    100% { 
+    100% {
         transform: scale(1.15); /* Ring wächst um 15% */
         opacity: 0;             /* und verblasst dabei */
     }
@@ -2919,7 +2925,7 @@ h1 {
    27. UI COMPONENTS ? STANDARDIZED POPUPS
    ========================================== */
 
-/* --- .popup-header-standard --- 
+/* --- .popup-header-standard ---
    Universal flex header for all popup/modal heads.
    Icon + h2 title sit side-by-side, with a fine gold
    separator underneath. The header MUST be closed
@@ -2978,7 +2984,7 @@ h1 {
     margin-left: auto;
 }
 
-/* --- .info-box-standard --- 
+/* --- .info-box-standard ---
    Universal info-box / callout.
    Transparent gold background, subtle border,
    <strong> title in accent colour, body text below.    */
