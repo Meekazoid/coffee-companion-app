@@ -8,10 +8,11 @@
 }
 
 html {
-    font-size: 18px;
-    /* Anchor rem units ? Firefox & Safari use this */     -webkit-text-size-adjust: none;
-    /* Disable Chrome Android text inflation that scales rem-based UI */     text-size-adjust: none;
-    /* Standard equivalent */     overflow-x: hidden;
+    /* Stufenlose Skalierung statt abrupter Sprünge */
+    font-size: clamp(14px, 4vw + 2px, 18px); 
+    -webkit-text-size-adjust: 100%; /* WICHTIG: 100% statt none */
+    text-size-adjust: 100%;         /* WICHTIG: 100% statt none */
+    overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
     scroll-behavior: smooth;
@@ -52,8 +53,14 @@ body.light-mode {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
-    min-height: 100vh;
-    padding: 40px 20px 100px;
+    min-height: 100dvh; /* dvh statt vh - ignoriert einklappende Adressleisten */
+    
+    /* iOS Safe Areas einbinden, damit Buttons nicht im Home-Balken hängen */
+    padding: env(safe-area-inset-top, 40px) 
+             env(safe-area-inset-right, 20px) 
+             calc(100px + env(safe-area-inset-bottom, 0px)) 
+             env(safe-area-inset-left, 20px);
+             
     transition: background-color 0.3s ease;
 }
 
@@ -219,7 +226,7 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: 12px;
-    padding: 14px 20px;
+    padding: 10px 16px; /* Vorher: 14px 20px -> Nimmt die Höhe raus */
     width: 100%;
     background: transparent;
     border: none;
@@ -677,8 +684,8 @@ body.light-mode .brew-chip-group-label {
 }
 
 #grinderModal .popup-header-standard svg, #methodModal .popup-header-standard svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 #grinderModal .popup-header-standard h2, #methodModal .popup-header-standard h2 {
@@ -814,7 +821,7 @@ body.light-mode .coffee-card.expanded {
 }
 
 .coffee-name {
-    font-size: 1.5rem;
+    font-size: 1.25rem; /* Vorher: 1.5rem - verhindert riesige Schrift in Firefox */
     font-weight: 600;
     margin-bottom: 8px;
     word-wrap: break-word;
@@ -2097,8 +2104,8 @@ body.light-mode .history-item-brew-badge {
 }
 
 .control-btn {
-    width: 40px;
-    height: 40px;
+    width: 36px;  /* Vorher: 40px */
+    height: 36px; /* Vorher: 40px */
     background: var(--bg-secondary);
     border: 2px solid var(--border);
     border-radius: 50%;
@@ -2112,8 +2119,8 @@ body.light-mode .history-item-brew-badge {
 }
 
 .control-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;  /* Vorher: 20px */
+    height: 18px; /* Vorher: 20px */
     stroke: var(--text-primary);
     stroke-width: 1.5;
     stroke-linecap: round;
@@ -2440,6 +2447,10 @@ h1 {
 .onboarding-text {
     font-size: 0.76rem;
     line-height: 1.55;
+}
+
+.coffee-card {
+    padding: 16px 14px; /* Erzwingt den kompakten Chrome-Look auf allen Handys */
 }
 
 .global-grinder-selector {
@@ -3014,7 +3025,7 @@ body.light-mode .edit-btn.editing {
 
 /* Name-Input: inherits coffee-name sizing */
 .coffee-card .inline-edit-input.edit-name {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 8px;
     color: var(--accent);
@@ -3311,4 +3322,3 @@ header {
 .roast-date-input-shell:focus-within .roast-date-display {
     border-color: var(--accent);
 }
-
