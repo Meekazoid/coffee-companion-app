@@ -260,12 +260,11 @@ export function toggleColorPicker(index) {
 export function selectColor(index, color) {
     const card = document.querySelector(`.coffee-card[data-original-index="${index}"]`);
     if (!card) return;
-
-    // CSS-Variable direkt aktualisieren für Instant-Preview
+    
+    // Nur die Hintergrund-Aura der Karte wird aktualisiert
     if (color) {
         card.style.setProperty('--card-accent-color', color);
     } else {
-        // Zwingt die Farbe aktiv auf transparent, behebt den Cache-Bug beim Löschen!
         card.style.setProperty('--card-accent-color', 'transparent');
     }
 
@@ -275,20 +274,8 @@ export function selectColor(index, color) {
     // Popup schließen
     const popup = document.getElementById(`color-popup-${index}`);
     if (popup) popup.classList.remove('active');
-
-    // Button-Icon UND Rahmen-Farbe anpassen
-    const btn = document.getElementById(`color-picker-btn-${index}`);
-    if (btn) {
-        if(color) {
-            btn.classList.add('has-color');
-            btn.style.color = color;
-            btn.style.borderColor = color;
-        } else {
-            btn.classList.remove('has-color');
-            btn.style.color = 'var(--text-secondary)';
-            btn.style.borderColor = 'var(--border)';
-        }
-    }
+    
+    // Keine Manipulation des Button-Styles mehr! Der Button bleibt immer strikt im Standard-Design.
 }
 
 // Window-Zuweisung für Inline-HTML Aufrufe
