@@ -111,12 +111,15 @@ function enterEditMode(index, card) {
         const safeDisplay = displayLabel === 'unknown' ? 'Processing Method' : displayLabel;
         
         processDisplay.outerHTML = `
-            <div class="inline-edit-input edit-process"
+            <div class="coffee-process-small inline-edit-input edit-process"
                  id="process-edit-${index}"
                  data-value="${escapeAttr(coffee.process || '')}"
                  tabindex="0"
-                 style="cursor: pointer; text-align: left; width: 100%; min-height: 42px; display: flex; align-items: center;"
-                 onclick="event.stopPropagation(); window.openCardProcessPicker(${index});">
+                 role="button"
+                 aria-label="Choose processing method"
+                 style="cursor: pointer; text-align: left; width: 100%; min-height: 42px; display: flex; align-items: center; pointer-events: auto;"
+                 onclick="event.stopPropagation(); window.openCardProcessPicker(${index});"
+                 onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); event.stopPropagation(); window.openCardProcessPicker(${index});}">
                  ${escapeAttr(safeDisplay)}
             </div>`;
     }
