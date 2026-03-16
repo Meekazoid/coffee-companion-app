@@ -787,10 +787,9 @@ body.light-mode .picker-option.active {
 }
 
 .coffee-card {
-    --card-accent-color: transparent;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
-    border-left: 4px solid var(--accent);
+    border-left: 4px solid var(--card-accent-color, var(--accent));
     border-radius: 16px;
     padding: 24px;
     cursor: pointer;
@@ -805,7 +804,7 @@ body.light-mode .picker-option.active {
 
 body.light-mode .coffee-card {
     background: var(--bg-secondary);
-    border-left: 4px solid var(--accent);
+    border-left: 4px solid var(--card-accent-color, var(--accent));
 }
 
 .coffee-card::before {
@@ -815,7 +814,7 @@ body.light-mode .coffee-card {
     top: 0;
     bottom: 0;
     width: 70px;
-    background: linear-gradient(to right, color-mix(in srgb, var(--accent) 15%, transparent), transparent);
+    background: linear-gradient(to right, color-mix(in srgb, var(--card-accent-color, var(--accent)) 15%, transparent), transparent);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     pointer-events: none;
