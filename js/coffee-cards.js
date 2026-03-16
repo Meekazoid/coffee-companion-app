@@ -37,15 +37,15 @@ import './brew-timer.js';
 import './card-editor.js';
 
 const PASTEL_COLORS = [
-    '#e0727f', // Berry
-    '#f2a673', // Peach
-    '#f5d073', // Yellow
-    '#94b897', // Sage
-    '#7dc8b8', // Mint
-    '#8dbbdb', // Ice Blue
-    '#b29ddb', // Lavender
-    '#db98af', // Rose
-    '#a39e99'  // Warm Grey
+    '#E8D5C0', // Crema (Dein --text-primary, sehr weich und hell)
+    '#F0C495', // Pale Sand / Blond Roast
+    '#D4A574', // Signature Gold (Dein --accent)
+    '#C88A53', // Caramel / Light Roast
+    '#B65D39', // Terracotta / Copper (Ein warmer, rötlicher Kontrast)
+    '#8B5A2B', // Cognac / Cinnamon
+    '#7A6050', // Taupe / Ash (Dein --text-secondary, sehr elegant)
+    '#5D4637', // Mocha / Medium Roast
+    '#6B705C'  // Muted Olive / Earth (Ein ganz gedämpftes, erdiges Grün für etwas Variation)
 ];
 
 
