@@ -3582,40 +3582,48 @@ header {
     border-color: var(--accent);
 }
 
-/* ==========================================
-   FIREFOX ANDROID BUTTON SIZE FIX
-   Keep Chrome baseline untouched via Firefox-only supports block.
-   ========================================== */
+/* ============================================================
+   FIREFOX ANDROID UI & TOUCH-TARGET FIX (DRILLING MODE)
+   Optimiert für Firefox, lässt Chrome Baseline unberührt.
+   ============================================================ */
+
+/* 1. Globaler Firefox-Reset für Button-Innenabstände */
 button::-moz-focus-inner {
     border: 0;
     padding: 0;
 }
 
+/* 2. Spezifische Korrekturen für Firefox Android */
 @supports (-moz-appearance: none) {
-    /* 1. Visuelle Vergrößerung der Buttons in Firefox */
+    
+    /* --- BUTTON GRÖSSEN (Visuelle Korrektur) --- */
     .favorite-btn,
     .edit-btn,
     .delete-btn {
-        width: 36px !important;  /* Vorher 28px */
+        width: 36px !important;
         height: 36px !important;
     }
     
-    /* WICHTIG: Da die Buttons oben rechts absolut positioniert sind, 
-       müssen wir den Abstand anpassen, damit sie bei 36px nicht überlappen */
+    /* Abstände anpassen, damit die größeren Buttons nicht überlappen */
     .edit-btn { right: 28px !important; }
     .favorite-btn { right: 72px !important; }
 
     .control-btn {
-        width: 48px !important; /* Vorher 40px */
+        width: 48px !important;
         height: 48px !important;
     }
 
     .color-picker-btn {
-        width: 44px !important; 
+        width: 44px !important;
         height: 44px !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        position: relative !important;
+        flex-shrink: 0 !important; /* Verhindert, dass der Button schrumpft */
     }
 
-    /* 2. Icons proportional an die neuen Button-Größen anpassen */
+    /* --- ICON GRÖSSEN --- */
     .star-icon, .edit-icon, .delete-icon {
         width: 20px !important;
         height: 20px !important;
@@ -3629,7 +3637,35 @@ button::-moz-focus-inner {
         height: 24px !important;
     }
 
-    /* 3. DER PRO-TIPP: Unsichtbare, riesige Klickfläche für "große Finger" */
+    /* --- EDITOR & INPUT FIX (Verhindert Überlappung) --- */
+    
+    /* Stellt sicher, dass die Textfelder Platz beanspruchen */
+    .coffee-roastery, 
+    .coffee-name, 
+    .coffee-origin {
+        min-width: 160px !important; 
+        flex-grow: 1 !important;
+        width: auto !important;
+    }
+
+    /* Der Container um Roastery-Input und Colorpicker */
+    .editor-grid-cell, .input-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important; /* Bleibt in einer Zeile, solange Platz ist */
+        align-items: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    /* Inputs in Firefox etwas höher für bessere Griffigkeit */
+    input:not([type="range"]) {
+        height: 42px !important;
+        font-size: 16px !important; /* Verhindert Browser-Auto-Zoom */
+    }
+
+    /* --- HITBOX ERWEITERUNG (Für große Finger) --- */
+    /* Erzeugt einen unsichtbaren 48px Klickbereich um alle Aktions-Buttons */
     .color-picker-btn::after,
     .favorite-btn::after,
     .edit-btn::after,
@@ -3640,10 +3676,9 @@ button::-moz-focus-inner {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 48px; /* Die goldene WCAG-Regel für Touch-Targets */
+        width: 48px;
         height: 48px;
-        z-index: 1; /* Legt sich unsichtbar über den Button */
+        z-index: 10;
         border-radius: 50%;
     }
 }
-
