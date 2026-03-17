@@ -269,7 +269,17 @@ export async function initBackendSync() {
                 if (looksIncomplete && localCoffees.length > 0) {
                     console.warn('[sync] Remote coffees missing feedbackHistory â€” keeping local data');
                 } else if (localChangedDuringSync) {
-                    console.warn('[sync] Local coffees changed during startup sync â€” skipping remote overwrite');
+                    console.warn('[sync] Local coffees changed during startup sync — skipping remote overwrite');
+                    // Push local state to backend so changes are not lost
+                    const currentLocal = (() => {
+                        try { return JSON.parse(localStorage.getItem('coffees') || '[]'); }
+                        catch (_) { return []; }
+                    })();
+                    if (currentLocal.length > 0) {
+                        syncCoffeesToBackend(currentLocal).catch(err =>
+                            console.warn('[sync] Deferred local->remote push failed:', err.message)
+                        );
+                    }
                 } else {
                     window.coffees = normalized;
                     localStorage.setItem('coffees', JSON.stringify(normalized));
