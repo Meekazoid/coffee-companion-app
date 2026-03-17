@@ -20,6 +20,7 @@ function openProcessPicker() {
 
 function closeProcessPicker() {
     document.getElementById('processModal').classList.remove('active');
+    window.currentProcessEditIndex = null; // <-- Wichtiger Fix, resettet den globalen State
 }
 
 function selectProcess(value) {
