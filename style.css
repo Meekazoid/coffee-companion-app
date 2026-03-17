@@ -3583,7 +3583,7 @@ header {
 }
 
 /* ============================================================
-   FINAL FIREFOX ANDROID FIX - NO OVERLAP VERSION
+   PERMANENT FIREFOX ANDROID UI FIX - FINAL VERSION
    ============================================================ */
 
 button::-moz-focus-inner {
@@ -3592,69 +3592,98 @@ button::-moz-focus-inner {
 }
 
 @supports (-moz-appearance: none) {
-    /* 1. BUTTONS & ICONS (Wie gehabt, leicht optimiert) */
-    .favorite-btn, .edit-btn, .delete-btn {
-        width: 36px !important;
-        height: 36px !important;
+    
+    /* 1. SETTINGS BUTTONS UNTEN (Wieder groß machen) */
+    .settings-btn, 
+    .theme-toggle, 
+    .water-btn,
+    .control-btn {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        min-height: 48px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
-    .edit-btn { right: 28px !important; }
-    .favorite-btn { right: 72px !important; }
+
+    .settings-btn svg, 
+    .theme-toggle svg, 
+    .water-btn svg,
+    .control-icon {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    /* 2. CARD-BUTTONS (Favorite, Edit, Delete) */
+    /* Wir schalten die absolute Positionierung in Firefox aus, 
+       damit sie nichts mehr überlappen können */
+    .favorite-btn, 
+    .edit-btn, 
+    .delete-btn {
+        position: relative !important; /* WICHTIG: Kein Überlappen mehr */
+        top: 0 !important;
+        right: 0 !important;
+        width: 40px !important;
+        height: 40px !important;
+        margin-left: 5px !important;
+    }
+
+    /* Container für die Card-Buttons oben rechts */
+    .card-actions {
+        display: flex !important;
+        gap: 8px !important;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+    }
+
+    /* 3. EDITOR / ROASTERY FELD FIX */
+    /* Wir geben dem Roastery-Feld volle Priorität */
+    .edit-roastery, 
+    .edit-name, 
+    .edit-origin,
+    input.inline-edit-input {
+        flex: 1 1 auto !important;
+        min-width: 150px !important; /* Mindestbreite gesichert */
+        height: 44px !important;
+        font-size: 16px !important;
+        padding: 8px !important;
+        width: 100% !important;
+    }
+
+    /* Der Bereich Roastery-Input + Colorpicker */
+    /* Wir erzwingen, dass sie nebeneinander stehen, aber der Pinsel nicht überlappt */
+    .coffee-card-header, 
+    .card-editor-header {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
 
     .color-picker-btn {
         width: 44px !important;
         height: 44px !important;
         flex-shrink: 0 !important;
-        position: relative !important;
-        margin: 0 0 0 10px !important; /* Erzwingt Abstand zum Input */
-        z-index: 5;
+        margin-left: auto !important;
     }
 
-    .color-picker-btn svg {
-        width: 24px !important;
-        height: 24px !important;
-    }
-
-    /* 2. DER ENTSCHEIDENDE FIX FÜR DIE ÜBERLAPPUNG */
-    
-    /* Wir müssen das Eltern-Element zwingen, Platz zu schaffen */
-    .coffee-card-header, 
-    .card-editor-header,
-    .editor-grid-cell {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        width: 100% !important;
-        overflow: visible !important;
-    }
-
-    /* Die Eingabefelder im Editor-Modus */
-    input.inline-edit-input {
-        flex: 1 1 auto !important; /* Erlaubt dem Input zu wachsen UND zu schrumpfen */
-        min-width: 0 !important;    /* Erlaubt Firefox das korrekte Berechnen der Flex-Breite */
-        width: 100% !important;
-        height: 42px !important;
-        margin-right: 10px !important;
-        padding: 8px 12px !important;
-        box-sizing: border-box !important;
-    }
-
-    /* Speziell für Roastery, falls es in einer Zeile mit dem Colorpicker ist */
-    .edit-roastery {
-        max-width: calc(100% - 60px) !important; /* Reserviert Platz für den Pinsel */
-    }
-
-    /* 3. HITBOX ERWEITERUNG */
+    /* 4. HITBOX (Bleibt für die Bedienbarkeit) */
     .color-picker-btn::after,
     .favorite-btn::after,
     .edit-btn::after,
-    .delete-btn::after {
+    .delete-btn::after,
+    .settings-btn::after,
+    .theme-toggle::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 48px;
-        height: 48px;
+        width: 50px;
+        height: 50px;
         z-index: 10;
     }
 }
