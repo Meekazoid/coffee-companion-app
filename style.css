@@ -3531,3 +3531,62 @@ header {
 .roast-date-input-shell:focus-within .roast-date-display {
     border-color: var(--accent);
 }
+
+/* 1. Entfernt den unsichtbaren Firefox-Extra-Platz in Buttons */
+button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/* 2. Nur für Firefox: Buttons vergrößern */
+@supports (-moz-appearance: none) {
+    
+    /* SETTINGS-BUTTONS UNTEN RECHTS (Settings, Compost, Water, Theme) */
+    .settings-btn, 
+    .theme-toggle, 
+    .water-btn,
+    .control-btn {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Icons in diesen Buttons mitwachsen lassen */
+    .settings-btn svg, 
+    .theme-toggle svg, 
+    .water-btn svg,
+    .control-icon {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    /* DIE DREI BUTTONS AUF DER COFFEECARD (Favorite, Edit, Delete) */
+    .favorite-btn, 
+    .edit-btn, 
+    .delete-btn {
+        width: 36px !important;  /* Von 28px auf 36px erhöht */
+        height: 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Positionen der Card-Buttons leicht korrigieren, damit sie nicht überlappen */
+    .delete-btn   { right: -10px !important; top: -10px !important; }
+    .edit-btn     { right: 32px !important;  top: -10px !important; }
+    .favorite-btn { right: 74px !important;  top: -10px !important; }
+
+    /* Icons auf der Card etwas größer für bessere Sichtbarkeit */
+    .favorite-btn svg, 
+    .edit-btn svg, 
+    .delete-btn svg,
+    .star-icon,
+    .edit-icon,
+    .delete-icon {
+        width: 18px !important;
+        height: 18px !important;
+    }
+}
