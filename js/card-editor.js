@@ -324,8 +324,8 @@ function replaceInputWithDisplay(inputEl, className, id, value, hidden = false) 
  * Escape a string for safe use in an HTML attribute value.
  */
 function escapeAttr(str) {
-    if (!str) return '';
-    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const s = String(str ?? ''); // Wandelt Zahlen in Strings um und fängt null/undefined sauber ab
+    return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 /**
