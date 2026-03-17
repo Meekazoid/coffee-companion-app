@@ -44,16 +44,17 @@ function selectProcess(value) {
 
     // 2. Fall: Wir sind im normalen "Add Coffee" Formular
     const processInput = document.getElementById('process');
-    const toggleBtn = document.getElementById('manual-processing-toggle');
+    const chipLabel = document.getElementById('process-chip-label');
+    const chip = document.getElementById('process-chip');
     
     if (processInput) processInput.value = value;
-    if (toggleBtn) {
+    if (chipLabel) {
         if (value) {
-            toggleBtn.innerHTML = `${PROCESS_LABELS[value]} <span style="margin-left: auto;">▼</span>`;
-            toggleBtn.classList.add('has-value');
+            chipLabel.textContent = PROCESS_LABELS[value] || value;
+            if (chip) chip.classList.add('has-value');
         } else {
-            toggleBtn.innerHTML = `Processing Method <span style="margin-left: auto;">▼</span>`;
-            toggleBtn.classList.remove('has-value');
+            chipLabel.textContent = '– optional –';
+            if (chip) chip.classList.remove('has-value');
         }
     }
     closeProcessPicker();

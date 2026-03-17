@@ -33,6 +33,7 @@ import { coffeeAmount, sanitizeHTML } from './state.js';
 import { getBrewRecommendations, boldWeights } from './brew-engine.js';
 import { getRoastFreshnessBadge } from './freshness.js';
 import { ensureInitialValues } from './feedback.js';
+import { PROCESS_LABELS } from './coffee-schema.js';
 import './brew-timer.js';
 import './card-editor.js';
 
@@ -97,8 +98,10 @@ export function renderCoffeeCard(coffee, index) {
     const amount = coffee.customAmount || coffeeAmount;
 
     // Farb-Aura Style generieren
-    const colorStyle = coffee.colorTag ? `--card-accent-color: ${sanitizeHTML(coffee.colorTag)};` : '';
-    const currentHex = coffee.colorTag || '';
+    // Farb-Aura Style generieren (Hex-Validierung gegen CSS-Injection)
+    const safeColorTag = /^#[0-9a-fA-F]{6}$/.test(coffee.colorTag) ? coffee.colorTag : '';
+    const colorStyle = safeColorTag ? `--card-accent-color: ${safeColorTag};` : '';
+    const currentHex = safeColorTag;
 
     // Color Swatches generieren
     const swatchesHTML = PASTEL_COLORS.map(color => 
@@ -113,8 +116,9 @@ export function renderCoffeeCard(coffee, index) {
 
     // Process: bei leerem/unbekanntem Wert unsichtbaren Platzhalter rendern (konstante Kartenhöhe)
     const hasProcess = coffee.process && coffee.process.toLowerCase() !== 'unknown' && coffee.process.trim() !== '';
+    const processDisplayLabel = hasProcess ? (PROCESS_LABELS[coffee.process] || PROCESS_LABELS[coffee.process.toLowerCase()] || coffee.process) : '';
     const processHTML = hasProcess
-        ? `<div class="coffee-process-small" id="process-display-${index}">${sanitizeHTML(coffee.process)}</div>`
+        ? `<div class="coffee-process-small" id="process-display-${index}">${sanitizeHTML(processDisplayLabel)}</div>`
         : `<div class="coffee-process-small" id="process-display-${index}" style="visibility: hidden;">&nbsp;</div>`;
 
     // NEU: Getrennte Logik für Sanitization (löst die Test-Assertions)
