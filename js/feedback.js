@@ -346,25 +346,30 @@ function generateSuggestion(index) {
         newTempStr = adjustTemp(currentTemp, cappedTemp);
     }
 
-    // 4. UI Rendering
+    // 4. UI Rendering (compact layout)
     suggestionDiv.innerHTML = `
         <div class="suggestion-title">
-            <svg style="width: 18px; height: 18px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path>
                 <path d="M9 18h6"></path><path d="M10 22h4"></path>
             </svg>
             Tuning Strategy
         </div>
-        <div class="suggestion-text" style="font-weight: 500; color: var(--text-primary); margin: 8px 0;">
+        <div class="suggestion-text" style="font-weight: 500; color: var(--text-primary);">
             ${strategyLabels.join('<br>')}
         </div>
         <div class="suggestion-values">
-            ${previewGrind ? `<div class="suggestion-value"><strong>Target Grind:</strong> ${previewGrind}</div>` : ''}
-            ${newTempStr ? `<div class="suggestion-value"><strong>Target Temp:</strong> ${newTempStr}</div>` : ''}
+            ${previewGrind ? `<div class="suggestion-value"><strong>Grind:</strong> ${previewGrind}</div>` : ''}
+            ${newTempStr ? `<div class="suggestion-value"><strong>Temp:</strong> ${newTempStr}</div>` : ''}
         </div>
-        <button class="apply-suggestion-btn" onclick="applySuggestion(${index}, ${cappedGrind}, '${newTempStr}')">
-            Apply Adjustments
-        </button>
+        <div class="suggestion-btn-row">
+            <button class="apply-suggestion-btn" onclick="applySuggestion(${index}, ${cappedGrind}, '${newTempStr}')">
+                Apply
+            </button>
+            <button class="undo-suggestion-btn" onclick="undoFeedbackSliders(${index})">
+                Reset
+            </button>
+        </div>
     `;
     suggestionDiv.classList.remove('hidden');
 }
@@ -690,11 +695,47 @@ function initClearHistoryConfirmListeners() {
 
 document.addEventListener("DOMContentLoaded", initClearHistoryConfirmListeners);
 
+// ==========================================
+// UNDO: Reset sliders to center (balanced)
+// ==========================================
+export function undoFeedbackSliders(index) {
+    const coffee = coffees[index];
+    if (!coffee) return;
+
+    // Reset feedback state
+    coffee.feedback = {};
+
+    // Reset all sliders to center (50)
+    const categories = ['bitterness', 'sweetness', 'acidity', 'body'];
+    categories.forEach(cat => {
+        const sliderEl = document.querySelector(`[data-feedback-slider="${index}-${cat}"]`);
+        if (sliderEl) {
+            sliderEl.value = 50;
+            updateSliderVisual(sliderEl);
+        }
+        // Reset quick-button highlights
+        document.querySelectorAll(`[data-feedback="${index}-${cat}"]`).forEach(opt => {
+            opt.classList.remove('selected');
+        });
+    });
+
+    // Hide suggestion box
+    const suggestionEl = document.getElementById(`suggestion-${index}`);
+    if (suggestionEl) {
+        suggestionEl.innerHTML = '';
+        suggestionEl.classList.add('hidden');
+    }
+
+    clearSuggestionHideTimer(index);
+    localStorage.setItem('coffees', JSON.stringify(coffees));
+}
+
 // Register functions on window for onclick handlers
 window.selectFeedback = selectFeedback;
 window.updateFeedbackSlider = updateFeedbackSlider;
 window.snapFeedbackSlider = snapFeedbackSlider;
 window.applySuggestion = applySuggestion;
+window.undoFeedbackSliders = undoFeedbackSliders;
 window.adjustGrindManual = adjustGrindManual;
 window.adjustTempManual = adjustTempManual;
 window.resetCoffeeAdjustments = resetCoffeeAdjustments;
