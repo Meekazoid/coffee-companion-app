@@ -169,6 +169,7 @@ function buildRoasteryStack(items) {
     let dragActive = false;
     let pendingDeltaX = 0;
     let dragRaf = 0;
+    let isTransitioning = false;
 
     // Schwellwerte
     const ACTIVATE_X = 12;
@@ -229,22 +230,14 @@ function buildRoasteryStack(items) {
         ghosts[0].appendChild(previewCard);
     }
 
-    function renderCurrent(inDirection) {
+    function renderCurrent(animateCounter = false) {
         slot.innerHTML = '';
         slot.appendChild(makeCard(items[current]));
         renderGhostPreview();
         renderDots();
-        renderCounter(Boolean(inDirection));
+        renderCounter(animateCounter);
         syncGhostHeight();
         requestAnimationFrame(syncGhostHeight);
-
-        if (inDirection) {
-            const appearClass = inDirection === 'left' ? 'roastery-card-enter-next' : 'roastery-card-enter-prev';
-            slot.classList.add(appearClass);
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => slot.classList.remove(appearClass));
-            });
-        }
     }
 
     function cleanupPointerState() {
@@ -276,31 +269,42 @@ function buildRoasteryStack(items) {
     }
 
     function go(direction /* 'left' | 'right' */) {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
         slot.classList.remove(
             'roastery-card-exit-next',
             'roastery-card-exit-prev',
-            'roastery-card-enter-next',
-            'roastery-card-enter-prev',
             'roastery-snap-back'
         );
-        slot.classList.add(direction === 'left' ? 'roastery-card-exit-next' : 'roastery-card-exit-prev');
+        const exitClass = direction === 'left' ? 'roastery-card-exit-next' : 'roastery-card-exit-prev';
+        slot.classList.add(exitClass);
 
         const activeCard = slot.querySelector('.coffee-card');
         if (activeCard) activeCard.dataset.suppressClick = '1';
 
-        setTimeout(() => {
+        let finalized = false;
+        const finalizeSwitch = () => {
+            if (finalized) return;
+            finalized = true;
+
             current = direction === 'left'
                 ? (current + 1) % items.length
                 : (current - 1 + items.length) % items.length;
 
             slot.classList.remove('roastery-card-exit-next', 'roastery-card-exit-prev');
             slot.style.transform = '';
-            renderCurrent(direction);
-        }, 280);
+            renderCurrent(true);
+            isTransitioning = false;
+        };
+
+        slot.addEventListener('animationend', finalizeSwitch, { once: true });
+        setTimeout(finalizeSwitch, 340);
     }
 
     function onPointerDown(e) {
         if (e.button !== undefined && e.button !== 0) return;
+        if (isTransitioning) return;
         const activeCard = slot.querySelector('.coffee-card');
         if (activeCard?.classList.contains('expanded')) return;
         if (e.target.closest(SWIPE_IGNORE_SELECTOR)) return;

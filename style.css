@@ -3714,32 +3714,14 @@ button::-moz-focus-inner {
     animation: roastery-card-exit-prev 0.28s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 
-.roastery-stack-slot.roastery-card-enter-next {
-    animation: roastery-card-enter-next 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.roastery-stack-slot.roastery-card-enter-prev {
-    animation: roastery-card-enter-prev 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
 @keyframes roastery-card-exit-next {
     from { transform: none; opacity: 1; filter: blur(0); }
-    to   { transform: translate3d(-14px, 0, -50px) scale(0.96) rotate(-1.1deg); opacity: 0; filter: blur(1.2px); }
+    to   { transform: translate3d(-34px, 0, -50px) scale(0.95) rotate(-1.4deg); opacity: 0; filter: blur(1.2px); }
 }
 
 @keyframes roastery-card-exit-prev {
     from { transform: none; opacity: 1; filter: blur(0); }
-    to   { transform: translate3d(14px, 0, -50px) scale(0.96) rotate(1.1deg); opacity: 0; filter: blur(1.2px); }
-}
-
-@keyframes roastery-card-enter-next {
-    from { transform: translate3d(8px, 10px, -55px) scale(0.965); opacity: 0.05; filter: blur(1.1px); }
-    to   { transform: none; opacity: 1; filter: blur(0); }
-}
-
-@keyframes roastery-card-enter-prev {
-    from { transform: translate3d(-8px, 10px, -55px) scale(0.965); opacity: 0.05; filter: blur(1.1px); }
-    to   { transform: none; opacity: 1; filter: blur(0); }
+    to   { transform: translate3d(34px, 0, -50px) scale(0.95) rotate(1.4deg); opacity: 0; filter: blur(1.2px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3747,8 +3729,6 @@ button::-moz-focus-inner {
     .roastery-stack-slot.roastery-snap-back,
     .roastery-stack-slot.roastery-card-exit-next,
     .roastery-stack-slot.roastery-card-exit-prev,
-    .roastery-stack-slot.roastery-card-enter-next,
-    .roastery-stack-slot.roastery-card-enter-prev,
     .roastery-stack-ghost {
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
