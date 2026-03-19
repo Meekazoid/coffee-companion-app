@@ -171,11 +171,16 @@ function buildRoasteryStack(items) {
     let dragRaf = 0;
     let isTransitioning = false;
     let transitionAnim = null;
+<<<<<<< codex/improve-card-transition-and-animation-effects-f8lhtb
+    let previewDirection = 'next'; // 'next' | 'prev'
+=======
+>>>>>>> main
 
     // Schwellwerte
     const ACTIVATE_X = 12;
     const LOCK_Y = 10;
     const SWIPE_THRESHOLD = 64;
+    const PREVIEW_SWITCH_X = 10;
     const SWIPE_IGNORE_SELECTOR = '.delete-btn, .favorite-btn, .edit-btn, .inline-edit-input, .edit-process, .timer-btn, .feedback-slider, .apply-suggestion-btn, .adjust-btn, .history-btn, .reset-adjustments-btn, input, select, textarea, button, .color-picker-btn, .color-picker-popup';
 
     function makeCard(item) {
@@ -226,8 +231,10 @@ function buildRoasteryStack(items) {
         ghosts.forEach(g => { g.innerHTML = ''; });
         if (ghosts.length === 0 || items.length < 2) return;
 
-        const nextItem = items[(current + 1) % items.length];
-        const previewCard = makePreviewCard(nextItem);
+        const previewIndex = previewDirection === 'prev'
+            ? (current - 1 + items.length) % items.length
+            : (current + 1) % items.length;
+        const previewCard = makePreviewCard(items[previewIndex]);
         ghosts[0].appendChild(previewCard);
     }
 
@@ -267,6 +274,10 @@ function buildRoasteryStack(items) {
         slot.classList.add('roastery-snap-back');
         slot.style.transform = '';
         setTimeout(() => slot.classList.remove('roastery-snap-back'), 180);
+        if (previewDirection !== 'next') {
+            previewDirection = 'next';
+            renderGhostPreview();
+        }
     }
 
     function go(direction /* 'left' | 'right' */) {
@@ -298,6 +309,10 @@ function buildRoasteryStack(items) {
                 ? (current + 1) % items.length
                 : (current - 1 + items.length) % items.length;
 
+<<<<<<< codex/improve-card-transition-and-animation-effects-f8lhtb
+            previewDirection = 'next';
+=======
+>>>>>>> main
             slot.style.transform = '';
             slot.style.opacity = '';
             slot.style.filter = '';
@@ -331,6 +346,7 @@ function buildRoasteryStack(items) {
         pointerId = e.pointerId;
         isPointerDown = true;
         dragActive = false;
+        previewDirection = 'next';
         startX = e.clientX;
         startY = e.clientY;
         deltaX = 0;
@@ -361,6 +377,17 @@ function buildRoasteryStack(items) {
 
         pendingDeltaX = deltaX;
         if (!dragRaf) dragRaf = requestAnimationFrame(applyDragTransform);
+
+        const desiredPreviewDirection = deltaX > PREVIEW_SWITCH_X
+            ? 'prev'
+            : deltaX < -PREVIEW_SWITCH_X
+                ? 'next'
+                : previewDirection;
+        if (desiredPreviewDirection !== previewDirection) {
+            previewDirection = desiredPreviewDirection;
+            renderGhostPreview();
+        }
+
         e.preventDefault();
     }
 
