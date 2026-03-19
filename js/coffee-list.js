@@ -144,6 +144,9 @@ function buildRoasteryStack(items) {
     const dots = document.createElement('div');
     dots.className = 'roastery-stack-dots';
 
+    const counter = document.createElement('div');
+    counter.className = 'roastery-stack-counter';
+
     const ghostLayer = document.createElement('div');
     ghostLayer.className = 'roastery-stack-ghost-layer';
     const ghostCount = Math.min(3, Math.max(0, items.length - 1));
@@ -166,6 +169,7 @@ function buildRoasteryStack(items) {
     let dragActive = false;
     let pendingDeltaX = 0;
     let dragRaf = 0;
+    let isTransitioning = false;
 
     // Schwellwerte
     const ACTIVATE_X = 12;
@@ -173,16 +177,10 @@ function buildRoasteryStack(items) {
     const SWIPE_THRESHOLD = 64;
     const SWIPE_IGNORE_SELECTOR = '.delete-btn, .favorite-btn, .edit-btn, .inline-edit-input, .edit-process, .timer-btn, .feedback-slider, .apply-suggestion-btn, .adjust-btn, .history-btn, .reset-adjustments-btn, input, select, textarea, button, .color-picker-btn, .color-picker-popup';
 
-    function makeCard(item, idx, total) {
+    function makeCard(item) {
         const tpl = document.createElement('template');
         tpl.innerHTML = renderCoffeeCard(item.coffee, item.originalIndex).trim();
         const card = tpl.content.firstElementChild;
-
-        // Badge zentriert auf der Oberkante (wie im vereinbarten Design)
-        const badge = document.createElement('div');
-        badge.className = 'roastery-stack-counter';
-        badge.textContent = `${idx + 1}/${total}`;
-        card.appendChild(badge);
 
         attachCardClickListener(card);
         return card;
@@ -206,6 +204,16 @@ function buildRoasteryStack(items) {
         });
     }
 
+    function renderCounter(animate = false) {
+        counter.textContent = `${current + 1}/${items.length}`;
+        if (!animate) {
+            counter.classList.remove('roastery-counter-pop');
+            return;
+        }
+        counter.classList.remove('roastery-counter-pop');
+        requestAnimationFrame(() => counter.classList.add('roastery-counter-pop'));
+    }
+
     function syncGhostHeight() {
         const active = slot.querySelector('.coffee-card');
         if (!active) return;
@@ -222,21 +230,14 @@ function buildRoasteryStack(items) {
         ghosts[0].appendChild(previewCard);
     }
 
-    function renderCurrent(inDirection) {
+    function renderCurrent(animateCounter = false) {
         slot.innerHTML = '';
-        slot.appendChild(makeCard(items[current], current, items.length));
+        slot.appendChild(makeCard(items[current]));
         renderGhostPreview();
         renderDots();
+        renderCounter(animateCounter);
         syncGhostHeight();
         requestAnimationFrame(syncGhostHeight);
-
-        if (inDirection) {
-            const slideClass = inDirection === 'left' ? 'roastery-slide-in-left' : 'roastery-slide-in-right';
-            slot.classList.add(slideClass);
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => slot.classList.remove(slideClass));
-            });
-        }
     }
 
     function cleanupPointerState() {
@@ -268,25 +269,42 @@ function buildRoasteryStack(items) {
     }
 
     function go(direction /* 'left' | 'right' */) {
-        slot.classList.remove('roastery-fly-left', 'roastery-fly-right', 'roastery-snap-back');
-        slot.classList.add('roastery-push-out');
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        slot.classList.remove(
+            'roastery-card-exit-next',
+            'roastery-card-exit-prev',
+            'roastery-snap-back'
+        );
+        const exitClass = direction === 'left' ? 'roastery-card-exit-next' : 'roastery-card-exit-prev';
+        slot.classList.add(exitClass);
 
         const activeCard = slot.querySelector('.coffee-card');
         if (activeCard) activeCard.dataset.suppressClick = '1';
 
-        setTimeout(() => {
+        let finalized = false;
+        const finalizeSwitch = () => {
+            if (finalized) return;
+            finalized = true;
+
             current = direction === 'left'
                 ? (current + 1) % items.length
                 : (current - 1 + items.length) % items.length;
 
-            slot.classList.remove('roastery-push-out');
+            slot.classList.remove('roastery-card-exit-next', 'roastery-card-exit-prev');
             slot.style.transform = '';
-            renderCurrent(direction);
-        }, 200);
+            renderCurrent(true);
+            isTransitioning = false;
+        };
+
+        slot.addEventListener('animationend', finalizeSwitch, { once: true });
+        setTimeout(finalizeSwitch, 340);
     }
 
     function onPointerDown(e) {
         if (e.button !== undefined && e.button !== 0) return;
+        if (isTransitioning) return;
         const activeCard = slot.querySelector('.coffee-card');
         if (activeCard?.classList.contains('expanded')) return;
         if (e.target.closest(SWIPE_IGNORE_SELECTOR)) return;
@@ -374,6 +392,7 @@ function buildRoasteryStack(items) {
     mo.observe(document.body, { childList: true, subtree: true });
 
     wrapper.appendChild(ghostLayer);
+    wrapper.appendChild(counter);
     wrapper.appendChild(slot);
     wrapper.appendChild(dots);
 
