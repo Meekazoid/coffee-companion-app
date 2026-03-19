@@ -3634,3 +3634,125 @@ button::-moz-focus-inner {
         height: 18px !important;
     }
 }
+
+
+/* ==========================================
+   ROASTERY STACK
+   ========================================== */
+
+.roastery-stack-wrapper {
+    position: relative;
+    margin-bottom: 14px;
+    overflow: visible;
+}
+
+.roastery-stack-ghost {
+    position: absolute;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    border-radius: 16px;
+    z-index: 0;
+    transition: height .2s ease;
+    background: color-mix(in srgb, var(--bg-secondary) 88%, transparent 12%);
+    border: 1px solid color-mix(in srgb, var(--border) 70%, transparent 30%);
+}
+
+.roastery-stack-ghost-1 {
+    top: 8px;
+    transform: scale(.985);
+    opacity: .82;
+}
+
+.roastery-stack-ghost-2 {
+    top: 16px;
+    transform: scale(.97);
+    opacity: .62;
+}
+
+.roastery-stack-slot {
+    position: relative;
+    z-index: 2;
+    overflow: visible;
+    touch-action: pan-y;
+    will-change: transform;
+    transition: transform .18s ease, opacity .18s ease;
+}
+
+.roastery-stack-slot.roastery-stack-dragging {
+    transition: none;
+    cursor: grabbing;
+}
+
+.roastery-stack-slot.roastery-snap-back {
+    transition: transform .18s ease;
+}
+
+.roastery-stack-slot.roastery-fly-left {
+    transform: translateX(-110%);
+    opacity: .35;
+}
+
+.roastery-stack-slot.roastery-fly-right {
+    transform: translateX(110%);
+    opacity: .35;
+}
+
+/* Hover-Lift im Stack deaktivieren (Drag-Konflikt vermeiden) */
+.roastery-stack-slot .coffee-card:hover {
+    transform: none;
+}
+
+/* Badge: zentriert auf der Oberkante der Karte */
+.roastery-stack-counter {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: .6rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+    color: var(--accent);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px var(--shadow);
+    backdrop-filter: blur(2px);
+}
+
+.roastery-stack-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.roastery-stack-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--text-secondary) 50%, transparent 50%);
+    transition: transform .15s ease, background .15s ease;
+}
+
+.roastery-stack-dot.active {
+    transform: scale(1.25);
+    background: var(--accent);
+}
+
+body.light-mode .roastery-stack-ghost {
+    background: color-mix(in srgb, #fff 84%, transparent 16%);
+    border-color: color-mix(in srgb, #d8dfe7 80%, transparent 20%);
+}
+
+body.light-mode .roastery-stack-counter {
+    background: var(--bg-card);
+    border-color: var(--border);
+    color: var(--accent);
+}
