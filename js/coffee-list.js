@@ -170,6 +170,7 @@ function buildRoasteryStack(items) {
     let pendingDeltaX = 0;
     let dragRaf = 0;
     let isTransitioning = false;
+    let transitionAnim = null;
 
     // Schwellwerte
     const ACTIVATE_X = 12;
@@ -272,34 +273,52 @@ function buildRoasteryStack(items) {
         if (isTransitioning) return;
         isTransitioning = true;
 
-        slot.classList.remove(
-            'roastery-card-exit-next',
-            'roastery-card-exit-prev',
-            'roastery-snap-back'
-        );
-        const exitClass = direction === 'left' ? 'roastery-card-exit-next' : 'roastery-card-exit-prev';
-        slot.classList.add(exitClass);
+        slot.classList.remove('roastery-snap-back');
 
         const activeCard = slot.querySelector('.coffee-card');
         if (activeCard) activeCard.dataset.suppressClick = '1';
+
+        const computed = window.getComputedStyle(slot).transform;
+        const matrix = computed && computed !== 'none' ? new DOMMatrixReadOnly(computed) : null;
+        const startX = matrix ? matrix.m41 : 0;
+        const endX = startX + (direction === 'left' ? -110 : 110);
+        const endRotate = direction === 'left' ? -1.4 : 1.4;
 
         let finalized = false;
         const finalizeSwitch = () => {
             if (finalized) return;
             finalized = true;
 
+            if (transitionAnim) {
+                transitionAnim.cancel();
+                transitionAnim = null;
+            }
+
             current = direction === 'left'
                 ? (current + 1) % items.length
                 : (current - 1 + items.length) % items.length;
 
-            slot.classList.remove('roastery-card-exit-next', 'roastery-card-exit-prev');
             slot.style.transform = '';
+            slot.style.opacity = '';
+            slot.style.filter = '';
             renderCurrent(true);
             isTransitioning = false;
         };
 
-        slot.addEventListener('animationend', finalizeSwitch, { once: true });
-        setTimeout(finalizeSwitch, 340);
+        transitionAnim = slot.animate(
+            [
+                { transform: `translate3d(${startX}px, 0, 0) scale(1) rotate(0deg)`, opacity: 1, filter: 'blur(0px)' },
+                { transform: `translate3d(${endX}px, 0, -50px) scale(0.95) rotate(${endRotate}deg)`, opacity: 0, filter: 'blur(1.2px)' }
+            ],
+            {
+                duration: 260,
+                easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
+                fill: 'forwards'
+            }
+        );
+
+        transitionAnim.addEventListener('finish', finalizeSwitch, { once: true });
+        setTimeout(finalizeSwitch, 360);
     }
 
     function onPointerDown(e) {
