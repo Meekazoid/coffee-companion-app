@@ -260,7 +260,10 @@ function buildRoasteryStack(items) {
         if (animating) return;
         animating = true;
         slot.classList.remove('roastery-fly-left', 'roastery-fly-right', 'roastery-snap-back');
+<<<<<<< codex/implement-new-swipe-effect-for-coffee-cards-vd1tcq
         slot.classList.remove('roastery-slide-in-left', 'roastery-slide-in-right');
+=======
+>>>>>>> main
         slot.classList.add('roastery-push-out');
 
         const activeCard = slot.querySelector('.coffee-card');
@@ -274,7 +277,10 @@ function buildRoasteryStack(items) {
             slot.classList.remove('roastery-push-out');
             slot.style.transform = '';
             renderCurrent(direction);
+<<<<<<< codex/implement-new-swipe-effect-for-coffee-cards-vd1tcq
             animating = false;
+=======
+>>>>>>> main
         }, 200);
     }
 
