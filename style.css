@@ -56,7 +56,7 @@ body.light-mode {
     min-height: 100dvh; /* dvh statt vh - ignoriert einklappende Adressleisten */
 
     /* iOS Safe Areas einbinden, damit Buttons nicht im Home-Balken hängen */
-    padding: env(safe-area-inset-top, 40px)
+    padding: env(safe-area-inset-top, 20px)
              env(safe-area-inset-right, 20px)
              calc(100px + env(safe-area-inset-bottom, 0px))
              env(safe-area-inset-left, 20px);
@@ -101,7 +101,7 @@ body.light-mode {
 }
 
 .header-logo {
-    height: 68px;
+    height: 82px;
     width: auto;
     display: block;
     flex-shrink: 0;
@@ -133,7 +133,7 @@ body.light-mode .logo-light {
 
 h1 {
     font-family: 'Sora', sans-serif;
-    font-size: 1.8rem;
+    font-size: 2.1rem;
     font-weight: 200;
     letter-spacing: 0.32em;
     text-transform: lowercase;
@@ -170,7 +170,7 @@ h1 {
 
 .header-subtitle {
     font-family: 'Sora', sans-serif;
-    font-size: 0.62rem;
+    font-size: 0.72rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--accent);
@@ -198,8 +198,8 @@ h1 {
 /* --- Coffee Shot Signature Button (Golden Outline) --- */ .cs-btn {
     position: relative;
     display: flex;
-    width: 220px;
-    height: 220px;
+    width: 188px;
+    height: 188px;
     margin: 0 auto;
     padding: 0;
     background: transparent;
@@ -248,8 +248,8 @@ body.light-mode .add-section {
 
 .cs-icon-wrap {
     flex-shrink: 0;
-    width: 58px;
-    height: 58px;
+    width: 52px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -257,8 +257,8 @@ body.light-mode .add-section {
 }
 
 .cs-viewfinder {
-    width: 58px;
-    height: 58px;
+    width: 52px;
+    height: 52px;
     overflow: visible;
     object-fit: contain;
     fill: none;
@@ -308,7 +308,7 @@ body.light-mode .add-section {
 }
 
 .cs-label {
-    font-size: 1.75rem;
+    font-size: 1.45rem;
     font-weight: 300;
     font-family: 'Sora', sans-serif;
     color: #C8945A;
@@ -334,6 +334,18 @@ body.light-mode .cs-btn {
 
 body.light-mode .cs-label {
     color: #2b2218;
+}
+
+body.light-mode .cs-content {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.light-mode .cs-viewfinder {
+    stroke: #8B6F47;
+}
+
+body.light-mode .cs-ring {
+    border-color: rgba(139, 111, 71, 0.07);
 }
 
 body.light-mode .cs-content {
@@ -412,7 +424,7 @@ body.light-mode .upload-button:hover, body.light-mode .manual-button:hover {
 }
 
 /* -- Action buttons row matches CoffeeShot button width -- */ .action-buttons {
-    width: 220px;
+    width: 188px;
     max-width: 100%;
     margin: 14px auto 0;
     display: flex;
