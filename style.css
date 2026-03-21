@@ -333,7 +333,19 @@ body.light-mode .cs-btn {
 }
 
 body.light-mode .cs-label {
-    color: #8B6F47;
+    color: #2b2218;
+}
+
+body.light-mode .cs-content {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.light-mode .cs-viewfinder {
+    stroke: #8B6F47;
+}
+
+body.light-mode .cs-ring {
+    border-color: rgba(139, 111, 71, 0.07);
 }
 
 body.light-mode .cs-content {
