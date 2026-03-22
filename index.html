@@ -169,6 +169,7 @@
 
         <!-- ====== BREW SETUP — STICKY SELECTOR (V5.2) ====== -->
         <div class="global-grinder-selector">
+            <div class="setup-heading">YOUR SETUP</div>
             <div class="brew-chip-row">
                 <div class="brew-chip-group">
                     <button type="button" class="brew-chip brew-chip--segmented" id="grinder-chip" aria-label="Choose grinder">
@@ -176,15 +177,10 @@
                             <span class="brew-chip-top-left">
                                 <span class="brew-chip-icon" aria-hidden="true">
                                     <svg viewBox="0 0 24 24" focusable="false">
-                                        <path d="M7 5h10"></path>
-                                        <path d="M8 5v3h8V5"></path>
-                                        <path d="M9 8l-2 4h10l-2-4"></path>
-                                        <path d="M8 12v2.8c0 .8.3 1.6.8 2.2L10 18.4"></path>
-                                        <path d="M16 12v2.8c0 .8-.3 1.6-.8 2.2L14 18.4"></path>
-                                        <path d="M10 18.4h4"></path>
-                                        <path d="M12 12v3.4"></path>
-                                        <circle cx="18.6" cy="8.6" r="1.2"></circle>
-                                        <path d="M19.8 8.6h1.2"></path>
+                                        <rect x="7" y="3" width="10" height="7" rx="2"></rect>
+                                        <path d="M8.5 10v3.5M15.5 10v3.5"></path>
+                                        <rect x="6" y="13.5" width="12" height="7.5" rx="2"></rect>
+                                        <path d="M10 17h4"></path>
                                     </svg>
                                 </span>
                                 <span class="brew-chip-group-label">Grinder</span>
@@ -488,7 +484,15 @@
         <div class="modal-content modal-content--narrow">
             <div class="popup-header-standard">
                 <div class="popup-title-group">
-                    <svg viewBox="0 0 24 24"><use href="#icon-coffee"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 6H20"></path>
+                        <path d="M6 6L10 16"></path>
+                        <path d="M18 6L14 16"></path>
+                        <path d="M8 16H16"></path>
+                        <path d="M7 19H17"></path>
+                        <path d="M18 8C19.5 8 21 9.5 21 11C21 12.5 19.5 14 18 14"></path>
+                        <path d="M12 7V13" class="brew-chip-icon-detail"></path>
+                    </svg>
                     <h2>Brew Method</h2>
                 </div>
                 <button class="close-btn" id="closeMethodBtn">✕</button>

@@ -508,31 +508,41 @@ button:hover {
     position: sticky;
     top: 20px;
     z-index: 100;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-left: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     margin-bottom: 32px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    box-shadow: 0 4px 12px var(--shadow);
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    box-shadow: none;
     transition: all 0.3s ease;
 }
 
 .global-grinder-selector:hover {
-    box-shadow: 0 6px 16px var(--shadow);
+    box-shadow: none;
+}
+
+.setup-heading {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.52rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--accent) 88%, #9D7C60 12%);
+    margin-left: 2px;
+    opacity: 0.9;
 }
 
 /* -- Chip Row -- */ .brew-chip-row {
     display: flex;
     gap: 14px;
     width: 100%;
-    max-width: 540px;
-    justify-content: center;
+    max-width: none;
+    justify-content: space-between;
 }
 
 /* -- Chip Group (smart card) -- */ .brew-chip-group {
@@ -722,6 +732,11 @@ body.light-mode .brew-chip-group-label {
 
 body.light-mode .brew-chip-caret--top {
     color: #9D7C60;
+}
+
+body.light-mode .setup-heading {
+    color: #9D7C60;
+    opacity: 0.86;
 }
 
 /* -- Picker List (inside modal) -- */ .picker-list {
@@ -2754,7 +2769,7 @@ h1 {
 
 .global-grinder-selector {
     gap: 10px;
-    padding: 14px 16px;
+    padding: 0;
     top: 10px;
 }
 
@@ -2893,9 +2908,10 @@ h1 {
 /* Desktop (=769px) */
 @media (min-width: 769px) {
     .global-grinder-selector {
-    flex-direction: row;
-    justify-content: center;
-}
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
 
 }
 
