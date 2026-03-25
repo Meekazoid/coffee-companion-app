@@ -15,7 +15,7 @@ function showCompostConfirmModal() {
     const closeBtn = document.getElementById('closeCompostConfirmBtn');
 
     if (!modal || !confirmBtn || !cancelBtn || !closeBtn) {
-        return Promise.resolve(confirm('Move this coffee to Compost?'));
+        return Promise.resolve(confirm('Move this coffee to Cold Brew?'));
     }
 
     modal.classList.add('active');
