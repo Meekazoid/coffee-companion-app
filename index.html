@@ -26,13 +26,12 @@
             <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
             <circle cx="12" cy="12" r="3"></circle>
         </symbol>
-        <!-- compost / trash plant -->
-        <symbol id="icon-compost" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6.5 13h11l-1.8 7H8.3L6.5 13z"></path>
-            <line x1="5.5" y1="13" x2="18.5" y2="13"></line>
-            <line x1="12" y1="13" x2="12" y2="8"></line>
-            <path d="M12 11.5 C9.5 11.5 7 10 7 6.5 C9 6.5 11.5 8 12 11.5z"></path>
-            <path d="M12 9 C14.5 9 17 7.5 17 4 C15 4 12.5 6.5 12 9z"></path>
+        <!-- coldbrew glass -->
+        <symbol id="icon-compost" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M45 50 Q50 40 60 40 L140 40 Q150 40 155 50 L145 165 Q140 175 130 175 L70 175 Q60 175 55 165 Z"/>
+            <path d="M60 85 Q100 70 140 85"/>
+            <rect x="75" y="105" width="22" height="22" rx="3" transform="rotate(-15 86 116)"/>
+            <rect x="110" y="120" width="22" height="22" rx="3" transform="rotate(20 121 131)"/>
         </symbol>
         <!-- water drop -->
         <symbol id="icon-water" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -590,7 +589,7 @@
             <div class="popup-header-standard" id="compost-popup">
                 <div class="popup-title-group">
                     <svg viewBox="0 0 24 24"><use href="#icon-compost"/></svg>
-                    <h2>Compost</h2>
+                    <h2>Cold Brew</h2>
                 </div>
                 <button class="close-btn" id="closeDecafBtn">✕</button>
             </div>
@@ -605,7 +604,7 @@
                 <div class="compost-empty-icon">
                     <svg width="38" height="38" viewBox="0 0 24 24" class="compost-empty-svg" stroke="var(--accent)"><use href="#icon-compost"/></svg>
                 </div>
-                <p class="compost-empty-title">Compost is empty</p>
+                <p class="compost-empty-title">Cold Brew is empty</p>
             </div>
         </div>
     </div>
@@ -616,13 +615,13 @@
             <div class="popup-header-standard">
                 <div class="popup-title-group">
                     <svg viewBox="0 0 24 24"><use href="#icon-compost"/></svg>
-                    <h2>Move to Compost?</h2>
+                    <h2>Move to Cold Brew?</h2>
                 </div>
                 <button class="close-btn" id="closeCompostConfirmBtn">✕</button>
             </div>
             <div class="info-box-standard">
                 <strong>Archive coffee</strong>
-                <p>Coffee can be stored here with all adjustments made, and restored anytime.</p>
+                <p>Coffee will be stored in Cold Brew with all adjustments, and can be restored anytime.</p>
             </div>
             <div class="compost-confirm-actions">
                 <button id="cancelCompostConfirmBtn" class="compost-confirm-btn-secondary">Cancel</button>
